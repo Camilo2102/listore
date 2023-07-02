@@ -1,10 +1,19 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 /**
- * 
- * @param actualValue la copia del objeto, en este caso el state del use state con spread operator (...)
- * @param setFunction el setState para asignar el valor
+ * hook encargado de asignar los valores e ingresarlos sin importar la clase
+ * @param initialValue importante pasar los datos inicializados en cero
+ * @returns el valor y la funcion para asignarlos
  */
-export const handleInput = (actualValue: any, setFunction: Dispatch<SetStateAction<any | undefined>>) => {
-    setFunction(actualValue);
-}
+export function useHandleInput<T>(initialValue: T): [T, (partialT: Partial<T>) => void] {
+    const [value, setValue] = useState<T>(initialValue);
+  
+    const setValuePartial = (partialT: Partial<T>) => {
+      setValue((prevValue) => ({
+        ...prevValue,
+        ...partialT
+      }));
+    };
+  
+    return [value, setValuePartial];
+  }

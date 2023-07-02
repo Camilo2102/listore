@@ -6,22 +6,21 @@ import { Card } from 'primereact/card';
 import {  useEffect, useState } from 'react';
 import CredentialModel from '@/models/credential';
 
-import { AuthService } from '@/app/services/authService';
 import { Button } from 'primereact/button';
 import { useRouter } from 'next/navigation';
-import { handleInput } from '@/app/utils/handleInput';
+import { useHandleInput } from '@/app/utils/handleInput';
 import { ToastService } from '@/app/services/toastService';
+import { AuthService } from '@/app/services/authService';
 
 export default function Login() {
     const router = useRouter();
 
-    const [credential, setCredential] = useState<CredentialModel>({
-        mail: '',
-        password: ''
-    });
+    const [credential, setCredential] = useHandleInput<CredentialModel>({mail: '', password: ''});
+
+    const authService: AuthService = new AuthService();
     
     const handleLogin = () => {
-        AuthService.login(credential).then(res => {
+        authService.login(credential).then(res => {
             if(res) {
                 localStorage.setItem('token', res.token);
                 router.push('/pages/main');
@@ -39,13 +38,13 @@ export default function Login() {
             <Card title="Iniciar Sesión">
                 <div className='py-5'>
                     <span className="p-float-label">
-                        <InputText id="mail" value={credential?.mail} onChange={(e) => handleInput({...credential, mail: e.target.value }, setCredential)} />
+                        <InputText id="mail" value={credential?.mail} onChange={(e) => setCredential({mail: e.target.value})} />
                         <label htmlFor="mail">Correo o usuario</label>
                     </span>
                 </div>
                 <div className='py-5'>
                     <span className="p-float-label">
-                        <Password inputId="password" value={credential?.password} onChange={(e) =>  handleInput({...credential, password: e.target.value }, setCredential)} />
+                        <Password inputId="password" value={credential?.password} onChange={(e) =>  setCredential({password: e.target.value}) } />
                         <label htmlFor="password">Password</label>
                     </span>
                 </div>
