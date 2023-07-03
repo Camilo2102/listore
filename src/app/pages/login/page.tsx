@@ -1,57 +1,92 @@
 'use client';
 
-import { InputText } from 'primereact/inputtext';
-import { Password } from 'primereact/password';
 import { Card } from 'primereact/card';
-import {  useEffect, useState } from 'react';
-import CredentialModel from '@/models/credential';
+import { FormEvent, useEffect, useState } from 'react';
 
-import { AuthService } from '@/app/services/authService';
 import { Button } from 'primereact/button';
 import { useRouter } from 'next/navigation';
-import { handleInput } from '@/app/utils/handleInput';
-import { ToastService } from '@/app/services/toastService';
+import { AuthService } from '@/app/services/authService';
+import { handleForm } from '@/app/hooks/handleForm';
+import Validators from '@/models/formModels/validators';
+import FormControl from '@/models/formModels/formControl';
+import InputForm from '@/app/components/formComponents/inputForm';
+import PasswordForm from '@/app/components/formComponents/passwordForm';
+import { AuthUtil } from '@/app/utils/authUtil';
 
 export default function Login() {
     const router = useRouter();
 
-    const [credential, setCredential] = useState<CredentialModel>({
-        mail: '',
-        password: ''
-    });
-    
-    const handleLogin = () => {
-        AuthService.login(credential).then(res => {
-            if(res) {
-                localStorage.setItem('token', res.token);
-                router.push('/pages/main');
+    const authService: AuthService = new AuthService();
+
+    /**
+     * Instancia inicial de los formcontrols
+     */
+    const [controls, setControls] = useState<FormControl[]>(
+        [
+            {
+                field: "mail",
+                value: "",
+                description: "Correo",
+                validators: [Validators.requiered, Validators.maxLenght, Validators.minLenght],
+                invalid: false,
+                message: true,
+                maxLenght: 10,
+                minLenght: 3
+            },
+            {
+                field: "password",
+                value: "",
+                description: "Contraseña",
+                validators: [Validators.requiered],
+                invalid: false,
+                message: true,
+                maxLenght: 10,
+                minLenght: 3
             }
-        })
+        ]
+    );
+
+    /**
+     * hook para la creacion y validacion de form, los parametros indican lo siguiente 1. valor accesible, 2. funcion para asignar valor, 3. un objeto a desestructurar, que tiene los fromcontrolls actualizados y el estado, ver ejemplo
+     */
+    const [credential, setCredential,  validateFormControls] = handleForm(controls);
+
+    const handleLogin = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const [formControls, valid] = validateFormControls();
+
+        setControls([...formControls]);    
+    
+        if(valid){
+            authService.login(credential).then(res => {
+                AuthUtil.setCredentials(res.token);
+                router.push("/pages/main")
+            })
+        }
+
     }
 
+
     useEffect(() => {
-        localStorage.removeItem('token');
+        
     }, [])
-    
+
 
     return (
         <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
             <Card title="Iniciar Sesión">
-                <div className='py-5'>
-                    <span className="p-float-label">
-                        <InputText id="mail" value={credential?.mail} onChange={(e) => handleInput({...credential, mail: e.target.value }, setCredential)} />
-                        <label htmlFor="mail">Correo o usuario</label>
-                    </span>
-                </div>
-                <div className='py-5'>
-                    <span className="p-float-label">
-                        <Password inputId="password" value={credential?.password} onChange={(e) =>  handleInput({...credential, password: e.target.value }, setCredential)} />
-                        <label htmlFor="password">Password</label>
-                    </span>
-                </div>
-                <div className='text-center'>
-                    <Button onClick={handleLogin} label="Primary" />
-                </div>
+                <form onSubmit={(e) => handleLogin(e)}>
+                    <div className='py-5'>
+                        <InputForm formControl={controls[0]} value={credential} onValueChange={(mail) => {setCredential(mail)}}></InputForm>
+                    </div>
+                    <div className='py-5'>
+                        <PasswordForm formControl={controls[1]} value={credential} onValueChange={(password) => {setCredential(password)}}></PasswordForm>
+                    </div>
+                    <div className='text-center'>
+                        <Button type='submit' label="Primary" />
+                    </div>
+                </form>
             </Card>
         </div>
     )

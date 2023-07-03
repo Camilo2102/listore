@@ -1,23 +1,26 @@
 import CredentialModel from "@/models/credential";
-import { HttpGenerator } from "../utils/httpGenerator";
+import { HttpFactory } from "../utils/httpFactory";
 import { ToastService } from "./toastService";
+import { CRUDFactory } from "../../models/CRUDFactory";
 
-export class AuthService {
+export class AuthService extends CRUDFactory<CredentialModel>{
 
-    // URL base del servicio
-    private static BASEURL = 'auth';
+    private BASE_URL: string = "auth"
+
+    constructor(){
+        super("auth")        
+    }
 
     /**
      * permite el inicio de sesion del usuario
      * @param crendential datos para el inicio de sesion
      * @returns respuesta del body de la peticion
      */
-    public static login (crendential: CredentialModel) {
-        return HttpGenerator.httpPost(this.BASEURL + '/login', false, crendential);
+    public login (crendential: CredentialModel) {
+        return HttpFactory.httpPost(this.BASE_URL + '/login', false, crendential);
     }
 
+    
 
-    public static getCredentials() {
-        return HttpGenerator.httpGet(this.BASEURL, true);
-    }
+    
 }

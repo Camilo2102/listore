@@ -1,15 +1,17 @@
 'use client';
 
-import { MESSAGE_ERROR } from "../constants/generalConstant";
+import { useRouter } from "next/navigation";
+import { AuthUtil } from "./authUtil";
+import { withRouter } from 'next/router'
 import { ToastService } from "../services/toastService";
+import { Messages } from "../constants/generalConstant";
 
 const headers = new Headers();
 
 headers.append('Content-Type', 'application/json')
 headers.append('Access-Control-Allow-Origin', '*')
 
-
-export class HttpGenerator {
+export class HttpFactory {
     //URL de la api
     private static APIURL = "http://localhost:7879/"
 
@@ -20,7 +22,7 @@ export class HttpGenerator {
      * @returns la respuesta del objeto obtenido con fetch para ser usado en el servicio
      */
     public static httpGet(url: string, secure: boolean): Promise<any> {
-        this.addToken(true);
+        this.requireToken(secure);
         const fethPetition = fetch(this.APIURL + url, {
             method: "GET",
             headers: headers
@@ -37,7 +39,7 @@ export class HttpGenerator {
      * @returns la respuesta del objeto obtenido con fetch para ser usado en el servicio
      */
     public static httpPost(url: string, secure: boolean, body: any): Promise<any> {
-        this.addToken(true);
+        this.requireToken(secure);
         const fetchPetition = fetch(this.APIURL + url, {
             method: "POST",
             headers: headers,
@@ -55,7 +57,7 @@ export class HttpGenerator {
      * @returns la respuesta del objeto de la peticion
      */
     public static httpPut(url: string, secure: boolean, body: any): Promise<any> {
-        this.addToken(true);
+        this.requireToken(secure);
         const fetchPetition = fetch(this.APIURL + url, {
             method: "PUT",
             headers: headers,
@@ -71,9 +73,9 @@ export class HttpGenerator {
      * @param id id del elemento a eliminar
      * @returns la respuesta del objeto de la peticion
      */
-    public static httpDelete(url: string, secure: boolean, id: string): Promise<any> {
-        this.addToken(true);
-        const fethPetition = fetch(this.APIURL + url + "/" + id, {
+    public static httpDelete(url: string, secure: boolean): Promise<any> {
+        this.requireToken(secure);
+        const fethPetition = fetch(this.APIURL + url, {
             method: "DELETE",
             headers: headers,
         });
@@ -95,14 +97,20 @@ export class HttpGenerator {
             }
         ).catch(
             err => {
-                err.json().then((res: any) => ToastService.showError(MESSAGE_ERROR, res.message));
+                err.json().then((res: any) => {
+                    ToastService.showError(Messages.MESSAGE_ERROR, res.error)
+                });
             }
         )
     }
 
-    private static addToken(secure: boolean) {
+    /**
+     * Valida si se requiere el token y lo agrega a los headers de la peticion
+     * @param secure le indica si es segura o no la peticion
+     */
+    private static requireToken(secure: boolean) {
         if(secure) {
-            const token = localStorage.getItem('token');
+            const token = AuthUtil.getCredentials();
             if(token) {
                 headers.append('authorization', token);
             }
