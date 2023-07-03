@@ -1,13 +1,7 @@
 'use client';
 
-import { Inter } from 'next/font/google'
-
-const inter = Inter({ subsets: ['latin'] })
-
-//theme
 import "primereact/resources/themes/lara-light-indigo/theme.css";     
     
-//core
 import "primereact/resources/primereact.min.css";         
 
 import 'primeflex/primeflex.css';
@@ -30,7 +24,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <Toast ref={toast} />
         {children}
       </body>

@@ -1,13 +1,15 @@
 'use client';
 
-import { Messages } from "../constants/generalConstant";
+import { useRouter } from "next/navigation";
+import { AuthUtil } from "./authUtil";
+import { withRouter } from 'next/router'
 import { ToastService } from "../services/toastService";
+import { Messages } from "../constants/generalConstant";
 
 const headers = new Headers();
 
 headers.append('Content-Type', 'application/json')
 headers.append('Access-Control-Allow-Origin', '*')
-
 
 export class HttpFactory {
     //URL de la api
@@ -95,14 +97,20 @@ export class HttpFactory {
             }
         ).catch(
             err => {
-                err.json().then((res: any) => ToastService.showError(Messages.MESSAGE_ERROR, res.message));
+                err.json().then((res: any) => {
+                    ToastService.showError(Messages.MESSAGE_ERROR, res.error)
+                });
             }
         )
     }
 
+    /**
+     * Valida si se requiere el token y lo agrega a los headers de la peticion
+     * @param secure le indica si es segura o no la peticion
+     */
     private static requireToken(secure: boolean) {
         if(secure) {
-            const token = localStorage.getItem('token');
+            const token = AuthUtil.getCredentials();
             if(token) {
                 headers.append('authorization', token);
             }
