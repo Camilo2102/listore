@@ -2,6 +2,8 @@ import { Messages } from "@/app/constants/generalConstant";
 import { ToastService } from "@/app/services/toastService";
 import FormControl from "./formControl";
 
+export type validateFunction  = (formControl: FormControl) => boolean;
+
 export default class Validators {
     
   /**
@@ -15,49 +17,61 @@ export default class Validators {
        if(isEmpty && formControl.message) {
         ToastService.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_REQUIERED + formControl.description);
        }
-        return isEmpty;
+      
+       return isEmpty;
   }
 
   /**
    * Validador para establecer una longitud maxima
-   * @param formControl el formcontrol con la informacion del elemento
+   * @param maxLenght cantidad maxima que puede contener un elemento
    * @returns booleano que permite establecer el estado del formcontrol
    */
-  public static maxLenght(formControl: FormControl): boolean {
-    if(formControl.maxLenght) {
-      const isInvalid = formControl.value.length > formControl.maxLenght;
+  public static maxLenght(maxLenght: number): validateFunction {
 
-      if(isInvalid && formControl.message) {
-        ToastService.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_MAX_LENGTH + formControl.maxLenght + " para " + formControl.description);
+    const validateMax = (formControl: FormControl) => {
+      if(maxLenght) {
+        const isInvalid = formControl.value.length > maxLenght;
+  
+        if(isInvalid && formControl.message) {
+          ToastService.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_MAX_LENGTH + maxLenght + " para " + formControl.description);
+        }
+  
+        return isInvalid;
+      } else {
+        ToastService.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_NO_MAX_LENGTH_STABLISHED + formControl.description);
+  
+        return false;
       }
-
-      return isInvalid;
-    } else {
-      ToastService.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_NO_MAX_LENGTH_STABLISHED + formControl.description);
-
-      return false;
     }
+    
+    return validateMax;
+
   }
 
   /**
    * Validador para establecer la longitud minima
-   * @param formControl el formcontrol con la informacion del elemento
+   * @param minLength cantidad minima que puede tener un elemento
    * @returns booleano que permite establecer el estado del formcontrol
    */
-  public static minLenght(formControl: FormControl): boolean {
-    if(formControl.minLenght) {
-      const isInvalid = formControl.value.length < formControl.minLenght;
+  public static minLenght(minLength: number): validateFunction {
 
-      if(isInvalid && formControl.message) {
-        ToastService.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_MIN_LENGTH + formControl.minLenght + " para " + formControl.description);
+    const validateMin = (formControl: FormControl) => {
+      if(minLength) {
+        const isInvalid = formControl.value.length < minLength;
+  
+        if(isInvalid && formControl.message) {
+          ToastService.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_MIN_LENGTH + minLength + " para " + formControl.description);
+        }
+  
+        return isInvalid;
+      } else {
+        ToastService.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_NO_MIN_LENGTH_STABLISHED + formControl.description);
+  
+        return false;
       }
-
-      return isInvalid;
-    } else {
-      ToastService.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_NO_MIN_LENGTH_STABLISHED + formControl.description);
-
-      return false;
     }
+
+    return validateMin;
   }
 
 

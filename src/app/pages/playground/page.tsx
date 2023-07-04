@@ -26,11 +26,9 @@ export default function PlayGround() {
                 field: "input",
                 value: "",
                 description: "Input",
-                validators: [Validators.requiered, Validators.maxLenght, Validators.minLenght],
+                validators: [Validators.requiered, Validators.maxLenght(10), Validators.minLenght(3)],
                 invalid: false,
                 message: true,
-                maxLenght: 10,
-                minLenght: 3
             },
             {
                 field: "password",
@@ -39,8 +37,6 @@ export default function PlayGround() {
                 validators: [Validators.requiered],
                 invalid: false,
                 message: true,
-                maxLenght: 10,
-                minLenght: 3
             },
             {
                 field: "date",
@@ -56,10 +52,9 @@ export default function PlayGround() {
                 field: "checkBox",
                 value: [],
                 description: "CheckBox",
-                validators: [Validators.requiered, Validators.minLenght],
+                validators: [Validators.requiered, Validators.minLenght(2)],
                 invalid: false,
                 message: true,
-                minLenght: 2,
                 options: [
                     {code: "pizza", value: "Piz", description: "Pizza"},
                     {code: "pizza2", value: "Piz2", description: "Pizza2"},

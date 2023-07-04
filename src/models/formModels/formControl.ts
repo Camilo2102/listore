@@ -11,8 +11,6 @@ export default interface FormControl{
     validators?: ((formControl: FormControl) => boolean)[];
     invalid?: boolean;
     message?: boolean;
-    minLenght?: number;
-    maxLenght?: number;
     minDate?: Date;
     maxDate?: Date;
     options?:  KeyValueInterface[];
