@@ -5,9 +5,11 @@
 import KeyValueInterface from "@/app/interfaces/keyValueInterface";
 
 export default interface FormControl{
-    field: string,
-    value: any,
-    description: string,
+    field: string;
+    value: any;
+    description: string;
+    type: string;
+    colSize?: number;
     validators?: ((formControl: FormControl) => boolean)[];
     invalid?: boolean;
     message?: boolean;

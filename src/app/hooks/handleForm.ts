@@ -3,7 +3,7 @@ import { useHandleInput } from "./handleInput";
 import FormControl from "@/models/formModels/formControl";
 
 
-export const handleForm = (formControls: FormControl[]) : [any, (partialT: Partial<any>) => void,() => [FormControl[], boolean]
+export const handleForm = (formControls: FormControl[]) : [any, Form, (partialT: Partial<any>) => void,() => [FormControl[], boolean]
 ] => {
     const form = new Form(formControls);
     const [value, setValue] = useHandleInput<any>(form.getFormControlValues());
@@ -29,5 +29,5 @@ export const handleForm = (formControls: FormControl[]) : [any, (partialT: Parti
     }
 
 
-    return [value, inputChange, () => validateForm()];
+    return [value, form, inputChange, () => validateForm()];
 }

@@ -1,24 +1,17 @@
+import { FormEvent, useState } from "react";
+import FormGenerator from "./formGenerator";
 import FormControl from "@/models/formModels/formControl";
 import Validators from "@/models/formModels/validators";
-import { FormEvent, useState } from "react";
 import { DateUtil } from "../utils/dateUtil";
 import { handleForm } from "../hooks/handleForm";
-import { ToastService } from "../services/toastService";
-import { Card } from "primereact/card";
-import InputForm from "./formComponents/inputForm";
-import PasswordForm from "./formComponents/passwordForm";
-import CalendarForm from "./formComponents/calendarForm";
-import CheckBoxForm from "./formComponents/checkBoxForm";
-import DropDownForm from "./formComponents/dropDownForm";
-import RadioButtonForm from "./formComponents/radioButtonForm";
-import { Button } from "primereact/button";
 import { FormTypes } from "../constants/formTypeConstant";
+import { ToastService } from "../services/toastService";
 
-export default function FormExample() {
-    /**
+export default function FormGeneratorExample () {
+     /**
    * Instancia inicial de los formcontrols
    */
-    const [controls, setControls] = useState<FormControl[]>(
+     const [controls, setControls] = useState<FormControl[]>(
         [
             {
                 field: "input",
@@ -28,6 +21,7 @@ export default function FormExample() {
                 validators: [Validators.requiered, Validators.maxLenght(10), Validators.minLenght(3)],
                 invalid: false,
                 message: true,
+                colSize: 12
             },
             {
                 field: "password",
@@ -91,9 +85,6 @@ export default function FormExample() {
         ]
     );
 
-    /**
-     * hook para la creacion y validacion de form, los parametros indican lo siguiente 1. valor accesible, 2. funcion para asignar valor, 3. un objeto a desestructurar, que tiene los fromcontrolls actualizados y el estado, ver ejemplo
-     */
     const [value, form, setValue, validateFormControls] = handleForm(controls);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -110,32 +101,8 @@ export default function FormExample() {
 
 
     }
-
-    return (
-        <Card title="Formularios" style={{ height: '100%', width: '100%' }}>
-            <form onSubmit={(e) => handleSubmit(e)}>
-                <div className='py-5'>
-                    <InputForm formControl={controls[0]} value={value} onValueChange={(data) => { setValue(data) }}></InputForm>
-                </div>
-                <div className='py-5'>
-                    <PasswordForm formControl={controls[1]} value={value} onValueChange={(data) => { setValue(data) }}></PasswordForm>
-                </div>
-                <div className="py-5">
-                    <CalendarForm formControl={controls[2]} value={value} onValueChange={(data) => { setValue(data) }}></CalendarForm>
-                </div>
-                <div className="py-5">
-                    <CheckBoxForm formControl={controls[3]} value={value} onValueChange={(data) => setValue(data)}></CheckBoxForm>
-                </div>
-                <div className="py-5">
-                    <DropDownForm formControl={controls[4]} value={value} onValueChange={(data) => setValue(data)}></DropDownForm>
-                </div>
-                <div className="py-5">
-                    <RadioButtonForm formControl={controls[5]} value={value} onValueChange={(data) => setValue(data)}></RadioButtonForm>
-                </div>
-                <div className='text-center'>
-                    <Button type='submit' label="Primary" />
-                </div>
-            </form>
-        </Card>
+    
+    return(
+        <FormGenerator form={form} value={value} setValue={setValue} submit={handleSubmit}></FormGenerator>
     )
 }
