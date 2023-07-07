@@ -12,7 +12,7 @@ export default function ({ formControl, value, onValueChange }: { formControl: F
 
     return (
         <span className="p-float-label">
-            <InputText id={formControl.field} className={formControl.invalid ? 'p-invalid' : ''} value={value[formControl.field]} onChange={handleInput} />
+            <InputText style={{width: '100%'}} id={formControl.field} className={formControl.invalid ? 'p-invalid' : ''} value={value[formControl.field]} onChange={handleInput} />
             <label htmlFor={formControl.field}>{formControl.description}</label>
         </span>
     )

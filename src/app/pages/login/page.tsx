@@ -27,21 +27,17 @@ export default function Login() {
                 field: "mail",
                 value: "",
                 description: "Correo",
-                validators: [Validators.requiered, Validators.maxLenght, Validators.minLenght],
+                validators: [Validators.requiered, Validators.maxLenght(10), Validators.minLenght(3)],
                 invalid: false,
                 message: true,
-                maxLenght: 10,
-                minLenght: 3
             },
             {
                 field: "password",
                 value: "",
                 description: "Contraseña",
-                validators: [Validators.requiered],
+                validators: [Validators.requiered, Validators.maxLenght(10), Validators.minLenght(3)],
                 invalid: false,
                 message: true,
-                maxLenght: 10,
-                minLenght: 3
             }
         ]
     );

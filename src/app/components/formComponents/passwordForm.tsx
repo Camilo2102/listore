@@ -13,7 +13,7 @@ export default function PasswordForm({ formControl, value, onValueChange }: { fo
 
     return (
         <span className="p-float-label">
-            <Password inputId={formControl.field} className={formControl.invalid ? 'p-invalid' : ''} value={value[formControl.field]} onChange={handlePassword} />
+            <Password style={{width: '100%'}} inputStyle={{width: '100%'}} inputId={formControl.field} className={formControl.invalid ? 'p-invalid' : ''} value={value[formControl.field]} onChange={handlePassword} />
             <label htmlFor={formControl.field}>{formControl.description}</label>
         </span>
     )

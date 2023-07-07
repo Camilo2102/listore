@@ -18,6 +18,7 @@ export default class Form {
      * Valida que el formulario cuente con formcontrols para generar un key value lo genera a partir del field y del value
      * @returns devolver un objeto clave: valor {key: value}, para poder ser usado en el useState 
      */
+    
     public getFormControlValues(): any {
         if (!this.withFormControls()) return;
         return this.formControls.reduce((acc, control) => {
