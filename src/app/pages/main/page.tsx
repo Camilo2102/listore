@@ -6,17 +6,10 @@ import { useEffect } from "react"
 
 
 export default function Main() {
-    const authService = new AuthService();
     const userServices = new UserService();
 
     useEffect(()=> {
-        userServices.getAll().then(
-            res => {
-                if(res){
-                    console.log(res);
-                }
-            }
-        )
+        
     }, [])
 
     return(
