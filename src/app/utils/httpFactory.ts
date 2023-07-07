@@ -23,6 +23,7 @@ export class HttpFactory {
      */
     public static httpGet(url: string, secure: boolean): Promise<any> {
         this.requireToken(secure);
+        debugger
         const fethPetition = fetch(this.APIURL + url, {
             method: "GET",
             headers: headers
@@ -112,10 +113,10 @@ export class HttpFactory {
         if(secure) {
             const token = AuthUtil.getCredentials();
             if(token) {
-                headers.append('authorization', token);
+                headers.append('Authorization', token);
             }
         } else {
-            headers.delete('authorization');
+            headers.delete('Authorization');
         }
     }
 }

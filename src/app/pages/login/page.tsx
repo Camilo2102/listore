@@ -27,7 +27,7 @@ export default function Login() {
                 field: "mail",
                 value: "",
                 description: "Correo",
-                validators: [Validators.requiered, Validators.maxLenght(10), Validators.minLenght(3)],
+                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
                 invalid: false,
                 message: true,
             },
