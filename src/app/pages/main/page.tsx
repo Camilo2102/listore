@@ -15,9 +15,6 @@ export default function Main() {
                 }
             }
         )
-        userServices.getAll().then(
-            res => console.log(res)
-        )
     }, [])
 
     return(
