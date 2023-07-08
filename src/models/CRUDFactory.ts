@@ -65,7 +65,7 @@ export class CRUDFactory<T> {
      * @returns  la lista de objetos filtrados
      */
     public getAllByFilter(secure: boolean = true, page: number = 0, pageSize: number = 10, t: any): Promise<T[]> {
-        const petitioRoute: string = this.baseUrl + Routes.GET_ALL_BY_Filter + `?pageNumber=${page}&pageSize=${pageSize}`;
+        const petitioRoute: string = this.baseUrl + Routes.GET_ALL_BY_FILTER + `?pageNumber=${page}&pageSize=${pageSize}`;
         return HttpFactory.httpPost(petitioRoute, secure, t);
     }
 

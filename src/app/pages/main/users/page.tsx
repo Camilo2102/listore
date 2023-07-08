@@ -3,6 +3,8 @@
 import TableGeneral from "@/app/components/tableGeneral";
 import { RolesMap } from "@/app/constants/roleMap";
 import { StatusMap } from "@/app/constants/statusMap";
+import UserFilterDTO from "@/app/dto/userFilterDTO";
+import { useHandleInput } from "@/app/hooks/handleInput";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import { UserService } from "@/app/services/userService";
 import User from "@/models/user";
@@ -13,16 +15,17 @@ export default function Users() {
     const userServices = new UserService();
 
     const [users, setUsers] = useState<User[]>([]);
+    const [userFilter, setUserFilter] = useHandleInput<UserFilterDTO>({active: "", companyId: "", name: "", role: ""});
 
     const columns: ColumnMeta[] = [
-        {field: 'name', header: 'Nombre'},
+        {field: 'name', header: 'Nombre',},
         {field: 'role', header: 'Rol', values: RolesMap},
         {field: 'active', header: 'Estado', values: StatusMap},
     ];
 
     useEffect(() => {
-        userServices.getAllByFilter(true, 0, 10, {companyId: "bbca48aa-af36-4d3d-b0a4-a21453890c95"}).then(res => setUsers(res));
-    }, [])
+        userServices.getAllByFilter(true, 0, 10, userFilter).then(res => setUsers(res));
+    }, [userFilter])
 
     return(
         <div>

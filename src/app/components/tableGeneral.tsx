@@ -5,11 +5,7 @@ import ColumnMeta from "../interfaces/columnMeta";
 export default function TableGeneral({values, columns, gridLines, stripedRows}: {values: any, columns: ColumnMeta[], gridLines?: boolean, stripedRows?: boolean}){
 
     const valuesSetter = (e: any, field: string, values?: any) => {
-      console.log(values);
-      
       if(values) {        
-        console.log(values[e[field]]);
-        
         return(
           <>
           {values[e[field]]}
