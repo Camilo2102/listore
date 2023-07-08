@@ -21,7 +21,7 @@ export default function Users() {
     ];
 
     useEffect(() => {
-        userServices.getAllByFilter(true, 0, 10, {}).then(res => setUsers(res));
+        userServices.getAllByFilter(true, 0, 10, {companyId: "bbca48aa-af36-4d3d-b0a4-a21453890c95"}).then(res => setUsers(res));
     }, [])
 
     return(
