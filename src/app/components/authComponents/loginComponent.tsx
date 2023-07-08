@@ -41,7 +41,7 @@ export default function LoginComponent() {
                 type: FormTypes.PASSWORD,
                 colSize: 12,
                 description: "Contraseña",
-                validators: [Validators.requiered, Validators.maxLenght(10), Validators.minLenght(3)],
+                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
                 invalid: false,
                 message: true,
             }
@@ -63,7 +63,7 @@ export default function LoginComponent() {
         if (valid) {
             authService.login(credential).then(res => {
                 AuthUtil.setCredentials(res.token);
-                router.push("/pages/main")
+                router.push("/pages/main/users")
             })
         }
 

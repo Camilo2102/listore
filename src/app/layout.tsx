@@ -1,14 +1,14 @@
 'use client';
 
-import  "./theme.css";
+import "./theme.css";
 
-import "primereact/resources/primereact.min.css"; 
+import "primereact/resources/primereact.min.css";
 
 import 'primeicons/primeicons.css';
 
 import 'primeflex/primeflex.css';
 
-import { useEffect, useRef} from 'react';
+import { useEffect, useRef } from 'react';
 import { Toast } from 'primereact/toast';
 import { ToastService } from './services/toastService';
 

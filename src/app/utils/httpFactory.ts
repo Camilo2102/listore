@@ -43,7 +43,6 @@ export class HttpFactory {
         method: "POST",
         headers: headers,
         body: JSON.stringify(body),
-        mode: "cors"
       });
       
       return this.handleFetchPetition(fetchPetition);

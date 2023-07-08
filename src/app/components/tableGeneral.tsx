@@ -4,9 +4,28 @@ import ColumnMeta from "../interfaces/columnMeta";
 
 export default function TableGeneral({values, columns, gridLines, stripedRows}: {values: any, columns: ColumnMeta[], gridLines?: boolean, stripedRows?: boolean}){
 
+    const valuesSetter = (e: any, field: string, values?: any) => {
+      console.log(values);
+      
+      if(values) {        
+        console.log(values[e[field]]);
+        
+        return(
+          <>
+          {values[e[field]]}
+          </>
+        )
+      }
+      return(
+        <div>
+          {e[field]}
+        </div>
+      )
+    }
+
     const generateColumns = () => {
         return columns.map(column => (
-          <Column key={column.field} field={column.field} header={column.header} sortable={column.sortable}/>
+          <Column key={column.field} field={column.field} header={column.header} sortable={column.sortable} body={(e) => valuesSetter(e, column.field, column.values)}/>
         ));
       };
       
