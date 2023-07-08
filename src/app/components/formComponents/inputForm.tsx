@@ -2,18 +2,20 @@ import FormControl from "@/models/formModels/formControl";
 import { InputText } from "primereact/inputtext";
 import { ChangeEvent } from "react";
 
-export default function InputForm ({ formControl, value, onValueChange }: { formControl: FormControl, value: any, onValueChange: (value: any) => void }) {
+export default function InputForm({ formControl, value, onValueChange, icon }: { formControl: FormControl, value: any, onValueChange: (value: any) => void, icon?: string }) {
 
     const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        
-        onValueChange({[formControl.field]: value}); 
+
+        onValueChange({ [formControl.field]: value });
     }
 
     return (
-        <span className="p-float-label">
-            <InputText style={{width: '100%'}} id={formControl.field} className={formControl.invalid ? 'p-invalid' : ''} value={value[formControl.field]} onChange={handleInput} />
-            <label htmlFor={formControl.field}>{formControl.description}</label>
+        <span className="p-float-label p-input-icon-right" style={{width: '100%'}} >
+            <i className={'pi ' + icon} style={{ color: '#9E6A90' }}></i>
+            <InputText style={{ width: '100%' }} id={formControl.field} className={formControl.invalid ? 'p-invalid' : ''} value={value[formControl.field]} onChange={handleInput} />
+            <label htmlFor={formControl.field} >{formControl.description}</label>
         </span>
+
     )
 }

@@ -15,15 +15,16 @@ import RadioButtonForm from "../components/formComponents/radioButtonForm";
  * @returns devuelve el elemento listo para ser usado
  */
 export default function inputTypeSelector(formControl: FormControl, value: any, setValue: (partialT: Partial<any>) => void) {
-    const type = formControl.type;
+    const type = formControl.type ? formControl.type : '';
 
     const types = {
-        [FormTypes.INPUT]: <InputForm formControl={formControl} value={value} onValueChange={(data) => { setValue(data) }}></InputForm>,
+        [FormTypes.INPUT]: <InputForm icon={formControl.icon} formControl={formControl} value={value} onValueChange={(data) => { setValue(data) }}></InputForm>,
         [FormTypes.CHECKBOX]: <CheckBoxForm formControl={formControl} value={value} onValueChange={(data) => { setValue(data) }}></CheckBoxForm>,
         [FormTypes.DATE]: <CalendarForm formControl={formControl} value={value} onValueChange={(data) => { setValue(data) }}></CalendarForm>,
         [FormTypes.DROPDOWN]: <DropDownForm formControl={formControl} value={value} onValueChange={(data) => { setValue(data) }}></DropDownForm>,
         [FormTypes.PASSWORD]: <PasswordForm formControl={formControl} value={value} onValueChange={(data) => { setValue(data) }}></PasswordForm>,
-        [FormTypes.RADIO]: <RadioButtonForm formControl={formControl} value={value} onValueChange={(data) => { setValue(data) }}></RadioButtonForm>
+        [FormTypes.RADIO]: <RadioButtonForm formControl={formControl} value={value} onValueChange={(data) => { setValue(data) }}></RadioButtonForm>,
+        '': <h3>Sin implementar</h3> 
     }
 
     return types[type]

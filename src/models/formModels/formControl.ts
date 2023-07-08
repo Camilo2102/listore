@@ -8,7 +8,9 @@ export default interface FormControl{
     field: string;
     value: any;
     description: string;
-    type: string;
+    feedback?: boolean;
+    icon? : string;
+    type?: string;
     colSize?: number;
     validators?: ((formControl: FormControl) => boolean)[];
     invalid?: boolean;

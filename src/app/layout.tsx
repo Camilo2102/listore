@@ -1,8 +1,10 @@
 'use client';
 
-import "primereact/resources/themes/lara-light-indigo/theme.css";     
-    
-import "primereact/resources/primereact.min.css";         
+import  "./theme.css";
+
+import "primereact/resources/primereact.min.css"; 
+
+import 'primeicons/primeicons.css';
 
 import 'primeflex/primeflex.css';
 
@@ -24,7 +26,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body>
+      <body className="p-0 m-0">
         <Toast ref={toast} />
         {children}
       </body>

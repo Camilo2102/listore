@@ -2,7 +2,7 @@ import FormControl from "@/models/formModels/formControl";
 import { Password } from "primereact/password";
 import { ChangeEvent } from "react";
 
-export default function PasswordForm({ formControl, value, onValueChange }: { formControl: FormControl, value: any, onValueChange: (value: any) => void }) {
+export default function PasswordForm({ formControl, value, onValueChange }: { formControl: FormControl, value: any, onValueChange: (value: any) => void}) {
 
     const handlePassword = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -13,7 +13,7 @@ export default function PasswordForm({ formControl, value, onValueChange }: { fo
 
     return (
         <span className="p-float-label">
-            <Password style={{width: '100%'}} inputStyle={{width: '100%'}} inputId={formControl.field} className={formControl.invalid ? 'p-invalid' : ''} value={value[formControl.field]} onChange={handlePassword} />
+            <Password style={{width: '100%'}} inputStyle={{width: '100%'}} inputId={formControl.field} feedback={formControl.feedback} className={formControl.invalid ? 'p-invalid' : ''} toggleMask value={value[formControl.field]} onChange={handlePassword} />
             <label htmlFor={formControl.field}>{formControl.description}</label>
         </span>
     )

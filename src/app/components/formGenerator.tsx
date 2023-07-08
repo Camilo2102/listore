@@ -4,7 +4,7 @@ import { Button } from "primereact/button";
 import { FormEvent } from "react";
 import { Dropdown } from "primereact/dropdown";
 
-export default function FormGenerator({ form, value, setValue, submit }: { form: Form, value: any, setValue: (partialT: Partial<any>) => void, submit: (e: FormEvent<HTMLFormElement>) => void }) {
+export default function FormGenerator({ form, value, setValue, submit, buttonLabel = "submit" }: { form: Form, value: any, setValue: (partialT: Partial<any>) => void, submit: (e: FormEvent<HTMLFormElement>) => void, buttonLabel?: string }) {
 
 
     const generateFields = () => {
@@ -22,7 +22,7 @@ export default function FormGenerator({ form, value, setValue, submit }: { form:
         <form onSubmit={(e) => submit(e)} className="grid">
             {generateFields()}
             <div className="col-12 text-center" >
-                <Button  label="Submit"></Button>
+                <Button label={buttonLabel}></Button>
             </div>
         </form>
     )
