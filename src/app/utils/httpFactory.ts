@@ -22,7 +22,7 @@ export class HttpFactory {
       
       const fetchPetition = fetch(this.APIURL + url, {
         method: "GET",
-        headers: headers
+        headers: headers,
       });
       
       return this.handleFetchPetition(fetchPetition);
@@ -42,7 +42,8 @@ export class HttpFactory {
       const fetchPetition = fetch(this.APIURL + url, {
         method: "POST",
         headers: headers,
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+        mode: "cors"
       });
       
       return this.handleFetchPetition(fetchPetition);
@@ -62,7 +63,8 @@ export class HttpFactory {
       const fetchPetition = fetch(this.APIURL + url, {
         method: "PUT",
         headers: headers,
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+        mode: "cors"
       });
       
       return this.handleFetchPetition(fetchPetition);
@@ -80,7 +82,8 @@ export class HttpFactory {
       
       const fetchPetition = fetch(this.APIURL + url, {
         method: "DELETE",
-        headers: headers
+        headers: headers,
+        mode: "cors"
       });
       
       return this.handleFetchPetition(fetchPetition);
@@ -115,12 +118,11 @@ export class HttpFactory {
      */
     private static requireToken(secure: boolean, headers: Headers) {
       headers.append('Content-Type', 'application/json');
-      headers.append('Access-Control-Allow-Origin', '*');
       
       if (secure) {
         const token = AuthUtil.getCredentials();
         if (token) {
-          headers.append('Authorization', token);
+          headers.append('Authorization', `${token}`);
         }
       } else {
         headers.delete('Authorization');
