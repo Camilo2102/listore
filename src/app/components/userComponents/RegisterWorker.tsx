@@ -107,19 +107,26 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
             const password = controls.find(control => control.field === 'password')?.value;
             const checkPassword = controls.find(control => control.field === 'passwordCheck')?.value;
             if (password === checkPassword) {
-                const userToRegister = { ...user, credential: {}, company: {} };
-                userToRegister.id = userSelected?.id
-                userToRegister.password = undefined;
-                userToRegister.passwordCheck = undefined;
-                userToRegister.mail = undefined;
-                userToRegister.active = userSelected?.active ? userSelected?.active : 'N';
-
-                userToRegister.credential.id = userSelected?.credential.id
-                userToRegister.credential.mail = user.mail;
-                userToRegister.credential.password = user.password;
-                userToRegister.credential.userName = user.userName;
-
-                userToRegister.company.id = AuthUtil.getCredentials().company
+                //TODO mejorar implementacion
+                const userToRegister = {
+                    ...user,
+                    credential: {
+                        ...user.credential,
+                        id: userSelected?.credential.id,
+                        mail: user.mail,
+                        password: user.password,
+                        userName: user.userName
+                    },
+                    company: {
+                        ...user.company,
+                        id: AuthUtil.getCredentials().company
+                    },
+                    id: userSelected?.id,
+                    password: undefined,
+                    passwordCheck: undefined,
+                    mail: undefined,
+                    active: userSelected?.active ?? 'N'
+                };
 
                 authService.registerUser(userToRegister).then(
                     res => {
