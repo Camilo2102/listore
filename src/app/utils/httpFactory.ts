@@ -119,7 +119,7 @@ export class HttpFactory {
       headers.append('Content-Type', 'application/json');
       
       if (secure) {
-        const token = AuthUtil.getCredentials();
+        const token = AuthUtil.getCredentials().token;
         if (token) {
           headers.append('Authorization', `${token}`);
         }

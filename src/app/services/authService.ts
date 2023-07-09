@@ -3,6 +3,7 @@ import { HttpFactory } from "../utils/httpFactory";
 import { ToastService } from "./toastService";
 import { CRUDFactory } from "../../models/CRUDFactory";
 import RegisterUserDTO from "../dto/registerUserDTO";
+import RegisterWorkerDTO from "../dto/registerWorkerDTO";
 
 export class AuthService extends CRUDFactory<CredentialModel>{
 
@@ -29,6 +30,16 @@ export class AuthService extends CRUDFactory<CredentialModel>{
      */
     public register(registerUser: RegisterUserDTO) {
         return HttpFactory.httpPost(this.BASE_URL + "/register", false, registerUser);
+    }
+
+
+    /**
+     * Permite el registro de un usuario dentro de la organizacion
+     * @param registerWorker el usuario a registrar
+     * @returns el estado de la creacion del usuario
+     */
+    public registerUser(registerWorker: RegisterWorkerDTO) {
+        return HttpFactory.httpPost(this.BASE_URL + "/registerUser", true, registerWorker)
     }
 
     

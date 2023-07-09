@@ -3,4 +3,5 @@ export default interface ColumnMeta {
     header: string;
     values?: any;
     sortable?: boolean;
+    action?: (t: any) => void;
 }

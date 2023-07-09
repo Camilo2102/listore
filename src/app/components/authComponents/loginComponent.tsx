@@ -62,8 +62,8 @@ export default function LoginComponent() {
 
         if (valid) {
             authService.login(credential).then(res => {
-                AuthUtil.setCredentials(res.token);
-                router.push("/pages/main/users")
+                AuthUtil.setCredentials(res.token, res.company);
+                router.push("/pages/main/user")
             })
         }
 

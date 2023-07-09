@@ -11,7 +11,7 @@ export default function DropDownForm({ formControl, value, onValueChange }: { fo
 
     return (
         <span className="p-float-label">
-            <Dropdown style={{width: '100% !important'}} inputId={formControl.field} className={`w-full md:w-14rem ${formControl.invalid ? 'p-invalid' : ''}`} value={value[formControl.field]} onChange={(e) => handleDropdown(e.value)} options={formControl.options} optionLabel="code" optionValue="value" />
+            <Dropdown style={{width: '100% !important'}} inputId={formControl.field} className={`${formControl.invalid ? 'p-invalid' : ''}`} value={value[formControl.field]} onChange={(e) => handleDropdown(e.value)} options={formControl.options} optionLabel="code" optionValue="value" />
             <label htmlFor={formControl.field}>{formControl.description}</label>
         </span>
     )
