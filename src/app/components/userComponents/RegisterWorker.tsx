@@ -1,21 +1,38 @@
-import User from "@/models/user";
+import User from "@/app/models/user";
 import Container from "../container";
 import FormGenerator from "../formGenerator";
 import { FormEvent, useEffect, useState } from "react";
 import { handleForm } from "@/app/hooks/handleForm";
 import { FormTypes } from "@/app/constants/formTypeConstant";
-import Validators from "@/models/formModels/validators";
-import FormControl from "@/models/formModels/formControl";
+import Validators from "@/app/models/formModels/validators";
+import FormControl from "@/app/models/formModels/formControl";
 import { RolesOptions } from "@/app/constants/roleValues";
 import { AuthService } from "@/app/services/authService";
 import { ToastService } from "@/app/services/toastService";
 import { Messages } from "@/app/constants/generalConstant";
 import { AuthUtil } from "@/app/utils/authUtil";
 import { useRouter } from "next/navigation";
+import RegisterWorkerDTO from "@/app/dto/registerWorkerDTO";
 
 export default function RegisterWorker({ userSelected }: { userSelected?: User }) {
     const authService = new AuthService();
     const router = useRouter();
+
+    const [submited, setSubmited] = useState<boolean>(false);
+    const [workerToRegister, setWorkerToRegister] = useState<User>({
+        name: "",
+        role: "",
+        active: "",
+        credential: {
+            id: "",
+            mail: "",
+            password: "",
+            userName: ""
+        },
+        company: {
+            id: ""
+        }
+    });
     /**
      * Instancia inicial de los formcontrols
      */
@@ -107,46 +124,47 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
             const password = controls.find(control => control.field === 'password')?.value;
             const checkPassword = controls.find(control => control.field === 'passwordCheck')?.value;
             if (password === checkPassword) {
-                //TODO mejorar implementacion
-                const userToRegister = {
-                    ...user,
-                    credential: {
-                        ...user.credential,
-                        id: userSelected?.credential.id,
-                        mail: user.mail,
-                        password: user.password,
-                        userName: user.userName
-                    },
-                    company: {
-                        ...user.company,
-                        id: AuthUtil.getCredentials().company
-                    },
-                    id: userSelected?.id,
-                    password: undefined,
-                    passwordCheck: undefined,
-                    mail: undefined,
-                    active: userSelected?.active ?? 'N'
-                };
-
-                authService.registerUser(userToRegister).then(
-                    res => {
-                        ToastService.showSuccess(Messages.MESSAGE_SUCCESS, userSelected ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
-                        router.push("/pages/main/user")
+                const { name, userName, mail, password, role } = user;
+                debugger
+                setWorkerToRegister(
+                    {
+                        id: workerToRegister.id ? workerToRegister.id : undefined,
+                        name, 
+                        role, 
+                        active: 'S',
+                        credential: {
+                            id: workerToRegister.credential?.id ? workerToRegister.credential?.id : undefined , 
+                            mail, 
+                            password, 
+                            userName
+                        },
+                        company: {
+                            id: AuthUtil.getCredentials().company
+                        } 
                     }
-                );
+                )
+                setSubmited(true);
                 return;
             }
-
-
             ToastService.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_PASSWORD_MISMATCH)
         }
     }
 
     useEffect(() => {
-        if (userSelected) {
+        if (!submited && userSelected) {
+            setWorkerToRegister(userSelected);
             setUser(userSelected);
+            return;
         }
-    }, [])
+        if (submited) {
+            authService.registerUser(workerToRegister).then(
+                res => {
+                    ToastService.showSuccess(Messages.MESSAGE_SUCCESS, userSelected ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
+                    router.push("/pages/main/user")
+                }
+            );
+        }
+    }, [submited])
 
 
     return (

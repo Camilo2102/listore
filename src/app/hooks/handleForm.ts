@@ -1,6 +1,6 @@
-import Form from "@/models/formModels/form";
+import Form from "@/app/models/formModels/form";
 import { useHandleInput } from "./handleInput";
-import FormControl from "@/models/formModels/formControl";
+import FormControl from "@/app/models/formModels/formControl";
 
 
 export const handleForm = (formControls: FormControl[]) : [any, Form, (partialT: Partial<any>) => void,() => [FormControl[], boolean]

@@ -1,4 +1,4 @@
-import FormControl from "@/models/formModels/formControl";
+import FormControl from "@/app/models/formModels/formControl";
 import { RadioButton, RadioButtonChangeEvent } from 'primereact/radiobutton';
 
 export default function RadioButtonForm({ formControl, value, onValueChange }: { formControl: FormControl, value: any, onValueChange: (value: any) => void }){

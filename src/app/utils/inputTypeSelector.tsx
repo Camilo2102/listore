@@ -1,4 +1,4 @@
-import FormControl from "@/models/formModels/formControl";
+import FormControl from "@/app/models/formModels/formControl";
 import { FormTypes } from "../constants/formTypeConstant";
 import InputForm from "../components/formComponents/inputForm";
 import CheckBoxForm from "../components/formComponents/checkBoxForm";

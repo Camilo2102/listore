@@ -9,8 +9,6 @@ export const RolesMap = {
   };
 
   export const RolesOptions = [
-    { code: Roles.CHALLENGER_DESC, value: Roles.CHALLENGER_VAL, description: Roles.CHALLENGER_DESC },
-    { code: Roles.MASTER_DESC, value: Roles.MASTER_VAL, description: Roles.MASTER_DESC },
     { code: Roles.DIAMOND_DESC, value: Roles.DIAMOND_VAL, description: Roles.DIAMOND_DESC},
     { code: Roles.PLATINUM_DESC, value: Roles.PLATINUM_VAL, description: Roles.PLATINUM_DESC },
     { code: Roles.GOLD_DESC, value: Roles.GOLD_VAL, description: Roles.GOLD_DESC },

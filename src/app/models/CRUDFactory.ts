@@ -1,5 +1,6 @@
-import { Routes } from "../app/constants/routesConstants";
-import { HttpFactory } from "../app/utils/httpFactory";
+import { Routes } from "@/app/constants/routesConstants";
+import { HttpFactory } from "@/app/utils/httpFactory";
+import Paginator from "../interfaces/paginator";
 
 /**
  * Clase encargada de generar las consultas basicas
@@ -64,8 +65,13 @@ export class CRUDFactory<T> {
      * @param t El objeto a filtrar
      * @returns  la lista de objetos filtrados
      */
-    public getAllByFilter(secure: boolean = true, page: number = 0, pageSize: number = 10, t: any): Promise<T[]> {
-        const petitioRoute: string = this.baseUrl + Routes.GET_ALL_BY_FILTER + `?pageNumber=${page}&pageSize=${pageSize}`;
+    public getAllByFilter(secure: boolean = true, paginator: Paginator, t: any): Promise<T[]> {
+        const petitioRoute: string = this.baseUrl + Routes.GET_ALL_BY_FILTER + `?pageNumber=${paginator.page}&pageSize=${paginator.rows}`;
+        return HttpFactory.httpPost(petitioRoute, secure, t);
+    }
+
+    public countAllByFilter(secure: boolean = true, t: any): Promise<number> {
+        const petitioRoute: string = this.baseUrl + Routes.COUNT_ALL_BY_FILTERS;
         return HttpFactory.httpPost(petitioRoute, secure, t);
     }
 

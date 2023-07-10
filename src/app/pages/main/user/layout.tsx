@@ -1,7 +1,7 @@
 "use client"
 import React, { useContext, useState } from "react";
 import { userContext } from "./userContext";
-import User from "@/models/user";
+import User from "@/app/models/user";
 import { useHandleInput } from "@/app/hooks/handleInput";
 
 export default function UserLayout({ children }: { children: React.ReactNode }) {

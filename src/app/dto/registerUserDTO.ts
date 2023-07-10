@@ -1,6 +1,6 @@
-import Company from "@/models/company";
-import CredentialModel from "@/models/credential";
-import User from "@/models/user";
+import Company from "@/app/models/company";
+import CredentialModel from "@/app/models/credential";
+import User from "@/app/models/user";
 
 export default class RegisterUserDTO {
         credential: CredentialModel;

@@ -1,16 +1,18 @@
 "use client";
 
 import { FormTypes } from "@/app/constants/formTypeConstant";
-import FormControl from "@/models/formModels/formControl";
-import Validators from "@/models/formModels/validators";
+import FormControl from "@/app/models/formModels/formControl";
+import Validators from "@/app/models/formModels/validators";
 import { FormEvent, useState } from "react";
 import Container from "../container";
 import FormGenerator from "../formGenerator";
 import { handleForm } from "@/app/hooks/handleForm";
 import { ToastService } from "@/app/services/toastService";
 import { Messages } from "@/app/constants/generalConstant";
+import {AuthService} from "@/app/services/authService";
 
 export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: number, value: any) => void}) {
+    const authService = new AuthService();
     /**
      * Instancia inicial de los formcontrols
      */

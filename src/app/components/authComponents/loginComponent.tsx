@@ -5,8 +5,8 @@ import { Button } from "primereact/button"
 import { AuthService } from "../../services/authService";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
-import FormControl from "@/models/formModels/formControl";
-import Validators from "@/models/formModels/validators";
+import FormControl from "@/app/models/formModels/formControl";
+import Validators from "@/app/models/formModels/validators";
 import { handleForm } from "../../hooks/handleForm";
 import { AuthUtil } from "../../utils/authUtil";
 import Container from "../container";

@@ -1,4 +1,4 @@
-import FormControl from "@/models/formModels/formControl";
+import FormControl from "@/app/models/formModels/formControl";
 import { InputText } from "primereact/inputtext";
 import { ChangeEvent } from "react";
 
@@ -9,6 +9,7 @@ export default function InputForm({ formControl, value, onValueChange, icon }: {
 
         onValueChange({ [formControl.field]: value });
     }
+
 
     return (
         <span className="p-float-label p-input-icon-right" style={{width: '100%'}} >

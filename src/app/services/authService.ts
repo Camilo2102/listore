@@ -1,9 +1,10 @@
-import CredentialModel from "@/models/credential";
+import CredentialModel from "@/app/models/credential";
 import { HttpFactory } from "../utils/httpFactory";
 import { ToastService } from "./toastService";
-import { CRUDFactory } from "../../models/CRUDFactory";
+import { CRUDFactory } from "@/app/models/CRUDFactory";
 import RegisterUserDTO from "../dto/registerUserDTO";
 import RegisterWorkerDTO from "../dto/registerWorkerDTO";
+import User from "../models/user";
 
 export class AuthService extends CRUDFactory<CredentialModel>{
 
@@ -38,10 +39,28 @@ export class AuthService extends CRUDFactory<CredentialModel>{
      * @param registerWorker el usuario a registrar
      * @returns el estado de la creacion del usuario
      */
-    public registerUser(registerWorker: RegisterWorkerDTO) {
+    public registerUser(registerWorker: User) {
         return HttpFactory.httpPost(this.BASE_URL + "/registerUser", true, registerWorker)
     }
 
+
+    /**
+     * Valida que las credenciales no esten registradas previamente
+     * @param credential El lado a validar(Contraseña o nombre de usuario)
+     * @returns la peticion para obtener el estado
+     */
+    public validateCredential(credential: string): Promise<any> {
+        return HttpFactory.httpGet(this.BASE_URL+`/validateCredential?credential=${credential}`, false);
+    }
+
+    /**
+     * Se encarga de deshabilitar el usuario creado
+     * @param id el id del usuario a eliminar
+     * @returns el estado de la eliminacion
+     */
+    public disableUser(id: string) {
+        return HttpFactory.httpDelete(this.BASE_URL+`/disableUser?id=${id}`, true)
+    }
     
 
     

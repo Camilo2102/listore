@@ -1,4 +1,4 @@
-import FormControl from "@/models/formModels/formControl";
+import FormControl from "@/app/models/formModels/formControl";
 import { Checkbox, CheckboxChangeEvent } from "primereact/checkbox";
 
 export default function CheckBoxForm({ formControl, value, onValueChange }: { formControl: FormControl, value: any, onValueChange: (value: any) => void }) {

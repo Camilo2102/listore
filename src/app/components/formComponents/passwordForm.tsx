@@ -1,4 +1,4 @@
-import FormControl from "@/models/formModels/formControl";
+import FormControl from "@/app/models/formModels/formControl";
 import { Password } from "primereact/password";
 import { ChangeEvent } from "react";
 

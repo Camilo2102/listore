@@ -6,9 +6,9 @@ import RegisterUserDTO from "@/app/dto/registerUserDTO";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import { AuthService } from "@/app/services/authService";
 import { ToastService } from "@/app/services/toastService";
-import Company from "@/models/company";
-import CredentialModel from "@/models/credential";
-import User from "@/models/user";
+import Company from "@/app/models/company";
+import CredentialModel from "@/app/models/credential";
+import User from "@/app/models/user";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -17,9 +17,10 @@ export default function Register() {
     const authService: AuthService = new AuthService();
     const [part, setPart] = useState<number>(0);
 
-    const [user, setUser] = useHandleInput<User>({name: "", role: "M"});
+    const [user, setUser] = useHandleInput<User>({active: "S", name: "", role: "M"});
     const [credential, setCredential] = useHandleInput<CredentialModel>({mail: "", password: "", userName: ""});
     const [company, setCompany] = useHandleInput<Company>({name: "", description: "", phone: ""});
+    const [submited, setSubmited] = useState<boolean>();
 
 
     const handlePartialSumbit = (part: number, value: any) => {
@@ -31,13 +32,8 @@ export default function Register() {
 
     const handleRegister = (value:any) => {
         setCompany(value);
+        setSubmited(true);
 
-        authService.register({user: user, credential: credential, company: value}).then(
-            res => {
-                ToastService.showSuccess("S", "Creado con exito");
-                router.push("/pages/auth/login")
-            }
-        )
     }
 
     const selectRegisterPart = () => {
@@ -66,7 +62,16 @@ export default function Register() {
         }
     }
 
-    useEffect(() => {}, [part])
+    useEffect(() => {
+        if(submited){
+            authService.register({user: user, credential: credential, company: company}).then(
+                res => {
+                    ToastService.showSuccess("S", "Creado con exito");
+                    router.push("/pages/auth/login")
+                }
+            )
+        } 
+    }, [part, submited])
 
 
     return (

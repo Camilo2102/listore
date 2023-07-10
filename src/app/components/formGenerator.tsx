@@ -1,4 +1,4 @@
-import Form from "@/models/formModels/form";
+import Form from "@/app/models/formModels/form";
 import inputTypeSelector from "../utils/inputTypeSelector";
 import { Button } from "primereact/button";
 import { FormEvent } from "react";

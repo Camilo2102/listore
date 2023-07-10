@@ -15,6 +15,7 @@ export class Messages {
     public static readonly MESSAGE_NO_MAX_LENGTH_STABLISHED: string = "No se ha definido una longitud maxima para: ";
     public static readonly MESSAGE_MIN_LENGTH: string = "Longitud minima: ";
     public static readonly MESSAGE_NO_MIN_LENGTH_STABLISHED: string = "No se ha definido una longitud minima para: ";
+    public static readonly MESSAGE_DUPLICATE_REGISTER: string = "El registro esta duplicado ";
 
     public static readonly MESSAGE_PASSWORD_MISMATCH: string = "Las contraseñas no coinciden: ";
   }
