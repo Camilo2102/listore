@@ -5,52 +5,20 @@ import FormControl from "@/app/models/formModels/formControl";
 import Validators from "@/app/models/formModels/validators";
 import { FormEvent, useState } from "react";
 import Container from "../container";
-import FormGenerator from "../CRUDComponents/formGenerator";
+import FormGenerator from "../formGenerator";
 import { handleForm } from "@/app/hooks/handleForm";
 import { ToastService } from "@/app/services/toastService";
 import { Messages } from "@/app/constants/messageConstant";
 import {AuthService} from "@/app/services/authService";
 
-export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: number, value: any) => void}) {
+
+export default function ValidationComponent (){
     const authService = new AuthService();
     /**
      * Instancia inicial de los formcontrols
      */
     const [controls, setControls] = useState<FormControl[]>(
         [
-            {
-                field: "name",
-                value: "",
-                description: "Nombre",
-                colSize: 12,
-                type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
-                invalid: false,
-                message: true,
-                icon: "pi-user"
-            },
-            {
-                field: "userName",
-                value: "",
-                description: "Usuario",
-                colSize: 12,
-                type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
-                invalid: false,
-                message: true,
-                icon: "pi-user"
-            },
-            {
-                field: "mail",
-                value: "",
-                description: "Correo",
-                icon: "pi-envelope",
-                type: FormTypes.INPUT,
-                colSize: 12,
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
-                invalid: false,
-                message: true,
-            },
             {
                 field: "password",
                 value: "",
@@ -106,8 +74,14 @@ export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: num
 
 
     return(
-        <Container title="Registro de usuario">
+        <Container title="Validación de contraseña">
             <FormGenerator buttonLabel="Continuar" form={form} value={user} setValue={setUser} submit={handleLogin}></FormGenerator>
         </Container>
     )
 }
+
+
+function onValidSubmit(arg0: number, arg1: any) {
+    throw new Error("Function not implemented.");
+}
+

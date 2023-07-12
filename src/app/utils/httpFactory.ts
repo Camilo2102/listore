@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { AuthUtil } from "./authUtil";
 import { withRouter } from 'next/router'
 import { ToastService } from "../services/toastService";
-import { Messages } from "../constants/generalConstant";
+import { Messages } from "../constants/messageConstant";
 
 export class HttpFactory {
     private static APIURL = "http://localhost:7879/";
