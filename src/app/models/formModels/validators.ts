@@ -1,4 +1,4 @@
-import {Messages} from "@/app/constants/generalConstant";
+import {Messages} from "@/app/constants/messageConstant";
 import {ToastService} from "@/app/services/toastService";
 import FormControl from "./formControl";
 import {AuthService} from "@/app/services/authService";

@@ -11,6 +11,7 @@ import CredentialModel from "@/app/models/credential";
 import User from "@/app/models/user";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Messages } from "@/app/constants/messageConstant";
 
 export default function Register() {
     const router = useRouter();
@@ -66,7 +67,7 @@ export default function Register() {
         if(submited){
             authService.register({user: user, credential: credential, company: company}).then(
                 res => {
-                    ToastService.showSuccess("S", "Creado con exito");
+                    ToastService.showSuccess(Messages.MESSAGE_SUCCESS, "Creado con exito");
                     router.push("/pages/auth/login")
                 }
             )

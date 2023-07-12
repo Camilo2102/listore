@@ -1,4 +1,4 @@
-import { Messages } from "@/app/constants/generalConstant";
+import { Messages } from "@/app/constants/messageConstant";
 import { AuthService } from "@/app/services/authService";
 import { ToastService } from "@/app/services/toastService";
 import { Button } from "primereact/button";
