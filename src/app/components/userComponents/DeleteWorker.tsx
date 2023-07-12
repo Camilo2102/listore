@@ -5,7 +5,7 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-export default function ({ user, visible, setVisible }: { user: any, visible: boolean, setVisible: Dispatch<SetStateAction<any>>}) {
+export default function DeleteWorker({ user, visible, setVisible }: { user: any, visible: boolean, setVisible: Dispatch<SetStateAction<any>>}) {
     const authService = new AuthService();
 
     const footerContent = (
@@ -17,13 +17,10 @@ export default function ({ user, visible, setVisible }: { user: any, visible: bo
 
     const deleteUser = () => {
         authService.disableUser(user.id).then(res => {
-            ToastService.showSuccess(Messages.MESSAGE_SUCCESS, "Deshabilitado con exito")
+            ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_SUCCESS_DISABLED)
             setVisible(undefined)
         })
     }
-
-    useEffect( () => {
-    }, [])
 
     return (
         <Dialog header="Header" footer={footerContent} visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(undefined)}>

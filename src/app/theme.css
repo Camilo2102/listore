@@ -53,7 +53,7 @@
 
 .p-component {
     font-family: Helvetica, sans-serif;
-    font-size: 1rem;
+    font-size: 0.90rem;
     font-weight: normal
 }
 
@@ -85,7 +85,7 @@
 }
 
 .p-link {
-    font-size: 1rem;
+    font-size: 0.90rem;
     font-family: Helvetica, sans-serif;
     border-radius: 6px
 }
@@ -285,7 +285,7 @@
 
 .p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-input-token input {
     font-family: Helvetica, sans-serif;
-    font-size: 1rem;
+    font-size: 0.90rem;
     color: #043d75;
     padding: 0;
     margin: 0
@@ -427,7 +427,7 @@
 }
 
 .p-datepicker table {
-    font-size: 1rem;
+    font-size: 0.90rem;
     margin: .5rem 0
 }
 
@@ -825,7 +825,7 @@
 
 .p-chips .p-chips-multiple-container .p-chips-input-token input {
     font-family: Helvetica, sans-serif;
-    font-size: 1rem;
+    font-size: 0.90rem;
     color: #043d75;
     padding: 0;
     margin: 0
@@ -1254,7 +1254,7 @@
 
 .p-inputtext {
     font-family: Helvetica, sans-serif;
-    font-size: 1rem;
+    font-size: 0.90rem;
     color: #043d75;
     background: #fff;
     padding: .75rem .75rem;
@@ -2073,7 +2073,7 @@
     background: #96d7eb;
     border: 1px solid #96d7eb;
     padding: .75rem 1.25rem;
-    font-size: 1rem;
+    font-size: 0.90rem;
     transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
     border-radius: 6px
 }
@@ -4091,7 +4091,7 @@
     color: #fff;
     background: #96d7eb;
     border: 1px solid #96d7eb;
-    font-size: 1rem;
+    font-size: 0.90rem;
     transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
     border-radius: 6px;
     display: flex;
@@ -4236,7 +4236,7 @@
     justify-content: center;
     overflow: hidden;
     font-family: "PrimeIcons" !important;
-    font-size: 1rem;
+    font-size: 0.90rem;
     width: 2rem;
     height: 2rem;
     color: #686466;
@@ -4298,7 +4298,7 @@
     color: #fff;
     background: #96d7eb;
     border: 1px solid #96d7eb;
-    font-size: 1rem;
+    font-size: 0.90rem;
     transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s;
     border-radius: 6px
 }
@@ -7067,7 +7067,7 @@
 }
 
 .p-inline-message .p-inline-message-icon {
-    font-size: 1rem;
+    font-size: 0.90rem;
     margin-right: .5rem
 }
 
@@ -7172,7 +7172,7 @@
 }
 
 .p-message .p-message-text {
-    font-size: 1rem;
+    font-size: 0.90rem;
     font-weight: 400
 }
 
@@ -7661,7 +7661,7 @@
 }
 
 .p-terminal .p-terminal-input {
-    font-size: 1rem;
+    font-size: 0.90rem;
     font-family: Helvetica, sans-serif
 }
 
@@ -7785,7 +7785,7 @@
 }
 
 .p-datepicker table {
-    font-size: 1rem;
+    font-size: 0.90rem;
     margin: .5rem 0
 }
 

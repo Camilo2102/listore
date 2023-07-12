@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import FormGenerator from "./formGenerator";
+import FormGenerator from "./CRUDComponents/formGenerator";
 import FormControl from "@/app/models/formModels/formControl";
 import Validators from "@/app/models/formModels/validators";
 import { DateUtil } from "../utils/dateUtil";

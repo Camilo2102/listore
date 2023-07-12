@@ -1,6 +1,6 @@
 import User from "@/app/models/user";
 import Container from "../container";
-import FormGenerator from "../formGenerator";
+import FormGenerator from "../CRUDComponents/formGenerator";
 import { FormEvent, useEffect, useState } from "react";
 import { handleForm } from "@/app/hooks/handleForm";
 import { FormTypes } from "@/app/constants/formTypeConstant";
@@ -55,7 +55,7 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
                 description: "Usuario",
                 colSize: 12,
                 type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
+                validators: [Validators.requiered, Validators.maxLenght(12), Validators.minLenght(3)],
                 invalid: false,
                 message: true,
                 icon: "pi-user"
@@ -67,27 +67,6 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
                 icon: "pi-envelope",
                 type: FormTypes.INPUT,
                 colSize: 12,
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
-                invalid: false,
-                message: true,
-            },
-            {
-                field: "password",
-                value: "",
-                type: FormTypes.PASSWORD,
-                colSize: 12,
-                feedback: true,
-                description: "Contraseña",
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
-                invalid: false,
-                message: true,
-            },
-            {
-                field: "passwordCheck",
-                value: "",
-                type: FormTypes.PASSWORD,
-                colSize: 12,
-                description: "Confirmar Contraseña",
                 validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
                 invalid: false,
                 message: true,
@@ -113,7 +92,7 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
     const [user, form, setUser, validateFormControls] = handleForm(controls);
 
 
-    const handleLogin = (e: FormEvent<HTMLFormElement>) => {
+    const handleWorker = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const [formControls, valid] = validateFormControls();
@@ -125,22 +104,21 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
             const checkPassword = controls.find(control => control.field === 'passwordCheck')?.value;
             if (password === checkPassword) {
                 const { name, userName, mail, password, role } = user;
-                debugger
+
                 setWorkerToRegister(
                     {
                         id: workerToRegister.id ? workerToRegister.id : undefined,
-                        name, 
-                        role, 
+                        name,
+                        role,
                         active: 'S',
                         credential: {
-                            id: workerToRegister.credential?.id ? workerToRegister.credential?.id : undefined , 
-                            mail, 
-                            password, 
+                            id: workerToRegister.credential?.id ? workerToRegister.credential?.id : undefined,
+                            mail,
                             userName
                         },
                         company: {
                             id: AuthUtil.getCredentials().company
-                        } 
+                        }
                     }
                 )
                 setSubmited(true);
@@ -169,7 +147,7 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
 
     return (
         <Container title="Registro de trabajador">
-            <FormGenerator buttonLabel={userSelected === undefined ? 'Guardar' : 'Actualizar'} update={userSelected === undefined} form={form} value={user} setValue={setUser} submit={handleLogin}></FormGenerator>
+            <FormGenerator buttonLabel={userSelected === undefined ? 'Guardar' : 'Actualizar'} update={userSelected === undefined} form={form} value={user} setValue={setUser} submit={handleWorker}></FormGenerator>
         </Container>
     )
 }

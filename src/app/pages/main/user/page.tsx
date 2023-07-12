@@ -25,7 +25,9 @@ export default function UserList({ props }: { props: any }) {
     const router = useRouter();
 
     const [users, setUsers] = useState<any[]>([]);
-    const [userFilter, setUserFilter] = useHandleInput<UserFilterDTO>({ active: "", companyId: AuthUtil.getCredentials().company, name: "", role: "" });
+    const [userFilter, setUserFilter] = useHandleInput<User>({ active: "", name: "", role: "", company: {
+        id: AuthUtil.getCredentials().company
+    } });
     const { user, setUser } = useContext(userContext);
     const [paginator, setPaginator] = useHandleInput<Paginator>({
         rows: 5,
@@ -56,7 +58,7 @@ export default function UserList({ props }: { props: any }) {
 
 
     useEffect(() => {
-        debugger
+        
         if (deleteUser === undefined) {
             userServices.getAllByFilter(true, paginator, userFilter).then((res) => {
                 const temporal = res.map((r) => ({ ...r.credential, ...r }));
@@ -87,7 +89,7 @@ export default function UserList({ props }: { props: any }) {
                     </div>
                 </div>
             </div>
-            {<DeleteWorker user={deleteUser} visible={deleteUser !== undefined} setVisible={setDeleteUser}></DeleteWorker>}
+            <DeleteWorker user={deleteUser} visible={deleteUser !== undefined} setVisible={setDeleteUser}></DeleteWorker>
         </>
     )
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import FormExample from "@/app/components/formExample"
-import FormGenerator from "@/app/components/formGenerator";
+import FormGenerator from "@/app/components/CRUDComponents/formGenerator";
 import FormGeneratorExample from "@/app/components/formGeneratorExample";
 import TableExample from "@/app/components/tableExample"
 import ColumnMeta from "@/app/interfaces/columnMeta";

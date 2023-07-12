@@ -5,7 +5,7 @@ import FormControl from "@/app/models/formModels/formControl";
 import Validators from "@/app/models/formModels/validators";
 import { FormEvent, useState } from "react";
 import Container from "../container";
-import FormGenerator from "../formGenerator";
+import FormGenerator from "../CRUDComponents/formGenerator";
 import { handleForm } from "@/app/hooks/handleForm";
 import { ToastService } from "@/app/services/toastService";
 import { Messages } from "@/app/constants/generalConstant";
