@@ -4,7 +4,7 @@ import PasswordForm from "../formComponents/passwordForm"
 import { Button } from "primereact/button"
 import { AuthService } from "../../services/authService";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import FormControl from "@/app/models/formModels/formControl";
 import Validators from "@/app/models/formModels/validators";
 import { handleForm } from "../../hooks/handleForm";
@@ -12,6 +12,9 @@ import { AuthUtil } from "../../utils/authUtil";
 import Container from "../container";
 import FormGenerator from "../formGenerator";
 import { FormTypes } from "../../constants/formTypeConstant";
+import Link from "next/link";
+import { Dialog } from "primereact/dialog";
+import { InputText } from "primereact/inputtext";
 
 export default function LoginComponent() {
 
@@ -19,6 +22,8 @@ export default function LoginComponent() {
 
     const authService: AuthService = new AuthService();
 
+    const [showRecoveryDialog, setShowRecoveryDialog] = useState<boolean>(false);
+    const [recoveryMail, setRecoveryMail] = useState<string>("");
     /**
      * Instancia inicial de los formcontrols
      */
@@ -69,10 +74,46 @@ export default function LoginComponent() {
 
     }
 
+    const getMessages = () => {
+        return [
+            <Button type="button" label="Olvidaste tu contraseña?" onClick={() => setShowRecoveryDialog(true)} text />
+        ]
+    }
+
+    const handleEmailRecovery = () => {
+        authService.sendRecoveryEmail(recoveryMail).then(
+            res => {
+                console.log(res);
+                
+            }
+        )
+    }
+
+    
 
     return (
-        <Container title="Login">
-            <FormGenerator buttonLabel="Ingresar" form={form} value={credential} setValue={setCredential} submit={handleLogin}></FormGenerator>
-        </Container>
+        <>
+            <Dialog header="Email de verificacion" visible={showRecoveryDialog} style={{ width: '50vw' }} onHide={() => setShowRecoveryDialog(false)}>
+                <form className="pt-5 grid" onSubmit={handleEmailRecovery}>
+                    <div className="col-12">
+                        <p className="text-900 font-bold text-xl">Escribe tu dirección de correo, y recibiras un mensaje en caso de que este registrada</p>
+                    </div>
+                    <div className="col-8">
+                        <span className="p-float-label p-input-icon-right" style={{ width: '100%' }} >
+                            <i className={'pi pi-envelope'} style={{ color: '#9E6A90' }}></i>
+                            <InputText style={{ width: '100%' }} id="mail" value={recoveryMail} onChange={(e) => setRecoveryMail(e.target.value)} />
+                            <label htmlFor="mail" >Correo:</label>
+                        </span>
+                    </div>
+                    <div className="col-4">
+                        <Button label="Enviar Mensaje"></Button>
+                    </div>
+                </form>
+
+            </Dialog>
+            <Container title="Login">
+                <FormGenerator messages={getMessages()} buttonLabel="Ingresar" form={form} value={credential} setValue={setCredential} submit={handleLogin}></FormGenerator>
+            </Container>
+        </>
     )
 }

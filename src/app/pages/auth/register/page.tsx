@@ -17,7 +17,7 @@ export default function Register() {
     const authService: AuthService = new AuthService();
     const [part, setPart] = useState<number>(0);
 
-    const [user, setUser] = useHandleInput<User>({active: "S", name: "", role: "M"});
+    const [user, setUser] = useHandleInput<User>({active: "N", name: "", role: "M"});
     const [credential, setCredential] = useHandleInput<CredentialModel>({mail: "", password: "", userName: ""});
     const [company, setCompany] = useHandleInput<Company>({name: "", description: "", phone: ""});
     const [submited, setSubmited] = useState<boolean>();
@@ -25,15 +25,14 @@ export default function Register() {
 
     const handlePartialSumbit = (part: number, value: any) => {
         setPart(part);
-        const {name, userName, mail, password} = value;
+        const {name, userName, mail} = value;
         setUser({name});
-        setCredential({userName, mail, password});
+        setCredential({userName, mail, password: null});
     }
 
     const handleRegister = (value:any) => {
         setCompany(value);
         setSubmited(true);
-
     }
 
     const selectRegisterPart = () => {
@@ -67,7 +66,7 @@ export default function Register() {
             authService.register({user: user, credential: credential, company: company}).then(
                 res => {
                     ToastService.showSuccess("S", "Creado con exito");
-                    router.push("/pages/auth/login")
+                    router.push("/pages/auth/passwordChange?token=" + res.temporalToken);
                 }
             )
         } 

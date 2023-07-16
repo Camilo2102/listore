@@ -51,27 +51,6 @@ export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: num
                 invalid: false,
                 message: true,
             },
-            {
-                field: "password",
-                value: "",
-                type: FormTypes.PASSWORD,
-                colSize: 12,
-                feedback: true,
-                description: "Contraseña",
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
-                invalid: false,
-                message: true,
-            },
-            {
-                field: "passwordCheck",
-                value: "",
-                type: FormTypes.PASSWORD,
-                colSize: 12,
-                description: "Confirmar Contraseña",
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
-                invalid: false,
-                message: true,
-            }
         ]
     );
 

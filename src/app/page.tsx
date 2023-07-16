@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { Menubar } from 'primereact/menubar';
 import { MenuItem } from 'primereact/menuitem';
+import { useEffect } from 'react';
 
 export default function Home() {
 
@@ -32,6 +33,11 @@ export default function Home() {
         icon: 'pi pi-fw pi-power-off'
     }
 ];
+
+useEffect(() => {
+  router.push("/pages/auth/login")
+}, 
+[])
 
   return (
     <Menubar model={items} />

@@ -17,7 +17,7 @@ export default function CheckBoxForm({ formControl, value, onValueChange }: { fo
     const generateOptions = () => {
         return formControl.options?.map(option => (
             <div key={"div" + option.code} className="flex align-items-center">
-                <Checkbox  inputId={"check" + option.code} key={"box" + option.code} className={formControl.invalid ? 'p-invalid' : ''} name={option.code} value={option.value} onChange={handleChange} checked={value[formControl.field].includes(option.value)} ></Checkbox>
+                <Checkbox  inputId={"check" + option.code} disabled={formControl.disabled} key={"box" + option.code} className={formControl.invalid ? 'p-invalid' : ''} name={option.code} value={option.value} onChange={handleChange} checked={value[formControl.field].includes(option.value)} ></Checkbox>
                 <label key={"label" + option.code} htmlFor={"check" + option.code}>{option.description} </label>
             </div>
         ))

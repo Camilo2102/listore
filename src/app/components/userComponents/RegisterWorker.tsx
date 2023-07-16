@@ -13,20 +13,22 @@ import { Messages } from "@/app/constants/generalConstant";
 import { AuthUtil } from "@/app/utils/authUtil";
 import { useRouter } from "next/navigation";
 import RegisterWorkerDTO from "@/app/dto/registerWorkerDTO";
+import { UserService } from "@/app/services/userService";
 
 export default function RegisterWorker({ userSelected }: { userSelected?: User }) {
     const authService = new AuthService();
+    const userService = new UserService();
     const router = useRouter();
 
     const [submited, setSubmited] = useState<boolean>(false);
     const [workerToRegister, setWorkerToRegister] = useState<User>({
         name: "",
         role: "",
-        active: "",
+        active: "N",
         credential: {
             id: "",
             mail: "",
-            password: "",
+            password: null,
             userName: ""
         },
         company: {
@@ -47,7 +49,8 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
                 validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
                 invalid: false,
                 message: true,
-                icon: "pi-user"
+                icon: "pi-user",
+                disabled: userSelected !== undefined
             },
             {
                 field: "userName",
@@ -58,7 +61,8 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
                 validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
                 invalid: false,
                 message: true,
-                icon: "pi-user"
+                icon: "pi-user",
+                disabled: userSelected !== undefined
             },
             {
                 field: "mail",
@@ -70,27 +74,7 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
                 validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
                 invalid: false,
                 message: true,
-            },
-            {
-                field: "password",
-                value: "",
-                type: FormTypes.PASSWORD,
-                colSize: 12,
-                feedback: true,
-                description: "Contraseña",
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
-                invalid: false,
-                message: true,
-            },
-            {
-                field: "passwordCheck",
-                value: "",
-                type: FormTypes.PASSWORD,
-                colSize: 12,
-                description: "Confirmar Contraseña",
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
-                invalid: false,
-                message: true,
+                disabled: userSelected !== undefined
             },
             {
                 field: "role",
@@ -113,7 +97,7 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
     const [user, form, setUser, validateFormControls] = handleForm(controls);
 
 
-    const handleLogin = (e: FormEvent<HTMLFormElement>) => {
+    const handleRegisterWorker = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const [formControls, valid] = validateFormControls();
@@ -125,13 +109,12 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
             const checkPassword = controls.find(control => control.field === 'passwordCheck')?.value;
             if (password === checkPassword) {
                 const { name, userName, mail, password, role } = user;
-                debugger
                 setWorkerToRegister(
                     {
                         id: workerToRegister.id ? workerToRegister.id : undefined,
                         name, 
                         role, 
-                        active: 'S',
+                        active: userSelected ? 'S' : "N",
                         credential: {
                             id: workerToRegister.credential?.id ? workerToRegister.credential?.id : undefined , 
                             mail, 
@@ -150,6 +133,24 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
         }
     }
 
+    const registerNewWorker = () => {
+        authService.registerUser(workerToRegister).then(
+            res => {
+                ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS);
+                router.push("/pages/main/user")
+            }
+        );
+    }
+
+    const updateWorker = () => {
+        userService.update(true, workerToRegister).then(
+            res => {
+                ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_UPDATE_SUCCESS);
+                router.push("/pages/main/user")
+            }
+        )
+    }
+
     useEffect(() => {
         if (!submited && userSelected) {
             setWorkerToRegister(userSelected);
@@ -157,19 +158,18 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
             return;
         }
         if (submited) {
-            authService.registerUser(workerToRegister).then(
-                res => {
-                    ToastService.showSuccess(Messages.MESSAGE_SUCCESS, userSelected ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
-                    router.push("/pages/main/user")
-                }
-            );
+            if(userSelected === null){
+                registerNewWorker();
+            } else {
+                updateWorker();
+            }
         }
     }, [submited])
 
 
     return (
         <Container title="Registro de trabajador">
-            <FormGenerator buttonLabel={userSelected === undefined ? 'Guardar' : 'Actualizar'} update={userSelected === undefined} form={form} value={user} setValue={setUser} submit={handleLogin}></FormGenerator>
+            <FormGenerator buttonLabel={userSelected === undefined ? 'Guardar' : 'Actualizar'} update={userSelected === undefined} form={form} value={user} setValue={setUser} submit={handleRegisterWorker}></FormGenerator>
         </Container>
     )
 }

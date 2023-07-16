@@ -5,6 +5,7 @@ import { CRUDFactory } from "@/app/models/CRUDFactory";
 import RegisterUserDTO from "../dto/registerUserDTO";
 import RegisterWorkerDTO from "../dto/registerWorkerDTO";
 import User from "../models/user";
+import PasswordChange from "../models/passwordChange";
 
 export class AuthService extends CRUDFactory<CredentialModel>{
 
@@ -63,5 +64,23 @@ export class AuthService extends CRUDFactory<CredentialModel>{
     }
     
 
+    /**
+     * Se encarga de reestablecer la contraseña
+     * @param passwordChange el objeto con los datos del registro
+     * @returns la peticion para resetear la contraseña
+     */
+    public enableUser(passwordChange: PasswordChange){
+        return HttpFactory.httpPost(this.BASE_URL+"/enableUser",false, passwordChange);
+    }
+
+
+    /**
+     * Envia el mensaje al back para que valide la direccion de correo y envie el mensaje en caso de estar registrado
+     * @param email el correo al que se va a enviar el mensaje
+     * @returns el estado de envio del correo
+     */
+    public sendRecoveryEmail(email: string){
+        return HttpFactory.httpGet(this.BASE_URL+ "/recoverPassword?mail=" + email, false);
+    }
     
 }

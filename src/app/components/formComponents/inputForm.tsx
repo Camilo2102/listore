@@ -14,7 +14,7 @@ export default function InputForm({ formControl, value, onValueChange, icon }: {
     return (
         <span className="p-float-label p-input-icon-right" style={{width: '100%'}} >
             <i className={'pi ' + icon} style={{ color: '#9E6A90' }}></i>
-            <InputText style={{ width: '100%' }} id={formControl.field} className={formControl.invalid ? 'p-invalid' : ''} value={value[formControl.field]} onChange={handleInput} />
+            <InputText style={{ width: '100%' }} id={formControl.field} disabled={formControl.disabled} className={formControl.invalid ? 'p-invalid' : ''} value={value[formControl.field]} onChange={handleInput} />
             <label htmlFor={formControl.field} >{formControl.description}</label>
         </span>
 
