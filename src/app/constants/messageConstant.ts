@@ -8,6 +8,7 @@ export class Messages {
     //Mensajes de body
     public static readonly MESSAGE_CREATE_SUCCESS: string = "Creado con exito";
     public static readonly MESSAGE_UPDATE_SUCCESS: string = "Actualizado con exito";
+    public static readonly MESSAGE_DELETE_SUCCESS: string = "Eliminado con exito";
 
     // Mensajes de los validadores
     public static readonly MESSAGE_REQUIERED: string = "Campo requerido: ";
@@ -18,4 +19,9 @@ export class Messages {
     public static readonly MESSAGE_DUPLICATE_REGISTER: string = "El registro esta duplicado ";
 
     public static readonly MESSAGE_PASSWORD_MISMATCH: string = "Las contraseñas no coinciden: ";
+    public static readonly MESSAGE_SUCCESS_DISABLED: string = "Deshabilitado con exito";
+
+    public static readonly MESSAGE_HEAER_DELETE: string = "Deseas eliminar?"
+
+    public static readonly MESSAGE_BODY_DELETE: string = "Deseas eliminar el registro: "
   }

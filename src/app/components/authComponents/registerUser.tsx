@@ -5,10 +5,10 @@ import FormControl from "@/app/models/formModels/formControl";
 import Validators from "@/app/models/formModels/validators";
 import { FormEvent, useState } from "react";
 import Container from "../container";
-import FormGenerator from "../formGenerator";
+import FormGenerator from "../CRUDComponents/formGenerator";
 import { handleForm } from "@/app/hooks/handleForm";
 import { ToastService } from "@/app/services/toastService";
-import { Messages } from "@/app/constants/generalConstant";
+import { Messages } from "@/app/constants/messageConstant";
 import {AuthService} from "@/app/services/authService";
 
 export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: number, value: any) => void}) {
@@ -68,6 +68,8 @@ export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: num
         const [formControls, valid] = validateFormControls();
 
         setControls([...formControls]);
+
+
 
         if (valid) {
             const password = controls.find(control => control.field === 'password')?.value;

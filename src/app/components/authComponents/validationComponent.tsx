@@ -5,48 +5,41 @@ import FormControl from "@/app/models/formModels/formControl";
 import Validators from "@/app/models/formModels/validators";
 import { FormEvent, useState } from "react";
 import Container from "../container";
-import FormGenerator from "../CRUDComponents/formGenerator";
+import FormGenerator from "../formGenerator";
 import { handleForm } from "@/app/hooks/handleForm";
+import { ToastService } from "@/app/services/toastService";
+import { Messages } from "@/app/constants/messageConstant";
+import {AuthService} from "@/app/services/authService";
 
-export default function RegisterCompany({onValidSubmit}: {onValidSubmit: (value: any) => void}) {
+
+export default function ValidationComponent (){
+    const authService = new AuthService();
     /**
      * Instancia inicial de los formcontrols
      */
     const [controls, setControls] = useState<FormControl[]>(
         [
             {
-                field: "name",
+                field: "password",
                 value: "",
-                description: "Nombre",
+                type: FormTypes.PASSWORD,
                 colSize: 12,
-                type: FormTypes.INPUT,
+                feedback: true,
+                description: "Contraseña",
                 validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
                 invalid: false,
                 message: true,
-                icon: "pi-home"
             },
             {
-                field: "phone",
+                field: "passwordCheck",
                 value: "",
-                description: "Teléfono",
+                type: FormTypes.PASSWORD,
                 colSize: 12,
-                type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(13), Validators.minLenght(3)],
-                invalid: false,
-                message: true,
-                icon: "pi-phone"
-            },
-            {
-                field: "description",
-                value: "",
-                description: "Descripción",
-                type: FormTypes.INPUT,
-                colSize: 12,
+                description: "Confirmar Contraseña",
                 validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
                 invalid: false,
                 message: true,
-                icon: "pi-pencil",
-            },
+            }
         ]
     );
 
@@ -60,19 +53,35 @@ export default function RegisterCompany({onValidSubmit}: {onValidSubmit: (value:
     const handleLogin = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+
         const [formControls, valid] = validateFormControls();
 
         setControls([...formControls]);
 
+
+
         if (valid) {
-            onValidSubmit(form.getFormControlValues());
+            const password = controls.find(control => control.field === 'password')?.value;
+            const checkPassword = controls.find(control => control.field === 'passwordCheck')?.value;
+
+            if(password === checkPassword) {
+                return onValidSubmit(1, form.getFormControlValues());
+            }
+
+            ToastService.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_PASSWORD_MISMATCH)
         }
     }
 
 
     return(
-        <Container title="Registro de compañia">
+        <Container title="Validación de contraseña">
             <FormGenerator buttonLabel="Continuar" form={form} value={user} setValue={setUser} submit={handleLogin}></FormGenerator>
         </Container>
     )
 }
+
+
+function onValidSubmit(arg0: number, arg1: any) {
+    throw new Error("Function not implemented.");
+}
+

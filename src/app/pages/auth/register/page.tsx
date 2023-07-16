@@ -11,6 +11,7 @@ import CredentialModel from "@/app/models/credential";
 import User from "@/app/models/user";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Messages } from "@/app/constants/messageConstant";
 
 export default function Register() {
     const router = useRouter();
@@ -43,7 +44,7 @@ export default function Register() {
                         <RegisterUser onValidSubmit={(part, value) => handlePartialSumbit(part, value)}></RegisterUser>
                     </div>
                     <div className="lg:col-6 md:col-6 hidden md:flex justify-content-center align-items-center">
-                        <img src='/registerUser.svg' alt='Login' width={'80%'} style={{ maxWidth: '750px' }}></img>
+                        <img src='/registerUser.svg' alt='register' width={'80%'} style={{ maxWidth: '750px' }}></img>
                     </div>
                 </div>
             )
@@ -51,7 +52,7 @@ export default function Register() {
             return (
                 <div className="flex justify-content-center align-items-center" style={{ height: '100vh', width: '100vw' }}>
                     <div className="lg:col-6 md:col-6 hidden md:flex justify-content-center align-items-center">
-                        <img src='/registerCompany.svg' alt='Login' width={'80%'} style={{ maxWidth: '750px' }}></img>
+                        <img src='/registerCompany.svg' alt='register' width={'80%'} style={{ maxWidth: '750px' }}></img>
                     </div>
                     <div className='lg:col-6 md:col-6 col-12 p-8'>
                         <RegisterCompany onValidSubmit={(value: any) => handleRegister(value)}></RegisterCompany>
@@ -65,8 +66,8 @@ export default function Register() {
         if(submited){
             authService.register({user: user, credential: credential, company: company}).then(
                 res => {
-                    ToastService.showSuccess("S", "Creado con exito");
-                    router.push("/pages/auth/passwordChange?token=" + res.temporalToken);
+                    ToastService.showSuccess(Messages.MESSAGE_SUCCESS, "Creado con exito");
+                    router.push("/pages/auth/login")
                 }
             )
         } 

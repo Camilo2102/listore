@@ -86,7 +86,7 @@ export default function UserList({ props }: { props: any }) {
                     </div>
                 </div>
             </div>
-            {<DeleteWorker user={deleteUser} visible={deleteUser !== undefined} setVisible={setDeleteUser}></DeleteWorker>}
+            <DeleteWorker user={deleteUser} visible={deleteUser !== undefined} setVisible={setDeleteUser}></DeleteWorker>
         </>
     )
 }

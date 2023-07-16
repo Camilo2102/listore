@@ -1,5 +1,5 @@
 import Form from "@/app/models/formModels/form";
-import inputTypeSelector from "../utils/inputTypeSelector";
+import inputTypeSelector from "../../utils/inputTypeSelector";
 import { Button } from "primereact/button";
 import React, { FormEvent } from "react";
 import { Dropdown } from "primereact/dropdown";
@@ -11,7 +11,7 @@ export default function FormGenerator({ form, value, setValue, submit, buttonLab
         const controls = form.getFormControls();
 
         return controls.map(control => (
-            <div className={`col-${control.colSize || '6'} py-5`} key={control.field}>
+            <div className={`col-${control.colSize || '6'} py-4`} key={control.field}>
                 {inputTypeSelector(control, value, setValue)}
             </div>
         ))

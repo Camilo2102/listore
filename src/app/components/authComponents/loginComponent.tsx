@@ -10,7 +10,7 @@ import Validators from "@/app/models/formModels/validators";
 import { handleForm } from "../../hooks/handleForm";
 import { AuthUtil } from "../../utils/authUtil";
 import Container from "../container";
-import FormGenerator from "../formGenerator";
+import FormGenerator from "../CRUDComponents/formGenerator";
 import { FormTypes } from "../../constants/formTypeConstant";
 import Link from "next/link";
 import { Dialog } from "primereact/dialog";
