@@ -11,6 +11,8 @@ import { AuthService } from "@/app/services/authService";
 import { useRouter, useSearchParams } from "next/navigation";
 import PasswordChange from "@/app/models/passwordChange";
 import FormGenerator from "../CRUDComponents/formGenerator";
+import { ToastService } from "@/app/services/toastService";
+import { Messages } from "@/app/constants/messageConstant";
 
 
 export default function PasswordChangeComponent() {
@@ -98,12 +100,13 @@ export default function PasswordChangeComponent() {
                 );
 
                 setSubmited(true);
+                return;
             }
+            ToastService.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_PASSWORD_MISMATCH)
         }
     }
 
     useEffect(() => {
-        debugger
         if (submited) {
             authService.enableUser(passwordToChange).then(res => {
                 router.push("/pages/auth/login")

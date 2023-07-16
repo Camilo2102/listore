@@ -158,7 +158,7 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
             return;
         }
         if (submited) {
-            if(userSelected === null){
+            if(userSelected === undefined){
                 registerNewWorker();
             } else {
                 updateWorker();

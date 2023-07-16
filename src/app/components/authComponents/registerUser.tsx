@@ -72,14 +72,7 @@ export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: num
 
 
         if (valid) {
-            const password = controls.find(control => control.field === 'password')?.value;
-            const checkPassword = controls.find(control => control.field === 'passwordCheck')?.value;
-
-            if(password === checkPassword) {
-                return onValidSubmit(1, form.getFormControlValues());
-            }
-
-            ToastService.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_PASSWORD_MISMATCH)
+            onValidSubmit(1, form.getFormControlValues());
         }
     }
 

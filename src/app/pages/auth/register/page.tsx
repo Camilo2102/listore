@@ -67,7 +67,7 @@ export default function Register() {
             authService.register({user: user, credential: credential, company: company}).then(
                 res => {
                     ToastService.showSuccess(Messages.MESSAGE_SUCCESS, "Creado con exito");
-                    router.push("/pages/auth/login")
+                    router.push("/pages/auth/passwordChange?token="+res.temporalToken);
                 }
             )
         } 
