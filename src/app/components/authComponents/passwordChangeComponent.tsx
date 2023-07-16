@@ -3,13 +3,14 @@ import { handleForm } from "@/app/hooks/handleForm";
 import { AuthUtil } from "@/app/utils/authUtil";
 import { FormEvent, useEffect, useState } from "react";
 import Container from "../container";
-import FormGenerator from "../formGenerator";
+
 import { FormTypes } from "@/app/constants/formTypeConstant";
 import Validators from "@/app/models/formModels/validators";
 import FormControl from "@/app/models/formModels/formControl";
 import { AuthService } from "@/app/services/authService";
 import { useRouter, useSearchParams } from "next/navigation";
 import PasswordChange from "@/app/models/passwordChange";
+import FormGenerator from "../CRUDComponents/formGenerator";
 
 
 export default function PasswordChangeComponent() {
