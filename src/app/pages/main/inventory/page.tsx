@@ -13,7 +13,7 @@ import { InventoryService } from "@/app/services/inventoryService";
 import InventoryModel from "@/app/models/inventory";
 import { AuthUtil } from "@/app/utils/authUtil";
 import { ConfirmationService } from "@/app/services/confirmationService";
-import { Messages } from "@/app/constants/generalConstant";
+import { Messages } from "@/app/constants/messageConstant";
 import { ToastService } from "@/app/services/toastService";
 
 
@@ -22,6 +22,7 @@ export default function Inventory({ props }: { props: any }) {
     const router = useRouter();
     const inventoryService = new InventoryService();
     const [inventorys, setInventorys] = useState<any[]>([]);
+
     const [inventoryFilter, setInventoryFitler] = useState<InventoryModel>({
         category: "",
         company: {
@@ -30,7 +31,9 @@ export default function Inventory({ props }: { props: any }) {
         description: "",
         name: "",
     });
+
     const {inventory, setInventory} = useContext(inventoryContext);
+    
     const columns: ColumnMeta[]=[
        {field: 'name', header: 'Nombre'},
        {field: 'description', header: 'Descripción'},

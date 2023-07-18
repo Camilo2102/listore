@@ -11,7 +11,7 @@ import { AuthUtil } from "@/app/utils/authUtil";
 import { InventoryService } from "@/app/services/inventoryService";
 import { useRouter } from "next/navigation";
 import { ToastService } from "@/app/services/toastService";
-import { Messages } from "@/app/constants/generalConstant";
+import { Messages } from "@/app/constants/messageConstant";
 
 export default function RegisterInventory({ inventorySelected }: { inventorySelected?: InventoryModel }) {
    const inventoryService = new InventoryService();
@@ -63,7 +63,9 @@ export default function RegisterInventory({ inventorySelected }: { inventorySele
          }
       ]
    );
+   
    const [inventory, form, setInventory, validateFormControls] = handleForm(controls);
+
    const handleInventory = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
@@ -76,13 +78,16 @@ export default function RegisterInventory({ inventorySelected }: { inventorySele
 
          setInventoryToRegister({
             id: inventoryToRegister.id ?? undefined,
-            name, description, category,
+            name, 
+            description, 
+            category,
             company: { id: AuthUtil.getCredentials().company }
          })
 
          setSubmited(true);
       }
    }
+   
    useEffect(() => {
    
       if(!submited && inventorySelected) {

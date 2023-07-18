@@ -1,5 +1,5 @@
 import { confirmDialog } from 'primereact/confirmdialog';
-import { Messages } from '../constants/generalConstant';
+import { Messages } from '../constants/messageConstant';
 
 export class ConfirmationService {
 

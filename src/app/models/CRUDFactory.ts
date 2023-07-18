@@ -70,6 +70,7 @@ export class CRUDFactory<T> {
         return HttpFactory.httpPost(petitioRoute, secure, t);
     }
 
+    //  todo    
     public countAllByFilter(secure: boolean = true, t: any): Promise<number> {
         const petitioRoute: string = this.baseUrl + Routes.COUNT_ALL_BY_FILTERS;
         return HttpFactory.httpPost(petitioRoute, secure, t);

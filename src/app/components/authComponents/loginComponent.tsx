@@ -76,7 +76,7 @@ export default function LoginComponent() {
 
     const getMessages = () => {
         return [
-            <Button type="button" label="Olvidaste tu contraseña?" onClick={() => setShowRecoveryDialog(true)} text />
+            <Button type="button" label="Olvidaste tu contraseña?" onClick={() => setShowRecoveryDialog(true)} text />,
         ]
     }
 
