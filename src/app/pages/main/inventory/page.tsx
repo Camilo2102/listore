@@ -15,6 +15,8 @@ import { AuthUtil } from "@/app/utils/authUtil";
 import { ConfirmationService } from "@/app/services/confirmationService";
 import { Messages } from "@/app/constants/messageConstant";
 import { ToastService } from "@/app/services/toastService";
+import { DataTableSelectEvent } from "primereact/datatable";
+import { mainContext } from "../mainContext";
 
 
 
@@ -33,7 +35,8 @@ export default function Inventory({ props }: { props: any }) {
     });
 
     const {inventory, setInventory} = useContext(inventoryContext);
-    
+    const {inventoryMain, setInventoryMain} = useContext(mainContext);
+
     const columns: ColumnMeta[]=[
        {field: 'name', header: 'Nombre'},
        {field: 'description', header: 'Descripción'},
@@ -61,6 +64,11 @@ export default function Inventory({ props }: { props: any }) {
         return deleteFn;
     }
 
+    const handleSelection = (inventory: DataTableSelectEvent) => {
+     setInventoryMain(inventory.data);
+        router.push("/pages/main/product")
+    };
+
     const [paginator, setPaginator] = useHandleInput<Paginator>({
         rows: 5,
         first: 0,
@@ -68,6 +76,7 @@ export default function Inventory({ props }: { props: any }) {
         totalRecords: 0,
         pagesVisited: 0,
     });
+
     useEffect(()=>{
         inventoryService.getAllByFilter(true, paginator, inventoryFilter).then(res =>{
             setInventorys(res);
@@ -82,7 +91,7 @@ export default function Inventory({ props }: { props: any }) {
             </Link>
             </div>
             <div className="col-12 flex justify-content-center">
-                    <TableGeneral columns={columns} values={inventorys} paginator={paginator} setPaginator={setPaginator} ></TableGeneral>
+                    <TableGeneral columns={columns} onRowSelect={handleSelection} values={inventorys} paginator={paginator} setPaginator={setPaginator} ></TableGeneral>
                 </div>
            </div>
         </div>
