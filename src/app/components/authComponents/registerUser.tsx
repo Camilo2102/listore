@@ -61,7 +61,7 @@ export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: num
     const [user, form, setUser, validateFormControls] = handleForm(controls);
 
 
-    const handleLogin = (e: FormEvent<HTMLFormElement>) => {
+    const handleRegisterUser = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
 
@@ -79,7 +79,7 @@ export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: num
 
     return(
         <Container title="Registro de usuario">
-            <FormGenerator buttonLabel="Continuar" form={form} value={user} setValue={setUser} submit={handleLogin}></FormGenerator>
+            <FormGenerator buttonLabel="Continuar" form={form} value={user} setValue={setUser} submit={handleRegisterUser}></FormGenerator>
         </Container>
     )
 }

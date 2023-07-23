@@ -13,10 +13,11 @@ import Paginator from "@/app/interfaces/paginator";
 import Link from "next/link";
 import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableGeneral";
-import { mainContext } from "../mainContext";
+import { inventoryContext } from "../inventoryContext";
 
-export default function ProductPage({ props }: { props: any }) {
-    const {inventoryMain, setInventoryMain} = useContext(mainContext);
+
+export default function ProductPage() {
+    const {inventory, setInventory} = useContext(inventoryContext);
     const productService = new ProductService();
     const [products, setProducts] = useState<any[]>([]);
 
@@ -27,7 +28,7 @@ export default function ProductPage({ props }: { props: any }) {
         supplier: {},
         category: "",
         inventory: {
-            id: inventoryMain?.id
+            id: inventory?.id
         },
         amount: 0
 
@@ -82,9 +83,6 @@ export default function ProductPage({ props }: { props: any }) {
         });
     },[product])
     
-    function setInventory(undefined: undefined) {
-        throw new Error("Function not implemented.");
-    }
 
     return(
         <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>

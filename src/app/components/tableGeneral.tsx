@@ -15,6 +15,12 @@ export default function TableGeneral({ values, paginator, setPaginator, columns,
       )
     }
 
+    if(field === "supplier"){
+      return(
+        <Button icon="pi pi-users" severity="secondary" rounded outlined onClick={() => {action && action(e)}} />
+      )
+    }
+
     if(field === "CRUDupdate") {
       return(
         <Button icon="pi pi-pencil" rounded outlined onClick={() => {action && action(e)}} />
@@ -37,7 +43,7 @@ export default function TableGeneral({ values, paginator, setPaginator, columns,
   }
 
   const setPage = (e:DataTablePageEvent) => {    
-    setPaginator({page: e.page, first: e.first, pagesVisited: ++paginator.pagesVisited });
+    setPaginator({page: e.page, first: e.first, pagesVisited: ++paginator.pagesVisited, loaded: false });
     
   }
 

@@ -16,8 +16,6 @@ import { ConfirmationService } from "@/app/services/confirmationService";
 import { Messages } from "@/app/constants/messageConstant";
 import { ToastService } from "@/app/services/toastService";
 import { DataTableSelectEvent } from "primereact/datatable";
-import { mainContext } from "../mainContext";
-
 
 
 export default function Inventory({ props }: { props: any }) {
@@ -35,12 +33,18 @@ export default function Inventory({ props }: { props: any }) {
     });
 
     const {inventory, setInventory} = useContext(inventoryContext);
-    const {inventoryMain, setInventoryMain} = useContext(mainContext);
+   
 
     const columns: ColumnMeta[]=[
        {field: 'name', header: 'Nombre'},
        {field: 'description', header: 'Descripción'},
        {field: 'category', header: 'Categoria'},
+       {
+        field: 'supplier', header: 'Proveedores', action: (t: any) =>{
+            router.push("/pages/main/inventory/supplier")
+            setInventory(t)
+        }
+       },
        {
         field: 'CRUDupdate', header: 'Actualizar', action: (t: any) => {
             router.push("/pages/main/inventory/mainteance")
@@ -51,7 +55,8 @@ export default function Inventory({ props }: { props: any }) {
         field: 'CRUDdelete', header: "Eliminar", action: (t: any) => {
            ConfirmationService.showConfirmDelete(Messages.MESSAGE_BODY_DELETE + t, handleDelete(t));
         }
-    }
+    },
+    
     ];
 
     const handleDelete = (t: any) =>{
@@ -65,8 +70,8 @@ export default function Inventory({ props }: { props: any }) {
     }
 
     const handleSelection = (inventory: DataTableSelectEvent) => {
-     setInventoryMain(inventory.data);
-        router.push("/pages/main/product")
+     setInventory(inventory.data);
+        router.push("/pages/main/inventory/product")
     };
 
     const [paginator, setPaginator] = useHandleInput<Paginator>({
@@ -75,6 +80,7 @@ export default function Inventory({ props }: { props: any }) {
         page: 0,
         totalRecords: 0,
         pagesVisited: 0,
+        loaded: false
     });
 
     useEffect(()=>{

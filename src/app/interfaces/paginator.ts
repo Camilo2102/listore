@@ -4,4 +4,5 @@ export default interface Paginator {
     totalRecords: number;
     first: number;
     pagesVisited: number;
+    loaded: boolean;
 }
