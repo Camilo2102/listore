@@ -40,7 +40,7 @@ export default function Supplier(){
    
     const columns: ColumnMeta[]=[
         {field: 'name', header: 'Nombre'},
-        {field: 'phone', header: 'Numero'},
+        {field: 'phone', header: 'Número telefónico'},
         {field: 'mail', header: 'Email'},
         {field: 'address', header: 'Dirección'},
         {field: 'description', header: 'Desripción'},
@@ -49,14 +49,21 @@ export default function Supplier(){
                setSupplier(t)
                setVisible(true)
             }
-        }
+        },
+        {
+            field: 'CRUDdelete', header: "Eliminar", action: (t: any) => {
+               ConfirmationService.showConfirmDelete(Messages.MESSAGE_BODY_DELETE + t, handleDelete(t));
+            }
+        },
     ];
 
-    const handleDelet = (t:any) =>{
+    const handleDelete = (t:any) =>{
         const deletFn = () =>{
             supplierService.delete(true, t.id).then((res) => {
                 ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
                 setSupplier(undefined);
+                setVisible(false)
+                setPaginator({loaded: false})
             });
         }
         return deletFn;
@@ -65,7 +72,7 @@ export default function Supplier(){
     const [paginator, setPaginator] = useHandleInput<Paginator>({
         rows: 5,
         first: 0,
-        page: 1,
+        page: 0,
         totalRecords: 0,
         pagesVisited: 0,
         loaded: false
@@ -94,7 +101,7 @@ export default function Supplier(){
            <div className="grid" style={{ width: '90%' }}>
             <div className="col-12 flex justify-content-start">
             
-            <Button onClick={handleNewSupplier} ></Button>
+            <Button onClick={handleNewSupplier} label="Nuevo" icon="pi pi-user-plus"></Button>
             </div>
             <div className="col-12 flex justify-content-center">
                     <TableGeneral columns={columns} values={suppliers} paginator={paginator} setPaginator={setPaginator} ></TableGeneral>
