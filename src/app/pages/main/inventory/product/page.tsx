@@ -75,6 +75,7 @@ export default function ProductPage() {
         page: 0,
         totalRecords: 0,
         pagesVisited: 0,
+        loaded: false
     });
 
     useEffect(() => {

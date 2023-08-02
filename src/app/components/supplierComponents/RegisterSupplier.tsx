@@ -101,9 +101,9 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
             supplierService.create(true, supplierToRegister).then(
                 res => {
                     ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS)
-                    setVisible(false)
-                    setSubmited(false)
                     setSupplier(undefined)
+                    setSubmited(false)
+                    setVisible(false)
                 }
             )
         }

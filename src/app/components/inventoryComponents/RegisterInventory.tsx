@@ -1,7 +1,7 @@
 
 import Container from "../container";
 import FormGenerator from "../CRUDComponents/formGenerator";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import FormControl from "@/app/models/formModels/formControl";
 import { FormTypes } from "@/app/constants/formTypeConstant";
 import Validators from "@/app/models/formModels/validators";
@@ -12,20 +12,13 @@ import { InventoryService } from "@/app/services/inventoryService";
 import { useRouter } from "next/navigation";
 import { ToastService } from "@/app/services/toastService";
 import { Messages } from "@/app/constants/messageConstant";
+import PopUp from "../popUp";
+import { inventoryContext } from "@/app/pages/main/inventory/inventoryContext";
+import Company from "@/app/models/company";
 
-export default function RegisterInventory({ inventorySelected }: { inventorySelected?: InventoryModel }) {
+export default function RegisterInventory({visible, setVisible}:{visible:boolean, setVisible:(partialT: Partial<boolean>) => void}) {
+   
    const inventoryService = new InventoryService();
-   const router = useRouter();
-
-   const [submited, setSubmited] = useState<boolean>(false);
-   const [inventoryToRegister, setInventoryToRegister] = useState<InventoryModel>({
-      name: "",
-      description: "",
-      category: "",
-      company: {
-         id: ""
-      }
-   })
    const [controls, setControls] = useState<FormControl[]>(
       [
          {
@@ -63,8 +56,10 @@ export default function RegisterInventory({ inventorySelected }: { inventorySele
          }
       ]
    );
-   
-   const [inventory, form, setInventory, validateFormControls] = handleForm(controls);
+
+   const [inventoryToRegister, form, setInventorToRegister, validateFormControls] = handleForm(controls);
+   const {inventory, setInventory} = useContext(inventoryContext);
+   const [submited, setSubmited] = useState<boolean>(false);
 
    const handleInventory = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -74,40 +69,31 @@ export default function RegisterInventory({ inventorySelected }: { inventorySele
       setControls([...formControls]);
 
       if (valid) {
-         const { name, description, category } = inventory
-
-         setInventoryToRegister({
-            id: inventoryToRegister.id ?? undefined,
-            name, 
-            description, 
-            category,
-            company: { id: AuthUtil.getCredentials().company }
-         })
-
+         inventoryToRegister.company = new Company();
+         inventoryToRegister.company.id = AuthUtil.getCredentials().company
          setSubmited(true);
       }
    }
    
    useEffect(() => {
-   
-      if(!submited && inventorySelected) {
-         setInventoryToRegister(inventorySelected);
-         setInventory(inventorySelected);
-      }
       if(submited){
          inventoryService.create(true, inventoryToRegister).then(
             res => {
-                ToastService.showSuccess(Messages.MESSAGE_SUCCESS, inventorySelected ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
-                router.push("/pages/main/inventory")
+                ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS);
                 setSubmited(false)
+                setVisible(false)
+                setInventory(undefined)
             }
         );
+      }
+      if(inventory !== undefined){
+         setInventorToRegister(inventory)
       }
   }, [submited])
 
    return (
-      <Container title="Registro de inventario">
-         <FormGenerator form={form} value={inventory} setValue={setInventory} submit={handleInventory}></FormGenerator>
-      </Container>
+      <PopUp visible={visible} setVisible= {setVisible} title="Registro de inventario">
+         <FormGenerator form={form} value={inventoryToRegister} setValue={setInventorToRegister} submit={handleInventory}></FormGenerator>
+      </PopUp>
    )
 }

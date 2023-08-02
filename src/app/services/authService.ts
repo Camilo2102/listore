@@ -82,5 +82,10 @@ export class AuthService extends CRUDFactory<CredentialModel>{
     public sendRecoveryEmail(email: string){
         return HttpFactory.httpGet(this.BASE_URL+ "/recoverPassword?mail=" + email, false);
     }
+
+    /*
+    TODO: limipar todo el storage
+    Caundo se hago el cierre de sesion
+    */
     
 }
