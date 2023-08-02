@@ -2,8 +2,7 @@ import { useState } from "react";
 import { StorageService } from "../services/storageService";
 
 export const handleContext = (key: string) => {
-    const [value, setValue] = useState<any | undefined>(undefined);
-
+    const [value, setValue] = useState<any | undefined>(StorageService.getValue(key) !== null ? JSON.parse(StorageService.getValue(key) as string) : undefined);
 
     const setValueAndStore = (t: any) => {
         setValue(t);
@@ -13,6 +12,7 @@ export const handleContext = (key: string) => {
         
         StorageService.saveValue(key, JSON.stringify(t));
     }
+
 
     return [value, setValueAndStore];
 }

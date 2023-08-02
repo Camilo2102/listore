@@ -12,11 +12,8 @@ import { Messages } from "@/app/constants/messageConstant";
 import Paginator from "@/app/interfaces/paginator";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import { inventoryContext } from "../inventoryContext";
-import Link from "next/link";
 import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableGeneral";
-import popUp from '../../../../components/popUp';
-import PopUp from "../../../../components/popUp";
 import RegisterSupplier from "@/app/components/supplierComponents/RegisterSupplier";
 
 export default function Supplier(){
@@ -25,6 +22,7 @@ export default function Supplier(){
     const supplierService = new SupplierService();
     const [suppliers, setSuppliers] = useState<any[]>([]);
 
+    const {supplier, setSupplier} = useContext(supplierContext);
     const [supplierFilter, setSupplierFilter] = useState<SupplierModel>({
         name: "",
         description: "",
@@ -35,8 +33,6 @@ export default function Supplier(){
             id: inventory?.id,
         }
     });
-
-    const {supplier, setSupplier} = useContext(supplierContext);
    
     const columns: ColumnMeta[]=[
         {field: 'name', header: 'Nombre'},
@@ -77,8 +73,22 @@ export default function Supplier(){
         pagesVisited: 0,
         loaded: false
     });
+
+    const setInventoryInFilter = () => {
+        setSupplierFilter({
+            name: "",
+            description: "",
+            address: "",
+            phone: 0,
+            mail: "",
+            inventory:{
+                id: inventory?.id,
+            }
+        })
+    }
     
     const [visible, setVisible] = useState<boolean>(false);
+
     useEffect(() =>{
         if(!visible && !paginator.loaded){
             supplierService.getAllByFilter(true, paginator, supplierFilter).then(res =>{
