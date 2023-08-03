@@ -37,7 +37,7 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
                 value: "",
                 description: "Número telefonico",
                 colSize: 6,
-                type: FormTypes.INPUT,
+                type: FormTypes.NUMBER,
                 validators: [Validators.requiered, Validators.maxLenght(17), Validators.minLenght(6)],
                 invalid: false,
                 message: true,
@@ -82,6 +82,7 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
     const [supplierToRegister, form, setSupplierToRegister, validateFormControls] = handleForm(controls);
     const {inventory, setInventory} = useContext(inventoryContext);
     const {supplier, setSupplier} = useContext(supplierContext);
+    
     const [submited, setSubmited] = useState<boolean>(false);
     const handleSupplier = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -91,22 +92,20 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
         if(valid){
             supplierToRegister.inventory = new InventoryModel()
             supplierToRegister.inventory.id = inventory.id
-            setSubmited(true)
             
-        }
-    }
-
-    useEffect(() =>{
-        if(submited){
             supplierService.create(true, supplierToRegister).then(
                 res => {
-                    ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS)
+                    ToastService.showSuccess(Messages.MESSAGE_SUCCESS, supplier? Messages.MESSAGE_CREATE_SUCCESS: Messages.MESSAGE_UPDATE_SUCCESS)
                     setVisible(false)
                     setSubmited(false)
                     setSupplier(undefined)
                 }
             )
+            
         }
+    }
+
+    useEffect(() =>{
         if(supplier !== undefined && !submited){
             setSupplierToRegister(supplier)
         }

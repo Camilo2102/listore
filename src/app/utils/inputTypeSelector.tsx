@@ -6,6 +6,7 @@ import CalendarForm from "../components/formComponents/calendarForm";
 import DropDownForm from "../components/formComponents/dropDownForm";
 import PasswordForm from "../components/formComponents/passwordForm";
 import RadioButtonForm from "../components/formComponents/radioButtonForm";
+import NumberForm from "../components/formComponents/numberForm";
 
 /**
  * Se encarga de convertir el formControl en un field ya listo para ser usado
@@ -24,6 +25,7 @@ export default function inputTypeSelector(formControl: FormControl, value: any, 
         [FormTypes.DROPDOWN]: <DropDownForm formControl={formControl} value={value} onValueChange={(data) => { setValue(data) }}></DropDownForm>,
         [FormTypes.PASSWORD]: <PasswordForm formControl={formControl} value={value} onValueChange={(data) => { setValue(data) }}></PasswordForm>,
         [FormTypes.RADIO]: <RadioButtonForm formControl={formControl} value={value} onValueChange={(data) => { setValue(data) }}></RadioButtonForm>,
+        [FormTypes.NUMBER]:<NumberForm formControl={formControl} value={value} onValueChange={(data) => { setValue(data) }}></NumberForm>,
         '': <h3>Sin implementar</h3> 
     }
 

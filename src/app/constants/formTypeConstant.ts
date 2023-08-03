@@ -5,4 +5,5 @@ export class FormTypes {
     public static readonly DROPDOWN: string = "dropdown";
     public static readonly DATE: string = "date";
     public static readonly RADIO: string = "radio";
+    public static readonly NUMBER: string = "number";
 }

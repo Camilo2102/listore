@@ -5,4 +5,5 @@ type supplierContext = {
     setSupplier: (supplier: any | undefined) => void
 }
 
-export const supplierContext = createContext<supplierContext>({} as supplierContext);
+export const supplierContext = createContext<supplierContext>(
+    {} as supplierContext);

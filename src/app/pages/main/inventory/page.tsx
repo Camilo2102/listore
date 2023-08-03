@@ -16,6 +16,9 @@ import { ConfirmationService } from "@/app/services/confirmationService";
 import { Messages } from "@/app/constants/messageConstant";
 import { ToastService } from "@/app/services/toastService";
 import { DataTableSelectEvent } from "primereact/datatable";
+import RegisterInventory from "@/app/components/inventoryComponents/RegisterInventory";
+import NavBar from "@/app/components/navBar";
+
 
 
 export default function Inventory({ props }: { props: any }) {
@@ -32,45 +35,48 @@ export default function Inventory({ props }: { props: any }) {
         name: "",
     });
 
-    const {inventory, setInventory} = useContext(inventoryContext);
-   
+    const { inventory, setInventory } = useContext(inventoryContext);
 
-    const columns: ColumnMeta[]=[
-       {field: 'name', header: 'Nombre'},
-       {field: 'description', header: 'Descripción'},
-       {field: 'category', header: 'Categoria'},
-       {
-        field: 'supplier', header: 'Proveedores', action: (t: any) =>{
-            router.push("/pages/main/inventory/supplier")
-            setInventory(t)
-        }
-       },
-       {
-        field: 'CRUDupdate', header: 'Actualizar', action: (t: any) => {
-            router.push("/pages/main/inventory/mainteance")
-            setInventory(t)
-        }
-    },
-    {
-        field: 'CRUDdelete', header: "Eliminar", action: (t: any) => {
-           ConfirmationService.showConfirmDelete(Messages.MESSAGE_BODY_DELETE + t, handleDelete(t));
-        }
-    },
-    
+
+    const columns: ColumnMeta[] = [
+        { field: 'name', header: 'Nombre' },
+        { field: 'description', header: 'Descripción' },
+        { field: 'category', header: 'Categoria' },
+        {
+            field: 'supplier', header: 'Proveedores', action: (t: any) => {
+
+                setInventory(t)
+                router.push("/pages/main/inventory/supplier")
+            }
+        },
+        {
+            field: 'CRUDupdate', header: 'Actualizar', action: (t: any) => {
+                setInventory(t)
+                setVisible(true)
+            }
+        },
+        {
+            field: 'CRUDdelete', header: "Eliminar", action: (t: any) => {
+                ConfirmationService.showConfirmDelete(Messages.MESSAGE_BODY_DELETE + t, handleDelete(t));
+            }
+        },
+
     ];
 
-    const handleDelete = (t: any) =>{
+
+    const handleDelete = (t: any) => {
         const deleteFn = () => {
-            inventoryService.delete(true, t.id).then((res)=> {
+            inventoryService.delete(true, t.id).then((res) => {
                 ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
                 setInventory(undefined);
             });
-        } 
+        }
         return deleteFn;
     }
 
+    // select supplier
     const handleSelection = (inventory: DataTableSelectEvent) => {
-     setInventory(inventory.data);
+        setInventory(inventory.data);
         router.push("/pages/main/inventory/product")
     };
 
@@ -83,24 +89,40 @@ export default function Inventory({ props }: { props: any }) {
         loaded: false
     });
 
-    useEffect(()=>{
-        inventoryService.getAllByFilter(true, paginator, inventoryFilter).then(res =>{
+    const [visible, setVisible] = useState<boolean>(false);
+    useEffect(() => {
+
+
+        inventoryService.getAllByFilter(true, paginator, inventoryFilter).then(res => {
             setInventorys(res);
+          
         })
-    }, [inventory])
-    return(
-        <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-           <div className="grid" style={{ width: '90%' }}>
-            <div className="col-12 flex justify-content-start">
-            <Link href={"/pages/main/inventory/mainteance"} >
-                <Button onClick={() => setInventory(undefined)} ></Button>
-            </Link>
-            </div>
-            <div className="col-12 flex justify-content-center">
-                    <TableGeneral columns={columns} onRowSelect={handleSelection} values={inventorys} paginator={paginator} setPaginator={setPaginator} ></TableGeneral>
+    }, [visible, paginator])
+
+    const handleNewInventory = () => {
+        setVisible(true);
+        setInventory(undefined);
+    }
+
+    return (
+        <>
+        <NavBar />
+            <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+                
+                <div className="grid" style={{ width: '90%' }}>
+                    <div className="col-12 flex justify-content-start">
+
+                        <Button label="Nuevo" icon="pi pi-inbox" onClick={handleNewInventory} ></Button>
+
+                    </div>
+                    <div className="col-12 flex justify-content-center">
+                        <TableGeneral columns={columns} onRowSelect={handleSelection} values={inventorys} paginator={paginator} setPaginator={setPaginator} ></TableGeneral>
+                    </div>
                 </div>
-           </div>
-        </div>
+                {visible && <RegisterInventory visible={visible} setVisible={setVisible} />}
+
+            </div>
+        </>
     )
 }
 

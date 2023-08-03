@@ -17,6 +17,7 @@ import { RolesMap } from "@/app/constants/roleValues";
 import { AuthUtil } from "@/app/utils/authUtil";
 import DeleteWorker from "@/app/components/userComponents/DeleteWorker";
 import Paginator from "@/app/interfaces/paginator";
+import NavBar from "@/app/components/navBar";
 
 
 
@@ -25,7 +26,7 @@ export default function UserList({ props }: { props: any }) {
     const router = useRouter();
 
     const [users, setUsers] = useState<any[]>([]);
-    const [userFilter, setUserFilter] = useHandleInput<User>({ active: "", company: {id: AuthUtil.getCredentials().company}, name: "", role: "" });
+    const [userFilter, setUserFilter] = useHandleInput<User>({ active: "", company: { id: AuthUtil.getCredentials().company }, name: "", role: "" });
     const { user, setUser } = useContext(userContext);
     const [paginator, setPaginator] = useHandleInput<Paginator>({
         rows: 5,
@@ -74,6 +75,7 @@ export default function UserList({ props }: { props: any }) {
 
     return (
         <>
+            <NavBar />
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
                 <div className="grid" style={{ width: '90%' }}>
                     <div className="col-12 flex justify-content-start">

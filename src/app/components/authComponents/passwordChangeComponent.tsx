@@ -79,7 +79,7 @@ export default function PasswordChangeComponent() {
     const handleLogin = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        debugger
+        
         const [formControls, valid] = validateFormControls();
 
         setControls([...formControls]);
