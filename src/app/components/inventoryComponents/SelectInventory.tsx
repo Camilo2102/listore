@@ -1,16 +1,15 @@
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import { inventoryContext } from "@/app/pages/main/inventory/inventoryContext";
-import Paginator from "@/app/interfaces/paginator";
 import { InventoryService } from "@/app/services/inventoryService";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import TableGeneral from "../tableGeneral";
 import { useHandleInput } from "@/app/hooks/handleInput";
-import { Paginator } from "primereact/paginator";
 import PopUp from "../popUp";
 import InventoryModel from "@/app/models/inventory";
 import { DataTableSelectEvent } from "primereact/datatable";
 import { AuthUtil } from "@/app/utils/authUtil";
+import Paginator from "@/app/interfaces/paginator";
 
 
 export default function SelectInventory({ inventorySelected, visible, setVisible }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {

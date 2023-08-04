@@ -94,16 +94,11 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
       setControls([...formControls]);
 
       if (valid) {
-         const { name, unitaryValue, wholeSalePrice, category, amount } = productToRegister;
+         productToRegister.inventory = {
+            id: inventory.id
+         };
 
-         productService.create(true, {
-            name,
-            unitaryValue,
-            wholeSalePrice,
-            category,
-            amount,
-            inventory: { id: inventory.id }
-         }).then(res => {
+         productService.create(true, productToRegister).then(res => {
             ToastService.showSuccess(Messages.MESSAGE_SUCCESS, inventorySelected ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
             setVisible(false);
             // setInventory(undefined)
