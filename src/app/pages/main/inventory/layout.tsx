@@ -1,14 +1,11 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { inventoryContext } from './inventoryContext';
-
-import { handleContext } from "@/app/hooks/handleContextHooks";
-import { StorageService } from "@/app/services/storageService";
+import InventoryModel from "@/app/models/inventory";
 
 export default function InventoryLayout({ children }: { children: React.ReactNode }){
-    const [inventory, setInventory] = handleContext("inventory");
-
+    const [inventory, setInventory] = useState<InventoryModel | undefined>(undefined);
     return(
         <inventoryContext.Provider value={{inventory, setInventory}}>
             {children}
