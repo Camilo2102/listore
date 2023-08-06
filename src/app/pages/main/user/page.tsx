@@ -34,6 +34,7 @@ export default function UserList({ props }: { props: any }) {
         page: 0,
         totalRecords: 0,
         pagesVisited: 0,
+        loaded: false
     });
 
     const [deleteUser, setDeleteUser] = useState<User | undefined>();
