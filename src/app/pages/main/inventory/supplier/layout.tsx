@@ -10,5 +10,6 @@ export default function SupplierLayout({children}: {children: React.ReactNode}){
         <supplierContext.Provider value={{supplier, setSupplier}}>
             {children}
         </supplierContext.Provider>
+        
     )
 }
