@@ -1,6 +1,6 @@
 "use client"
 
-import { ProductModel } from "@/app/models/product";
+import  ProductModel  from "@/app/models/product";
 import { useState } from "react";
 import { productContext } from "./productContext";
 

@@ -90,9 +90,9 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
 
         setControls([...formControls]);
         if(valid){
+            
             supplierToRegister.inventory = new InventoryModel()
             supplierToRegister.inventory.id = inventory.id
-            
             supplierService.create(true, supplierToRegister).then(
                 res => {
                     ToastService.showSuccess(Messages.MESSAGE_SUCCESS, supplier? Messages.MESSAGE_CREATE_SUCCESS: Messages.MESSAGE_UPDATE_SUCCESS)

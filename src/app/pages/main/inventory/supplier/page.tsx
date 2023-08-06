@@ -80,6 +80,7 @@ export default function Supplier(){
     });
     
     const [visible, setVisible] = useState<boolean>(false);
+    
     useEffect(() =>{
         if(!visible && !paginator.loaded){
             supplierService.getAllByFilter(true, paginator, supplierFilter).then(res =>{

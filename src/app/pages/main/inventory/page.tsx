@@ -77,6 +77,7 @@ export default function Inventory({ props }: { props: any }) {
     // select supplier
     const handleSelection = (inventory: DataTableSelectEvent) => {
         setInventory(inventory.data);
+        console.log(inventory.data)
         router.push("/pages/main/inventory/product")
     };
 

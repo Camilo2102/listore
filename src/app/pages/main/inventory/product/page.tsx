@@ -1,6 +1,6 @@
 'use client';
 
-import { ProductModel } from "@/app/models/product";
+import  ProductModel  from "@/app/models/product";
 import { ProductService } from "@/app/services/productService";
 import { useContext, useEffect, useState } from "react";
 import ColumnMeta from "@/app/interfaces/columnMeta";
@@ -16,9 +16,12 @@ import { inventoryContext } from "../inventoryContext";
 import RegisterProduct from "@/app/components/productComponents/RegisterProduct";
 import { productContext } from "./productContext";
 import NavBar from "@/app/components/navBar";
+import { DataTableSelectEvent } from "primereact/datatable";
+import { useRouter } from "next/navigation";
 
 
 export default function ProductPage() {
+    const router = useRouter();
     const { inventory, setInventory } = useContext(inventoryContext);
     const productService = new ProductService();
     const [products, setProducts] = useState<any[]>([]);
@@ -103,6 +106,12 @@ export default function ProductPage() {
         setProduct(undefined)
     }
 
+    const handleSelection = (product: DataTableSelectEvent) =>{
+        setProduct(product.data);
+        console.log(product.data)
+        router.push("/pages/main/inventory/atribute")
+    }
+
     return (
         <>
             <NavBar />
@@ -114,7 +123,7 @@ export default function ProductPage() {
 
                     </div>
                     <div className="col-12 flex justify-content-center">
-                        <TableGeneral columns={columns} values={products} paginator={paginator} setPaginator={setPaginator} ></TableGeneral>
+                        <TableGeneral columns={columns} values={products} paginator={paginator} setPaginator={setPaginator} onRowSelect={handleSelection}></TableGeneral>
                     </div>
                 </div>
                 {visible && <RegisterProduct visible={visible} setVisible={setVisible} />}
