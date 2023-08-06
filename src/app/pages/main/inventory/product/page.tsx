@@ -108,8 +108,7 @@ export default function ProductPage() {
 
     const handleSelection = (product: DataTableSelectEvent) =>{
         setProduct(product.data);
-        console.log(product.data)
-        router.push("/pages/main/inventory/atribute")
+        router.push("/pages/main/inventory/product/atribute")
     }
 
     return (

@@ -12,6 +12,5 @@ export default function ProductLayout({ children }: { children: React.ReactNode 
         <productContext.Provider value={{product, setProduct}}>
             {children}
         </productContext.Provider>
-
     )
 }

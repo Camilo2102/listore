@@ -3,7 +3,7 @@ import { Messages } from "@/app/constants/messageConstant";
 import { handleForm } from "@/app/hooks/handleForm";
 import FormControl from "@/app/models/formModels/formControl";
 import Validators from "@/app/models/formModels/validators";
-import { atributeContext } from "@/app/pages/main/inventory/atribute/atributeContext";
+import { atributeContext } from "@/app/pages/main/inventory/product/atribute/atributeContext";
 import { productContext } from "@/app/pages/main/inventory/product/productContext";
 import { AtributeService } from "@/app/services/atributeService";
 import { ToastService } from "@/app/services/toastService";

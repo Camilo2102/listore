@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { atributeContext } from "./atributeContext";
 import { AtributeService } from "@/app/services/atributeService";
 import AtributesModel from "@/app/models/atribute";
-import { productContext } from "../product/productContext";
+import { productContext } from "../productContext";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import { ConfirmationService } from "@/app/services/confirmationService";
 import { Messages } from "@/app/constants/messageConstant";
@@ -14,6 +14,7 @@ import NavBar from "@/app/components/navBar";
 import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableGeneral";
 import RegisterAtribute from "@/app/components/atributesComponentes/RegisterAtribute";
+import { StorageService } from "@/app/services/storageService";
 
 export default function AtributePage(){
     const {product, setProduct} = useContext(productContext);
@@ -67,7 +68,8 @@ export default function AtributePage(){
     });
 
     useEffect(() =>{
-        console.log(product)
+        console.log(product);
+                
         if(!visible && !paginator.loaded){
             atributesService.getAllByFilter(true, paginator, atributesFilter).then(res =>{
                 setAtributes(res);
