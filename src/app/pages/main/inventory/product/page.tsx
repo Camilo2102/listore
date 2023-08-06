@@ -18,6 +18,7 @@ import { productContext } from "./productContext";
 import NavBar from "@/app/components/navBar";
 import { DataTableSelectEvent } from "primereact/datatable";
 import { useRouter } from "next/navigation";
+import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 
 
 export default function ProductPage() {
@@ -68,6 +69,9 @@ export default function ProductPage() {
 
         const deleteFn = () => {
             productService.delete(true, t.id).then((res) => {
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                 }
                 ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
                 setProduct(undefined);
                 setVisible(false)
@@ -91,9 +95,15 @@ export default function ProductPage() {
 
         if (!visible && !paginator.loaded) {
             productService.getAllByFilter(true, paginator, productFilter).then(res => {
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                 }
                 setProducts(res);
             })
             productService.countAllByFilter(true, productFilter).then(res => {
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                 }
                 setPaginator({ totalRecords: res, loaded: true })
             })
         }

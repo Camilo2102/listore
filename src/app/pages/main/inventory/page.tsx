@@ -18,6 +18,7 @@ import { ToastService } from "@/app/services/toastService";
 import { DataTableSelectEvent } from "primereact/datatable";
 import RegisterInventory from "@/app/components/inventoryComponents/RegisterInventory";
 import NavBar from "@/app/components/navBar";
+import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 
 
 
@@ -67,6 +68,9 @@ export default function Inventory({ props }: { props: any }) {
     const handleDelete = (t: any) => {
         const deleteFn = () => {
             inventoryService.delete(true, t.id).then((res) => {
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                 }
                 ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
                 setInventory(undefined);
             });
@@ -95,6 +99,9 @@ export default function Inventory({ props }: { props: any }) {
 
 
         inventoryService.getAllByFilter(true, paginator, inventoryFilter).then(res => {
+            if(!ResErrorHandler.isValidRes(res)){
+                return;
+             }
             setInventorys(res);
           
         })

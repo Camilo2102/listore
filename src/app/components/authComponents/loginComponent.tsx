@@ -15,6 +15,7 @@ import { FormTypes } from "../../constants/formTypeConstant";
 import Link from "next/link";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
+import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 
 export default function LoginComponent() {
 
@@ -67,6 +68,9 @@ export default function LoginComponent() {
 
         if (valid) {
             authService.login(credential).then(res => {
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                 }
                 AuthUtil.setCredentials(res.token, res.company);
                 router.push("/pages/main/user")
             })
@@ -83,8 +87,9 @@ export default function LoginComponent() {
     const handleEmailRecovery = () => {
         authService.sendRecoveryEmail(recoveryMail).then(
             res => {
-                console.log(res);
-                
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                 }
             }
         )
     }

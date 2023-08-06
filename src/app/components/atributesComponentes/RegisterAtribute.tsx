@@ -11,6 +11,7 @@ import { FormEvent, useContext, useEffect, useState } from "react";
 import PopUp from "../popUp";
 import FormGenerator from "../CRUDComponents/formGenerator";
 import ProductModel from "@/app/models/product";
+import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 
 export default function RegisterAtribute({visible, setVisible}: {visible: boolean, setVisible: (partialT: Partial<boolean>) => void}){
     const atributesService = new AtributeService()
@@ -55,6 +56,9 @@ export default function RegisterAtribute({visible, setVisible}: {visible: boolea
            atributeToRegister.product.id = product.id
             atributesService.create(true, atributeToRegister).then(
                 res => {
+                    if(!ResErrorHandler.isValidRes(res)){
+                        return;
+                     }
                     ToastService.showSuccess(Messages.MESSAGE_SUCCESS, atribute? Messages.MESSAGE_CREATE_SUCCESS: Messages.MESSAGE_UPDATE_SUCCESS)
                     setVisible(false)
                     setSubmited(false)

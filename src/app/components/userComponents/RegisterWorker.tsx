@@ -14,6 +14,7 @@ import { AuthUtil } from "@/app/utils/authUtil";
 import { useRouter } from "next/navigation";
 import RegisterWorkerDTO from "@/app/dto/registerWorkerDTO";
 import { UserService } from "@/app/services/userService";
+import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 
 export default function RegisterWorker({ userSelected }: { userSelected?: User }) {
     const authService = new AuthService();
@@ -136,6 +137,9 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
     const registerNewWorker = () => {
         authService.registerUser(workerToRegister).then(
             res => {
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                 }
                 ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS);
                 router.push("/pages/main/user")
             }
@@ -145,6 +149,9 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
     const updateWorker = () => {
         userService.update(true, workerToRegister).then(
             res => {
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                 }
                 ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_UPDATE_SUCCESS);
                 router.push("/pages/main/user")
             }

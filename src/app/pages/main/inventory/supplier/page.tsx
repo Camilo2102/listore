@@ -19,6 +19,7 @@ import popUp from '../../../../components/popUp';
 import PopUp from "../../../../components/popUp";
 import RegisterSupplier from "@/app/components/supplierComponents/RegisterSupplier";
 import NavBar from "@/app/components/navBar";
+import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 
 export default function Supplier(){
     const {inventory, setInventory} = useContext(inventoryContext);
@@ -61,6 +62,9 @@ export default function Supplier(){
     const handleDelete = (t:any) =>{
         const deletFn = () =>{
             supplierService.delete(true, t.id).then((res) => {
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                 }
                 ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
                 setSupplier(undefined);
                 setVisible(false)
@@ -84,9 +88,15 @@ export default function Supplier(){
     useEffect(() =>{
         if(!visible && !paginator.loaded){
             supplierService.getAllByFilter(true, paginator, supplierFilter).then(res =>{
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                 }
                 setSuppliers(res);
             })
             supplierService.countAllByFilter(true, supplierFilter).then(res=>{
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                 }
                 setPaginator({totalRecords: res, loaded: true})
             })
         }

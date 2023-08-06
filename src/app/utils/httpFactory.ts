@@ -96,14 +96,17 @@ export class HttpFactory {
     private static handleFetchPetition(fetchPetition: Promise<any>): Promise<any> {
       return fetchPetition.then(
         res => {
-          if (res.ok) {
+          if (res.status >= 200 && res.status < 300) {
             return res.json();
           }
-          return Promise.reject(res);
+          throw res;
         }
       ).catch(
         err => {
           err.json().then((res: any) => {
+            if (res.status === 401) {
+              AuthUtil.setAuthorized(false);
+            }
             ToastService.showError(Messages.MESSAGE_ERROR, res.error);
           });
         }

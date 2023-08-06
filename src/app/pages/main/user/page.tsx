@@ -18,6 +18,7 @@ import { AuthUtil } from "@/app/utils/authUtil";
 import DeleteWorker from "@/app/components/userComponents/DeleteWorker";
 import Paginator from "@/app/interfaces/paginator";
 import NavBar from "@/app/components/navBar";
+import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 
 
 
@@ -60,6 +61,9 @@ export default function UserList({ props }: { props: any }) {
     useEffect(() => {
         if (deleteUser === undefined) {
             userServices.getAllByFilter(true, paginator, userFilter).then((res) => {
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                 }
                 const temporal = res.map((r) => ({ ...r.credential, ...r }));
                 setUsers(temporal);
             });
@@ -68,8 +72,11 @@ export default function UserList({ props }: { props: any }) {
 
     useEffect(() => {
         if (deleteUser === undefined) {
-            userServices.countAllByFilter(true, userFilter).then((r) => {
-                setPaginator({ totalRecords: r });
+            userServices.countAllByFilter(true, userFilter).then((res) => {
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                 }
+                setPaginator({ totalRecords: res });
             });
         }
     }, [userFilter, deleteUser]);

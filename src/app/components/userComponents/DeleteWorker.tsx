@@ -1,6 +1,7 @@
 import { Messages } from "@/app/constants/messageConstant";
 import { AuthService } from "@/app/services/authService";
 import { ToastService } from "@/app/services/toastService";
+import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -17,6 +18,9 @@ export default function DeleteWorker({ user, visible, setVisible }: { user: any,
 
     const deleteUser = () => {
         authService.disableUser(user.id).then(res => {
+            if(!ResErrorHandler.isValidRes(res)){
+                return;
+             }
             ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_SUCCESS_DISABLED)
             setVisible(undefined)
         })

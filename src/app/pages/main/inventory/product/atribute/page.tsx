@@ -14,7 +14,7 @@ import NavBar from "@/app/components/navBar";
 import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableGeneral";
 import RegisterAtribute from "@/app/components/atributesComponentes/RegisterAtribute";
-import { StorageService } from "@/app/services/storageService";
+import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 
 export default function AtributePage(){
     const {product, setProduct} = useContext(productContext);
@@ -49,6 +49,9 @@ export default function AtributePage(){
     const handleDelete = (t: any) =>{
         const deletFn = () =>{
             atributesService.delete(true, t.id).then((res) => {
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                 }
                 ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
                 setAtribute(undefined);
                 setVisible(false)
@@ -68,13 +71,17 @@ export default function AtributePage(){
     });
 
     useEffect(() =>{
-        console.log(product);
-                
         if(!visible && !paginator.loaded){
             atributesService.getAllByFilter(true, paginator, atributesFilter).then(res =>{
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                 }
                 setAtributes(res);
             })
             atributesService.countAllByFilter(true, atributesFilter).then(res=>{
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                 }
                 setPaginator({totalRecords: res, loaded: true})
             })
         }
