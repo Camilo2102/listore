@@ -67,6 +67,7 @@ export default function AtributePage(){
     });
 
     useEffect(() =>{
+        console.log(product)
         if(!visible && !paginator.loaded){
             atributesService.getAllByFilter(true, paginator, atributesFilter).then(res =>{
                 setAtributes(res);

@@ -10,10 +10,7 @@ import { ToastService } from "@/app/services/toastService";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import PopUp from "../popUp";
 import FormGenerator from "../CRUDComponents/formGenerator";
-import { AuthUtil } from "@/app/utils/authUtil";
-import AtributesModel from "@/app/models/atribute";
 import ProductModel from "@/app/models/product";
-import { inventoryContext } from "@/app/pages/main/inventory/inventoryContext";
 
 export default function RegisterAtribute({visible, setVisible}: {visible: boolean, setVisible: (partialT: Partial<boolean>) => void}){
     const atributesService = new AtributeService()
