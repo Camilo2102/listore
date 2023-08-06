@@ -118,9 +118,7 @@ export default function ProductPage() {
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
                 <div className="grid" style={{ width: '90%' }}>
                     <div className="col-12 flex justify-content-start">
-
                         <Button label="Nuevo" icon="pi pi-inbox" onClick={handleNewProduct} ></Button>
-
                     </div>
                     <div className="col-12 flex justify-content-center">
                         <TableGeneral columns={columns} values={products} paginator={paginator} setPaginator={setPaginator} onRowSelect={handleSelection}></TableGeneral>
