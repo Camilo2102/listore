@@ -15,6 +15,7 @@ import { SupplierService } from "@/app/services/supplierService";
 import { ToastService } from "@/app/services/toastService";
 import { Messages } from "@/app/constants/messageConstant";
 import { supplierContext } from "@/app/pages/main/inventory/supplier/supplierContext";
+import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 
 export default function RegisterSupplier({visible, setVisible}:{visible:boolean, setVisible:(partialT: Partial<boolean>) => void}) {
 
@@ -95,6 +96,9 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
             
             supplierService.create(true, supplierToRegister).then(
                 res => {
+                    if(!ResErrorHandler.isValidRes(res)){
+                        return;
+                     }
                     ToastService.showSuccess(Messages.MESSAGE_SUCCESS, supplier? Messages.MESSAGE_CREATE_SUCCESS: Messages.MESSAGE_UPDATE_SUCCESS)
                     setVisible(false)
                     setSubmited(false)

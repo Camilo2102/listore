@@ -12,6 +12,7 @@ import User from "@/app/models/user";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Messages } from "@/app/constants/messageConstant";
+import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 
 export default function Register() {
     const router = useRouter();
@@ -66,6 +67,9 @@ export default function Register() {
         if(submited){
             authService.register({user: user, credential: credential, company: company}).then(
                 res => {
+                    if(!ResErrorHandler.isValidRes(res)){
+                        return;
+                     }
                     ToastService.showSuccess(Messages.MESSAGE_SUCCESS, "Creado con exito");
                     router.push("/pages/auth/passwordChange?token="+res.temporalToken);
                 }

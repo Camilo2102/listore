@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { ProductService } from "@/app/services/productService";
 import { inventoryContext } from "@/app/pages/main/inventory/inventoryContext";
 import { productContext } from "@/app/pages/main/inventory/product/productContext";
+import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 
 
 export default function RegisterInventory({ inventorySelected, visible, setVisible }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
@@ -99,9 +100,11 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
          };
 
          productService.create(true, productToRegister).then(res => {
+            if(!ResErrorHandler.isValidRes(res)){
+               return;
+            }
             ToastService.showSuccess(Messages.MESSAGE_SUCCESS, inventorySelected ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
             setVisible(false);
-            // setInventory(undefined)
          });
 
       }

@@ -13,6 +13,7 @@ import { AuthUtil } from "@/app/utils/authUtil";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { inventoryContext } from "@/app/pages/main/inventory/inventoryContext";
+import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 
 
 export default function RegisterInventory({ inventorySelected, visible, setVisible }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
@@ -78,6 +79,9 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
             category,
             company: { id: AuthUtil.getCredentials().company }
          }).then(res => {
+            if(!ResErrorHandler.isValidRes(res)){
+               return;
+            }
             ToastService.showSuccess(Messages.MESSAGE_SUCCESS, inventory ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
             setVisible(false);
             setInventory(undefined);

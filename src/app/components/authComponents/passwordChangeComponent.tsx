@@ -13,6 +13,7 @@ import PasswordChange from "@/app/models/passwordChange";
 import FormGenerator from "../CRUDComponents/formGenerator";
 import { ToastService } from "@/app/services/toastService";
 import { Messages } from "@/app/constants/messageConstant";
+import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 
 
 export default function PasswordChangeComponent() {
@@ -109,6 +110,9 @@ export default function PasswordChangeComponent() {
     useEffect(() => {
         if (submited) {
             authService.enableUser(passwordToChange).then(res => {
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                }
                 router.push("/pages/auth/login")
             })
             setSubmited(false);

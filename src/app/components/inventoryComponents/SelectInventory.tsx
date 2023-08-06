@@ -53,8 +53,6 @@ export default function SelectInventory({ inventorySelected, visible, setVisible
     });
 
     useEffect(() => {
-
-
         inventoryService.getAllByFilter(true, paginator, inventoryFilter).then(res => {
             setInventorys(res);
 
