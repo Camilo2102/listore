@@ -16,6 +16,7 @@ import { inventoryContext } from "../inventoryContext";
 import RegisterProduct from "@/app/components/productComponents/RegisterProduct";
 import { productContext } from "./productContext";
 import NavBar from "@/app/components/navBar";
+import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 
 
 export default function ProductPage() {
@@ -88,9 +89,15 @@ export default function ProductPage() {
 
         if (!visible && !paginator.loaded) {
             productService.getAllByFilter(true, paginator, productFilter).then(res => {
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                 }
                 setProducts(res);
             })
             productService.countAllByFilter(true, productFilter).then(res => {
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                 }
                 setPaginator({ totalRecords: res, loaded: true })
             })
         }

@@ -10,6 +10,7 @@ import InventoryModel from "@/app/models/inventory";
 import { DataTableSelectEvent } from "primereact/datatable";
 import { AuthUtil } from "@/app/utils/authUtil";
 import Paginator from "@/app/interfaces/paginator";
+import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 
 
 export default function SelectInventory({ inventorySelected, visible, setVisible }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
@@ -54,6 +55,9 @@ export default function SelectInventory({ inventorySelected, visible, setVisible
 
     useEffect(() => {
         inventoryService.getAllByFilter(true, paginator, inventoryFilter).then(res => {
+            if(!ResErrorHandler.isValidRes(res)){
+                return;
+             }
             setInventorys(res);
 
         })

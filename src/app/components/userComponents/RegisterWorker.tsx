@@ -149,6 +149,9 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
     const updateWorker = () => {
         userService.update(true, workerToRegister).then(
             res => {
+                if(!ResErrorHandler.isValidRes(res)){
+                    return;
+                 }
                 ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_UPDATE_SUCCESS);
                 router.push("/pages/main/user")
             }

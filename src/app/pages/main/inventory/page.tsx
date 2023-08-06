@@ -18,6 +18,7 @@ import { ToastService } from "@/app/services/toastService";
 import { DataTableSelectEvent } from "primereact/datatable";
 import RegisterInventory from "@/app/components/inventoryComponents/RegisterInventory";
 import NavBar from "@/app/components/navBar";
+import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 
 
 
@@ -91,9 +92,10 @@ export default function Inventory({ props }: { props: any }) {
 
     const [visible, setVisible] = useState<boolean>(false);
     useEffect(() => {
-
-
         inventoryService.getAllByFilter(true, paginator, inventoryFilter).then(res => {
+            if(!ResErrorHandler.isValidRes(res)){
+                return;
+             }
             setInventorys(res);
           
         })
