@@ -9,7 +9,7 @@ export default function MainLayout({children} : {children: React.ReactNode}) {
 
     useEffect(() => {
         if(!AuthUtil.isAuthorized()) {
-            router.push('/pages/auth/login');
+            //*router.push('/pages/auth/login');
         }
 
     }, [AuthUtil.AUTHORIZED])
