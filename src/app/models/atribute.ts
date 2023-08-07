@@ -5,5 +5,4 @@ export default class AtributesModel extends General{
     name?: string;
     value?: string;
     product?: ProductModel;
-
 }

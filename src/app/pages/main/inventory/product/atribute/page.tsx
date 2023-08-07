@@ -95,7 +95,7 @@ export default function AtributePage(){
         <>
           
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-           <div className="grid" style={{ width: '90%' }}>
+            <div className="grid" style={{ width: '90%' }}>
             <div className="col-12 flex justify-content-start">
             
             <Button onClick={handleNewAtribute} label="Nuevo" icon="pi pi-user-plus"></Button>
