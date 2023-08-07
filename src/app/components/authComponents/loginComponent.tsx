@@ -72,6 +72,7 @@ export default function LoginComponent() {
                     return;
                  }
                 AuthUtil.setCredentials(res.token, res.company);
+                AuthUtil.setAuthorized(true);
                 router.push("/pages/main/user")
             })
         }
