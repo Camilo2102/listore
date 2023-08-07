@@ -18,7 +18,6 @@ import TableGeneral from "@/app/components/tableGeneral";
 import popUp from '../../../../components/popUp';
 import PopUp from "../../../../components/popUp";
 import RegisterSupplier from "@/app/components/supplierComponents/RegisterSupplier";
-import NavBar from "@/app/components/navBar";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 
 export default function Supplier(){
@@ -109,7 +108,7 @@ export default function Supplier(){
    
     return(
         <>
-         <NavBar />
+     
         <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
            <div className="grid" style={{ width: '90%' }}>
             <div className="col-12 flex justify-content-start">

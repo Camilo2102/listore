@@ -17,7 +17,6 @@ import { Messages } from "@/app/constants/messageConstant";
 import { ToastService } from "@/app/services/toastService";
 import { DataTableSelectEvent } from "primereact/datatable";
 import RegisterInventory from "@/app/components/inventoryComponents/RegisterInventory";
-import NavBar from "@/app/components/navBar";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 
 
@@ -114,7 +113,7 @@ export default function Inventory({ props }: { props: any }) {
 
     return (
         <>
-        <NavBar />
+     
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
                 
                 <div className="grid" style={{ width: '90%' }}>
