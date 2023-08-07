@@ -22,7 +22,6 @@
     flex-direction: column;
     align-items: center;
     padding-top: 16px;
-    filter: grayscale(100%);
     flex-grow: 1;
 
 }
