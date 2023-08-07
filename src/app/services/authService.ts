@@ -82,5 +82,13 @@ export class AuthService extends CRUDFactory<CredentialModel>{
     public sendRecoveryEmail(email: string){
         return HttpFactory.httpGet(this.BASE_URL+ "/recoverPassword?mail=" + email, false);
     }
+
+    /**
+     * Envia una peticion para validar que el token fue enviado correctamente
+     * @returns la peticion para validar el token
+     */
+    public validateToken(){
+        return HttpFactory.httpGet(this.BASE_URL+ "/validateToken", true);
+    }
     
 }
