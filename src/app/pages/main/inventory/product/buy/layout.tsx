@@ -1,6 +1,4 @@
 "use client"
-
-import React, { useState } from "react";
 import { handleContext } from "@/app/hooks/handleContextHook";
 import { buyContext } from "./buyContext";
 

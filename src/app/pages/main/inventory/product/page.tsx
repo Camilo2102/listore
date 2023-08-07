@@ -69,6 +69,14 @@ export default function ProductPage() {
                 router.push("/pages/main/inventory/product/buy")
 
             }
+        },
+        {
+            field: 'sale', header: "Vender", action: (t: any) => {
+                
+                setProduct(t);
+                router.push("/pages/main/inventory/product/sale")
+
+            }
         }
     ];
 

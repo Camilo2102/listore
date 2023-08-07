@@ -43,6 +43,14 @@ export default function TableGeneral({ values, paginator, setPaginator, columns,
       )
     }
 
+    if(field === "sale") {
+      return(
+        <>
+          <Button icon="pi pi-dollar" rounded outlined onClick={() => {action && action(e)}} />
+        </>
+      )
+    }
+
     return (
       <div>
         {e[field]}

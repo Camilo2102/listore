@@ -9,21 +9,21 @@ import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableGeneral";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { userContext } from "../../../user/userContext";
-import { BuyService } from "@/app/services/buyService";
-import BuyModel from "@/app/models/buy";
-import { buyContext } from "./buyContext";
 import BuyAtribute from "@/app/components/buyComponents/registerBuy";
-import RegisterBuy from "@/app/components/buyComponents/registerBuy";
+import { SaleService } from "@/app/services/saleService";
+import SaleModel from "@/app/models/sale";
+import { saleContext } from "./saleContext";
+import RegisterSale from "@/app/components/saleComponents/registerSale";
 
-export default function BuyPage(){
+export default function SalePage(){
     const {product, setProduct} = useContext(productContext);
     const {user, setUser} = useContext(userContext);
-    const [buys, setBuys] = useState<any[]>([]);
-    const buyService = new BuyService();
+    const [sales, setSales] = useState<any[]>([]);
+    const saleService = new SaleService();
     const [visible, setVisible] = useState<boolean>(false);
-    const [buyFilter, setBuyFilter] = useState<BuyModel>({
-        buyDate: new Date(),
-        price: 0,
+    const [saleFilter, setSaleFilter] = useState<SaleModel>({
+        saleDate: new Date(),
+        unitaryValue: 0,
         amount: 0,
         product:{
             id: product?.id,
@@ -32,11 +32,11 @@ export default function BuyPage(){
             id: user?.id,
         } 
     });
-    const {buy, setBuy} = useContext(buyContext);
+    const {sale, setSale} = useContext(saleContext);
     
     const columns: ColumnMeta[]=[
-        {field: 'buyDate', header: 'Fecha de compra'},
-        {field: 'price', header: 'Precio'},
+        {field: 'saleDate', header: 'Fecha de venta'},
+        {field: 'unitaryValue', header: 'Valor unitario'},
         {field: 'amount', header: 'Cantidad'},
     ];
 
@@ -51,13 +51,13 @@ export default function BuyPage(){
 
     useEffect(() =>{
         if(!visible && !paginator.loaded){
-            buyService.getAllByFilter(true, paginator, buyFilter).then(res =>{
+            saleService.getAllByFilter(true, paginator, saleFilter).then(res =>{
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }
-                 setBuys(res);
+                 setSales(res);
             })
-            buyService.countAllByFilter(true, buyFilter).then(res=>{
+            saleService.countAllByFilter(true, saleFilter).then(res=>{
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }
@@ -66,9 +66,9 @@ export default function BuyPage(){
         }
     }, [visible, paginator])
 
-    const handleNewBuy = () =>{
+    const handleNewSale = () =>{
         setVisible(true);
-        setBuy(undefined)
+        setSale(undefined)
     }
 
     return(
@@ -78,13 +78,13 @@ export default function BuyPage(){
             <div className="grid" style={{ width: '90%' }}>
             <div className="col-12 flex justify-content-start">
             
-            <Button onClick={handleNewBuy} label="Nuevo" icon="pi pi-user-plus"></Button>
+            <Button onClick={handleNewSale} label="Nuevo" icon="pi pi-user-plus"></Button>
             </div>
             <div className="col-12 flex justify-content-center">
-                    <TableGeneral columns={columns} values={buys} paginator={paginator} setPaginator={setPaginator} ></TableGeneral>
+                    <TableGeneral columns={columns} values={sales} paginator={paginator} setPaginator={setPaginator} ></TableGeneral>
                 </div>
            </div>
-           {visible && <RegisterBuy visible={visible} setVisible={setVisible}/>}
+           {visible && <RegisterSale visible={visible} setVisible={setVisible}/>}
             </div>
        
         </>
