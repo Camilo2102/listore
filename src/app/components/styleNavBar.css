@@ -10,7 +10,7 @@
     flex-direction: column;
     justify-content: space-between;
     transition: all 0.3s ease-in-out;
-    z-index: 9999 !important;
+    z-index: 2;
 }
 
 .navbar-container:not(.visible) {
