@@ -1,12 +1,14 @@
+import { StorageService } from "../services/storageService";
+
 export class AuthUtil {
-    public static AUTHORIZED = false;
+    public static AUTHORIZED: boolean = StorageService.getValue('authorized') === 'true';
     /**
      * Agrega al local storage el jwt
      * @param token token generado por el back
      */
     public static setCredentials(token: string, company: string) : void {
-        localStorage.setItem("token", token);
-        localStorage.setItem("company", company);
+        StorageService.saveValue("token", token);
+        StorageService.saveValue("company", company);
     }
 
     /**
@@ -15,8 +17,8 @@ export class AuthUtil {
      */
     public static getCredentials(): any | null{
         const credentials = {
-            token: localStorage.getItem('token'),
-            company: localStorage.getItem('company'),
+            token: StorageService.getValue('token'),
+            company: StorageService.getValue('company'),
         }
         return credentials;
     }
@@ -34,6 +36,7 @@ export class AuthUtil {
      * @param state es el estado que se le va a asignar
      */
     public static setAuthorized(state: boolean){
+        StorageService.saveValue('authorized', state + '');
         this.AUTHORIZED = state;
     }
 }
