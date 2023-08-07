@@ -10,7 +10,6 @@ import { Messages } from "@/app/constants/messageConstant";
 import { ToastService } from "@/app/services/toastService";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
-import NavBar from "@/app/components/navBar";
 import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableGeneral";
 import RegisterAtribute from "@/app/components/atributesComponentes/RegisterAtribute";
@@ -94,7 +93,7 @@ export default function AtributePage(){
 
     return(
         <>
-            <NavBar/>
+          
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
             <div className="grid" style={{ width: '90%' }}>
             <div className="col-12 flex justify-content-start">

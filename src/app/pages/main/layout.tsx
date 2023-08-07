@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { AuthUtil } from "@/app/utils/authUtil";
 import { AuthService } from "@/app/services/authService";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+import NavBar from "@/app/components/navBar";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
     const router = useRouter();
@@ -38,6 +39,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     }, [AuthUtil.AUTHORIZED])
     return (
         <>
+            <NavBar />
             {children}
         </>
     )

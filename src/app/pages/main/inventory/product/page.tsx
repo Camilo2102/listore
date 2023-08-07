@@ -15,7 +15,6 @@ import TableGeneral from "@/app/components/tableGeneral";
 import { inventoryContext } from "../inventoryContext";
 import RegisterProduct from "@/app/components/productComponents/RegisterProduct";
 import { productContext } from "./productContext";
-import NavBar from "@/app/components/navBar";
 import { DataTableSelectEvent } from "primereact/datatable";
 import { useRouter } from "next/navigation";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
@@ -132,7 +131,7 @@ export default function ProductPage() {
 
     return (
         <>
-            <NavBar />
+        
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
                 <div className="grid" style={{ width: '90%' }}>
                     <div className="col-12 flex justify-content-start">
