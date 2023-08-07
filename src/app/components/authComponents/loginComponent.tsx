@@ -71,7 +71,7 @@ export default function LoginComponent() {
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }
-                AuthUtil.setCredentials(res.token, res.company);
+                AuthUtil.setCredentials(res.token, res.company, res.user);
                 AuthUtil.setAuthorized(true);
                 router.push("/pages/main/user")
             })

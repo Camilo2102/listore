@@ -35,6 +35,14 @@ export default function TableGeneral({ values, paginator, setPaginator, columns,
       )
     }
 
+    if(field === "buy") {
+      return(
+        <>
+          <Button icon="pi pi-shopping-bag" rounded outlined onClick={() => {action && action(e)}} />
+        </>
+      )
+    }
+
     return (
       <div>
         {e[field]}
