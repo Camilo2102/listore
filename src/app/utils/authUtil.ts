@@ -6,9 +6,10 @@ export class AuthUtil {
      * Agrega al local storage el jwt
      * @param token token generado por el back
      */
-    public static setCredentials(token: string, company: string) : void {
+    public static setCredentials(token: string, company: string, user: string) : void {
         StorageService.saveValue("token", token);
         StorageService.saveValue("company", company);
+        StorageService.saveValue("user", user);
     }
 
     /**
@@ -19,6 +20,7 @@ export class AuthUtil {
         const credentials = {
             token: StorageService.getValue('token'),
             company: StorageService.getValue('company'),
+            user: StorageService.getValue('user'),
         }
         return credentials;
     }

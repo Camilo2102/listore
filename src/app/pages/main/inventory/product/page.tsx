@@ -66,6 +66,22 @@ export default function ProductPage() {
                 ConfirmationService.showConfirmDelete(Messages.MESSAGE_BODY_DELETE + t, handleDelete(t));
 
             }
+        },
+        {
+            field: 'buy', header: "Comprar", action: (t: any) => {
+                
+                setProduct(t);
+                router.push("/pages/main/inventory/product/buy")
+
+            }
+        },
+        {
+            field: 'sale', header: "Vender", action: (t: any) => {
+                
+                setProduct(t);
+                router.push("/pages/main/inventory/product/sale")
+
+            }
         }
     ];
 
