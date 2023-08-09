@@ -84,25 +84,39 @@ export default function NavBar() {
     };
 
 
+    // navegacion
+    const goBack = () => {
+        window.history.back();
+    };
+
+    const goForward = () => {
+        window.history.forward();
+    };
+
+
+
 
     return (
         <div>
 
+            <div className='navigation'>
+                <Button className='back' icon='pi pi-arrow-left' onClick={goBack} />
+                <Button className='forward' icon='pi pi-arrow-right' onClick={goForward} />
+            </div>
+
             <div className={`navbar-container ${navBarVisible ? 'visible' : ''}`}>
                 <div className="navbar-icons-container">
 
-                    {screenWidth <= 767 && (
-                        <Button
-                            className='navbar-icon'
-                           
-                        />
-                    )}
+                    
 
                     {items.map((item, index) => (
                         <Button key={index} icon={item.icon}
                             title={item.label}
                             className="navbar-icon"
-                            onClick={item.command} />
+                            onClick={item.command}
+                            label={screenWidth <= 767 ? item.label : null}
+                        />
+
                     ))}
                 </div>
                 <div className="navbar-power-off-container">
@@ -110,16 +124,19 @@ export default function NavBar() {
                         icon="pi pi-power-off"
                         className="navbar-icon2"
                         title='Cerrar sesión'
+                        label={screenWidth <= 767 ? 'Salir' : null}
                         onClick={exit}
                     />
                 </div>
                 {visibleSelectInventory && <SelectInventory visible={visibleSelectInventory} setVisible={setVisibleSelectInventory} />}
             </div>
 
+
+
             {screenWidth <= 767 && (
 
                 <Button
-                    icon={`pi ${navBarVisible ? 'pi-chevron-left' : 'pi-chevron-right'}`}
+                    icon='pi pi-bars'
                     className={`navbar-toggle-btn ${navBarVisible ? 'visible' : ''}`}
                     onClick={toggleNavBarVisibility}
                 />

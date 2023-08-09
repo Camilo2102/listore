@@ -2,12 +2,10 @@
 
 import { useContext, useEffect, useState } from "react";
 import ColumnMeta from "@/app/interfaces/columnMeta";
-import Link from "next/link";
 import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableGeneral";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
-import { inventoryContext } from "./inventoryContext";
 import { useRouter } from "next/navigation";
 import { InventoryService } from "@/app/services/inventoryService";
 import InventoryModel from "@/app/models/inventory";
@@ -18,6 +16,7 @@ import { ToastService } from "@/app/services/toastService";
 import { DataTableSelectEvent } from "primereact/datatable";
 import RegisterInventory from "@/app/components/inventoryComponents/RegisterInventory";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+import { mainContext } from "../mainContext";
 
 
 
@@ -35,8 +34,7 @@ export default function Inventory({ props }: { props: any }) {
         name: "",
     });
 
-    const { inventory, setInventory } = useContext(inventoryContext);
-
+    const { mainInventory, setMainInventory } = useContext(mainContext);
 
     const columns: ColumnMeta[] = [
         { field: 'name', header: 'Nombre' },
@@ -45,13 +43,13 @@ export default function Inventory({ props }: { props: any }) {
         {
             field: 'supplier', header: 'Proveedores', action: (t: any) => {
 
-                setInventory(t)
+                setMainInventory(t)
                 router.push("/pages/main/inventory/supplier")
             }
         },
         {
             field: 'CRUDupdate', header: 'Actualizar', action: (t: any) => {
-                setInventory(t)
+                setMainInventory(t)
                 setVisible(true)
             }
         },
@@ -66,21 +64,21 @@ export default function Inventory({ props }: { props: any }) {
 
     const handleDelete = (t: any) => {
         const deleteFn = () => {
+           
             inventoryService.delete(true, t.id).then((res) => {
-                if(!ResErrorHandler.isValidRes(res)){
+                if (!ResErrorHandler.isValidRes(res)) {
                     return;
-                 }
+                }
                 ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
-                setInventory(undefined);
+                setMainInventory(undefined);
             });
         }
         return deleteFn;
     }
 
-    // select supplier
+    // select product
     const handleSelection = (inventory: DataTableSelectEvent) => {
-        setInventory(inventory.data);
-        console.log(inventory.data)
+        setMainInventory(inventory.data);
         router.push("/pages/main/inventory/product")
     };
 
@@ -98,24 +96,24 @@ export default function Inventory({ props }: { props: any }) {
 
 
         inventoryService.getAllByFilter(true, paginator, inventoryFilter).then(res => {
-            if(!ResErrorHandler.isValidRes(res)){
+            if (!ResErrorHandler.isValidRes(res)) {
                 return;
-             }
+            }
             setInventorys(res);
-          
+
         })
     }, [visible, paginator])
 
     const handleNewInventory = () => {
         setVisible(true);
-        setInventory(undefined);
+        setMainInventory(undefined);
     }
 
     return (
         <>
-     
+
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-                
+
                 <div className="grid" style={{ width: '90%' }}>
                     <div className="col-12 flex justify-content-start">
 

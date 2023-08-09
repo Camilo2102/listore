@@ -11,6 +11,7 @@ import { DataTableSelectEvent } from "primereact/datatable";
 import { AuthUtil } from "@/app/utils/authUtil";
 import Paginator from "@/app/interfaces/paginator";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+import { mainContext } from "@/app/pages/main/mainContext";
 
 
 export default function SelectInventory({ inventorySelected, visible, setVisible }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
@@ -28,7 +29,7 @@ export default function SelectInventory({ inventorySelected, visible, setVisible
         name: "",
     });
 
-    const { inventory, setInventory } = useContext(inventoryContext);
+    const { mainInventory, setMainInventory } = useContext(mainContext);
 
     const columns: ColumnMeta[] = [
         { field: 'name', header: 'Nombre' },
@@ -40,7 +41,9 @@ export default function SelectInventory({ inventorySelected, visible, setVisible
 
 
     const handleSelection = (inventory: DataTableSelectEvent) => {
-        setInventory(inventory.data);
+        setMainInventory(inventory.data);
+        setVisible(false);
+        
         router.push("/pages/main/inventory/product")
     };
 
@@ -54,14 +57,11 @@ export default function SelectInventory({ inventorySelected, visible, setVisible
     });
 
     useEffect(() => {
-
-
         inventoryService.getAllByFilter(true, paginator, inventoryFilter).then(res => {
             if(!ResErrorHandler.isValidRes(res)){
                 return;
              }
             setInventorys(res);
-
         })
     }, [visible, paginator])
 
