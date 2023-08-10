@@ -12,5 +12,4 @@ export default function InventoryLayout({ children }: { children: React.ReactNod
             {children}
         </inventoryContext.Provider>
     )
-
 }
