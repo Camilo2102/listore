@@ -7,6 +7,7 @@ import DropDownForm from "../components/formComponents/dropDownForm";
 import PasswordForm from "../components/formComponents/passwordForm";
 import RadioButtonForm from "../components/formComponents/radioButtonForm";
 import NumberForm from "../components/formComponents/numberForm";
+import InputHelper from "../components/formComponents/inputHelper";
 
 /**
  * Se encarga de convertir el formControl en un field ya listo para ser usado
@@ -15,7 +16,7 @@ import NumberForm from "../components/formComponents/numberForm";
  * @param setValue Asigna el valor
  * @returns devuelve el elemento listo para ser usado
  */
-export default function inputTypeSelector(formControl: FormControl, value: any, setValue: (partialT: Partial<any>) => void) {
+export default function inputTypeSelector(formControl: FormControl, value: any, setValue: (partialT: Partial<any>, dependecy?: string) => void) {
     const type = formControl.type ? formControl.type : '';
 
     const types = {
@@ -26,6 +27,7 @@ export default function inputTypeSelector(formControl: FormControl, value: any, 
         [FormTypes.PASSWORD]: <PasswordForm formControl={formControl} value={value} onValueChange={(data) => { setValue(data) }}></PasswordForm>,
         [FormTypes.RADIO]: <RadioButtonForm formControl={formControl} value={value} onValueChange={(data) => { setValue(data) }}></RadioButtonForm>,
         [FormTypes.NUMBER]:<NumberForm formControl={formControl} value={value} onValueChange={(data) => { setValue(data) }}></NumberForm>,
+        [FormTypes.INPUTHELPER]: <InputHelper formControl={formControl} value={value} onValueChange={(data, dependency) => { setValue(data, dependency) }}></InputHelper>,
         '': <h3>Sin implementar</h3> 
     }
 

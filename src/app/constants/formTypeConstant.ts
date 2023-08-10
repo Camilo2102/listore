@@ -6,4 +6,5 @@ export class FormTypes {
     public static readonly DATE: string = "date";
     public static readonly RADIO: string = "radio";
     public static readonly NUMBER: string = "number";
+    public static readonly INPUTHELPER: string = "input-helper";
 }

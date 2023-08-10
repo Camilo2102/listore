@@ -43,6 +43,14 @@ export default class Form {
         return this.formControls;
     }
 
+    public enableField(field: string): void{
+        this.formControls.forEach(control => {
+            if(control.field === field){
+                control.disabled = false;
+            }
+        })
+    }
+
     /**
      * se encarga de tomar los valores que tenga dentro del useState para ponerlos como valores en los fromcontrols, es decir poner el valor en el fromcontroll
      * @param values los valores a parchar dentro de los formcontrols

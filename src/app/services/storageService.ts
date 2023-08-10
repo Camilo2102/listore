@@ -1,4 +1,4 @@
-export class StorageService{
+export class StorageService<T>{
 
     public static saveValue(key: string, value: string) {
         localStorage.setItem(key, value);
