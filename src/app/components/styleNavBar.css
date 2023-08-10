@@ -1,4 +1,5 @@
-.navbar-container,.navbar-toggle-btn {
+.navbar-container,
+.navbar-toggle-btn {
     position: fixed;
     left: 0;
     top: 0;
@@ -28,11 +29,13 @@
 
 .navbar-icon,
 .navbar-toggle-btn,
-.navbar-icon2 {
+.navbar-icon2,
+.back,
+.forward {
     color: #333333;
     width: 80%;
     height: 40px;
-    text-align: center;
+    text-align: left;
     cursor: pointer;
     background: transparent;
     border: none;
@@ -40,10 +43,10 @@
 
 .navbar-icon {
     margin-bottom: 20%;
-    /* font-size: 3rem; */
+  
 }
 
-.navbar-toggle-btn{
+.navbar-toggle-btn {
     margin-left: 11px;
     margin-top: 16px;
 }
@@ -55,5 +58,39 @@
     padding-bottom: 16px;
 }
 
+.back,
+.forward {
+   
+    position: fixed;
+    box-shadow: 4px 0px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    margin-top: 16px;
+}
+
+.back {
+    margin-left: 81px;
+}
+
+.forward {
+    margin-left: 141px;
+}
 
 
+
+@media screen and (max-width: 767px) {
+    .navbar-container {
+        width: 195px;
+    }
+
+    .navbar-icon {
+        margin-bottom: 5%;
+    }
+
+    .navbar-icon:first-child {
+    
+        margin-top: 50px;
+      }
+      
+      
+
+}

@@ -1,6 +1,6 @@
 'use client';
 
-import  ProductModel  from "@/app/models/product";
+import ProductModel from "@/app/models/product";
 import { ProductService } from "@/app/services/productService";
 import { useContext, useEffect, useState } from "react";
 import ColumnMeta from "@/app/interfaces/columnMeta";
@@ -9,7 +9,6 @@ import { ToastService } from "@/app/services/toastService";
 import { ConfirmationService } from "@/app/services/confirmationService";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
-import Link from "next/link";
 import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableGeneral";
 import { inventoryContext } from "../inventoryContext";
@@ -18,14 +17,20 @@ import { productContext } from "./productContext";
 import { DataTableSelectEvent } from "primereact/datatable";
 import { useRouter } from "next/navigation";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+import { mainContext } from "../../mainContext";
 
 
 export default function ProductPage() {
     const router = useRouter();
     const { inventory, setInventory } = useContext(inventoryContext);
+    const { mainInventory, setMainInventory } = useContext(mainContext);
     const productService = new ProductService();
     const [products, setProducts] = useState<any[]>([]);
 
+    
+    const [productCreated, setProductCreated] = useState(false);
+
+    
     const [productFilter, setProductFilter] = useState<ProductModel>({
         name: "",
         unitaryValue: 0,
@@ -84,9 +89,9 @@ export default function ProductPage() {
 
         const deleteFn = () => {
             productService.delete(true, t.id).then((res) => {
-                if(!ResErrorHandler.isValidRes(res)){
+                if (!ResErrorHandler.isValidRes(res)) {
                     return;
-                 }
+                }
                 ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
                 setProduct(undefined);
                 setVisible(false)
@@ -106,40 +111,62 @@ export default function ProductPage() {
     });
 
     const [visible, setVisible] = useState<boolean>(false);
+
+    const getData = () => {
+        productService.getAllByFilter(true, paginator, productFilter).then(res => {
+            if (!ResErrorHandler.isValidRes(res)) {
+                return;
+            }
+            setProducts(res);
+        })
+        productService.countAllByFilter(true, productFilter).then(res => {
+            if (!ResErrorHandler.isValidRes(res)) {
+                return;
+            }
+            setPaginator({ totalRecords: res, loaded: true })
+        })
+    }
+
     useEffect(() => {
-
+       
         if (!visible && !paginator.loaded) {
-            productService.getAllByFilter(true, paginator, productFilter).then(res => {
-                if(!ResErrorHandler.isValidRes(res)){
-                    return;
-                 }
-                setProducts(res);
-            })
-            productService.countAllByFilter(true, productFilter).then(res => {
-                if(!ResErrorHandler.isValidRes(res)){
-                    return;
-                 }
-                setPaginator({ totalRecords: res, loaded: true })
-            })
+            getData();
         }
+        if (productCreated) {
+            getData(); // Recargar datos cuando productCreated cambie a true
+            setProductCreated(false); // Restaurar el estado a false
+        }
+    }, [visible, paginator,productCreated])
+
+    useEffect(() => {
+    
+        if(mainInventory !== undefined){
+            setProductFilter({...productFilter, inventory: {id: mainInventory.id}});
+            setPaginator({ loaded: false })
+        }
+    },[mainInventory]);
 
 
-    }, [visible, paginator])
 
     const handleNewProduct = () => {
         setVisible(true)
         setProduct(undefined)
     }
 
-    const handleSelection = (product: DataTableSelectEvent) =>{
+    const handleSelection = (product: DataTableSelectEvent) => {
         setProduct(product.data);
         router.push("/pages/main/inventory/product/atribute")
     }
 
 
+    const handleProductCreated = () => {
+        setProductCreated(true); // Cambia el estado cuando se crea un producto
+    };
+
+
     return (
         <>
-        
+
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
                 <div className="grid" style={{ width: '90%' }}>
                     <div className="col-12 flex justify-content-start">
@@ -149,7 +176,7 @@ export default function ProductPage() {
                         <TableGeneral columns={columns} values={products} paginator={paginator} setPaginator={setPaginator} onRowSelect={handleSelection}></TableGeneral>
                     </div>
                 </div>
-                {visible && <RegisterProduct visible={visible} setVisible={setVisible} />}
+                {visible && <RegisterProduct visible={visible} setVisible={setVisible} onProductCreated={handleProductCreated} />}
 
             </div>
         </>
