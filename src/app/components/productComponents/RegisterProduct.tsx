@@ -12,12 +12,12 @@ import { Messages } from "@/app/constants/messageConstant";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ProductService } from "@/app/services/productService";
-import { inventoryContext } from "@/app/pages/main/inventory/inventoryContext";
 import { productContext } from "@/app/pages/main/inventory/product/productContext";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+import { mainContext } from "@/app/pages/main/mainContext";
 
 
-export default function RegisterInventory({ inventorySelected, visible, setVisible }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
+export default function RegisterProduct({ inventorySelected, visible, setVisible, onProductCreated  }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void , onProductCreated: () => void}){
    const productService = new ProductService();
    const router = useRouter();
 
@@ -83,7 +83,7 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
 
    const [productToRegister, form, setProductToRegister, validateFormControls] = handleForm(controls);
    const [submited, setSubmited] = useState<boolean>(false);
-   const { inventory, setInventory } = useContext(inventoryContext);
+   const { mainInventory, setMainInventory } = useContext(mainContext);
    const { product, setProduct } = useContext(productContext);
   
 
@@ -96,7 +96,7 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
 
       if (valid) {
          productToRegister.inventory = {
-            id: inventory.id
+            id: mainInventory.id
          };
 
          productService.create(true, productToRegister).then(res => {
@@ -105,7 +105,8 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
             }
             ToastService.showSuccess(Messages.MESSAGE_SUCCESS, inventorySelected ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
             setVisible(false);
-            // setInventory(undefined)
+            setProduct(undefined);
+            onProductCreated(); // Llamar a la función de callback al crear el producto
          });
 
       }

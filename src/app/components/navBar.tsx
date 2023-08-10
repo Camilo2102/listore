@@ -1,77 +1,149 @@
-import React, { useState } from 'react';
-import { Sidebar } from 'primereact/sidebar';
+import React, { useEffect, useState } from 'react';
 import { Button } from 'primereact/button';
-import { Menu } from 'primereact/menu';
 import { useRouter } from 'next/navigation';
 import SelectInventory from './inventoryComponents/SelectInventory';
 
+import './styleNavBar.css';
 
 export default function NavBar() {
     const router = useRouter();
-    const [visible, setVisible] = useState<boolean>(false);
     const [visibleSelectInventory, setVisibleSelectInventory] = useState<boolean>(false);
-   
+    const [navBarVisible, setNavBarVisible] = useState(true);
+    const [screenWidth, setScreenWidth] = useState<number>(0);
+
+    useEffect(() => {
+        // Detectar el ancho de la pantalla y actualizar el estado
+        const handleResize = () => {
+            setScreenWidth(window.innerWidth);
+            if (window.innerWidth <= 767) {
+                setNavBarVisible(false);
+            } else {
+                setNavBarVisible(true);
+            }
+        };
+        handleResize(); // Llamarlo al principio para establecer el estado inicial
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     const items = [
         {
-            label: 'Usuarios',
             icon: 'pi pi-user',
+            label: 'Usuarios',
             command: () => {
-                router.push("/pages/main/user")
+                router.push("/pages/main/user");
             }
         },
         {
-            label: 'Inventarios',
             icon: 'pi pi-th-large',
+            label: 'Inventarios',
             command: () => {
-               router.push("/pages/main/inventory")
+                router.push("/pages/main/inventory");
             }
         },
         {
-            label: 'Productos',
             icon: 'pi pi-inbox',
+            label: 'Productos',
             command: () => {
-                 setVisibleSelectInventory(true);
-               
+                setVisibleSelectInventory(true);
             }
         },
         {
-            label: 'Proveedores',
             icon: 'pi pi-users',
+            label: 'Proveedores',
             command: () => {
-                router.push("/pages/main/inventory/supplier")
+                router.push("/pages/main/inventory/supplier");
             }
-            
         },
         {
-            separator: true
-        },
-        {
-            label: 'Salir',
-            icon: 'pi pi-power-off',
+            icon: 'pi pi-shopping-cart',
+            label: 'Compras',
             command: () => {
-                router.push("/pages/auth/login")
+                //Compas
+            }
+        },
+        {
+            icon: 'pi pi-dollar',
+            label: 'Ventas',
+            command: () => {
+                //ventas
             }
         }
     ];
 
 
-    
-    
+    const exit = () => {
+        router.push("/pages/auth/login");
+    };
 
-   
+
+    const toggleNavBarVisibility = () => {
+        setNavBarVisible(prevVisible => !prevVisible);
+    };
+
+
+    // navegacion
+    const goBack = () => {
+        window.history.back();
+    };
+
+    const goForward = () => {
+        window.history.forward();
+    };
+
+
+
 
     return (
-        <div className="card">
-            <Sidebar visible={visible} onHide={() => setVisible(false)}>
-                <h2>Menu </h2>
-                
-                <Menu model={items} style={{ width: '100%' }} />
-            </Sidebar>
-            <div className="flex justify-content-start pt-3 pl-3">
-                <Button icon="pi pi-th-large" onClick={() => setVisible(true)} />
+        <div>
+
+            <div className='navigation'>
+                <Button className='back' icon='pi pi-arrow-left' onClick={goBack} />
+                <Button className='forward' icon='pi pi-arrow-right' onClick={goForward} />
             </div>
 
-            {visibleSelectInventory && <SelectInventory visible={visibleSelectInventory} setVisible={setVisibleSelectInventory} />}
+            <div className={`navbar-container ${navBarVisible ? 'visible' : ''}`}>
+                <div className="navbar-icons-container">
+
+                    
+
+                    {items.map((item, index) => (
+                        <Button key={index} icon={item.icon}
+                            title={item.label}
+                            className="navbar-icon"
+                            onClick={item.command}
+                            label={screenWidth <= 767 ? item.label : null}
+                        />
+
+                    ))}
+                </div>
+                <div className="navbar-power-off-container">
+                    <Button
+                        icon="pi pi-power-off"
+                        className="navbar-icon2"
+                        title='Cerrar sesión'
+                        label={screenWidth <= 767 ? 'Salir' : null}
+                        onClick={exit}
+                    />
+                </div>
+                {visibleSelectInventory && <SelectInventory visible={visibleSelectInventory} setVisible={setVisibleSelectInventory} />}
+            </div>
+
+
+
+            {screenWidth <= 767 && (
+
+                <Button
+                    icon='pi pi-bars'
+                    className={`navbar-toggle-btn ${navBarVisible ? 'visible' : ''}`}
+                    onClick={toggleNavBarVisibility}
+                />
+            )}
+
+
+            {navBarVisible && <SelectInventory visible={visibleSelectInventory} setVisible={setVisibleSelectInventory} />}
         </div>
     );
 }

@@ -17,7 +17,7 @@ import { RolesMap } from "@/app/constants/roleValues";
 import { AuthUtil } from "@/app/utils/authUtil";
 import DeleteWorker from "@/app/components/userComponents/DeleteWorker";
 import Paginator from "@/app/interfaces/paginator";
-import NavBar from "@/app/components/navBar";
+
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 
 
@@ -83,7 +83,7 @@ export default function UserList({ props }: { props: any }) {
 
     return (
         <>
-            <NavBar />
+           
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
                 <div className="grid" style={{ width: '90%' }}>
                     <div className="col-12 flex justify-content-start">

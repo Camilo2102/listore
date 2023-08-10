@@ -14,6 +14,7 @@ import { FormEvent, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { inventoryContext } from "@/app/pages/main/inventory/inventoryContext";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+import { mainContext } from "@/app/pages/main/mainContext";
 
 
 export default function RegisterInventory({ inventorySelected, visible, setVisible }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
@@ -61,7 +62,8 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
    const [inventoryToRegister, form, setInventoryToRegister, validateFormControls] = handleForm(controls);
 
    const [submited, setSubmited] = useState<boolean>(false);
-   const { inventory, setInventory } = useContext(inventoryContext);
+   //const { inventory, setInventory } = useContext(inventoryContext);
+   const { mainInventory, setMainInventory } = useContext(mainContext);
    const handleInventory = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
@@ -73,7 +75,7 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
          const { name, description, category } = inventoryToRegister;
 
          inventoryService.create(true, {
-            id: inventory?.id,
+            id: mainInventory?.id,
             name,
             description,
             category,
@@ -82,9 +84,9 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
             if(!ResErrorHandler.isValidRes(res)){
                return;
             }
-            ToastService.showSuccess(Messages.MESSAGE_SUCCESS, inventory ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
+            ToastService.showSuccess(Messages.MESSAGE_SUCCESS, mainInventory ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
             setVisible(false);
-            setInventory(undefined);
+            setMainInventory(undefined);
          });
         
       }
@@ -92,9 +94,9 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
 
    useEffect(() => {
 
-      if (inventory !== undefined && !submited) {
-         setInventoryToRegister(inventory);
-         setInventory(inventory);
+      if (mainInventory !== undefined && !submited) {
+         setInventoryToRegister(mainInventory);
+         setMainInventory(mainInventory);
       }
 
    }, [submited]);
