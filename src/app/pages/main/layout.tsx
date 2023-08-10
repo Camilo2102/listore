@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { AuthUtil } from "@/app/utils/authUtil";
 import { AuthService } from "@/app/services/authService";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+import { StorageService } from "@/app/services/storageService";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
     const router = useRouter();
@@ -12,6 +13,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
 
 
     const redirectToLogin = () => {
+        StorageService.deleteStorage();
         router.push('/pages/auth/login');
     }
 
@@ -32,7 +34,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
 
     useEffect(() => {
         validateStatus();
-
+        validateToken();
         const intervalId = setInterval(validateToken, 30000);
         return () => clearInterval(intervalId);
     }, [AuthUtil.AUTHORIZED])

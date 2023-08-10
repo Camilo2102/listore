@@ -11,4 +11,8 @@ export class StorageService{
     public static deleteValue(value: string){
         localStorage.removeItem(value)
     }
+
+    public static deleteStorage(){
+        localStorage.clear();
+    }
 }
