@@ -1,4 +1,4 @@
-export class StorageService{
+export class StorageService<T>{
 
     public static saveValue(key: string, value: string) {
         localStorage.setItem(key, value);
@@ -10,5 +10,9 @@ export class StorageService{
 
     public static deleteValue(value: string){
         localStorage.removeItem(value)
+    }
+
+    public static deleteStorage(){
+        localStorage.clear();
     }
 }

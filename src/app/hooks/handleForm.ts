@@ -3,7 +3,7 @@ import { useHandleInput } from "./handleInput";
 import FormControl from "@/app/models/formModels/formControl";
 
 
-export const handleForm = (formControls: FormControl[]) : [any, Form, (partialT: Partial<any>) => void,() => [FormControl[], boolean]
+export const handleForm = (formControls: FormControl[]) : [any, Form, (partialT: Partial<any>, dependency?: string) => void,() => [FormControl[], boolean]
 ] => {
     const form = new Form(formControls);
     const [value, setValue] = useHandleInput<any>(form.getFormControlValues());
@@ -12,11 +12,16 @@ export const handleForm = (formControls: FormControl[]) : [any, Form, (partialT:
      * Se encarga de validar cuando se ejecute un cambio en el input y resetea el status del formcontrol
      * @param partialT el objeto parcial a ingresar
      */
-    const inputChange = (partialT: Partial<any>) =>{
+    const inputChange = (partialT: Partial<any>, dependency?: string) =>{
+        if(dependency !== undefined){
+            form.enableField(dependency);
+        }
+
         Object.keys(partialT).forEach( key => {
             form.resetStatus(key);
         }) 
         setValue(partialT);
+
     } 
 
     /**
