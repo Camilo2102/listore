@@ -15,8 +15,14 @@ export const handleForm = (formControls: FormControl[]) : [any, Form, (partialT:
     const inputChange = (partialT: Partial<any>, dependency?: string) =>{
         if(dependency !== undefined){
             form.enableField(dependency);
-        }
-
+            const obj = {
+                [Object.keys(partialT)[0]]: {
+                    id: partialT[Object.keys(partialT)[0]],
+                }
+            }            
+            form.updateFilter(dependency, obj);
+        }        
+        
         Object.keys(partialT).forEach( key => {
             form.resetStatus(key);
         }) 

@@ -43,6 +43,10 @@ export default class Form {
         return this.formControls;
     }
 
+    /**
+     * 
+     * @param field 
+     */
     public enableField(field: string): void{
         this.formControls.forEach(control => {
             if(control.field === field){
@@ -50,6 +54,15 @@ export default class Form {
             }
         })
     }
+
+    public updateFilter(field:string, value: any){
+        this.formControls.forEach(control => {
+            if(control.field === field){
+                control.filter = {...control.filter, ...value}                
+            }
+        })
+    }
+    
 
     /**
      * se encarga de tomar los valores que tenga dentro del useState para ponerlos como valores en los fromcontrols, es decir poner el valor en el fromcontroll

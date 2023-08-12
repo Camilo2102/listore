@@ -57,6 +57,7 @@ export default function SelectInventory({ inventorySelected, visible, setVisible
     });
 
     useEffect(() => {
+       
         inventoryService.getAllByFilter(true, paginator, inventoryFilter).then(res => {
             if(!ResErrorHandler.isValidRes(res)){
                 return;

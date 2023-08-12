@@ -81,6 +81,7 @@ export default function RegisterBuy({visible, setVisible}: {visible: boolean, se
         <>
             <PopUp title="Nueva Compra" visible= {visible} setVisible={setVisible}>
                 <FormGenerator form={form} setValue={setBuyToRegister} submit={handleBuy} value={buyToRegister} buttonLabel="Crear"></FormGenerator>
+           
             </PopUp>
         </>
     )

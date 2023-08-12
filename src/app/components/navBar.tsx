@@ -68,7 +68,7 @@ export default function NavBar() {
             icon: 'pi pi-dollar',
             label: 'Ventas',
             command: () => {
-                //ventas
+                router.push("/pages/main/inventory/product/sale");
             }
         }
     ];
@@ -105,7 +105,7 @@ export default function NavBar() {
             </div>
 
             <div className={`navbar-container ${navBarVisible ? 'visible' : ''}`}>
-                <div className="navbar-icons-container">
+                <div className="navbar-icons-container" onClick={toggleNavBarVisibility}>
 
                     
 

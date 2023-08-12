@@ -111,4 +111,11 @@ export class CRUDFactory<T> {
         const petitioRoute: string = this.baseUrl + Routes.DELETE_ROUTE + `?id=${id}`;
         return HttpFactory.httpDelete(petitioRoute, secure);
     }
+
+
+
+    public createAll(secure: boolean = true, body: T[]): Promise<any> {
+        const petitioRoute: string = this.baseUrl + Routes.CREATE_ALL_ROUTE;
+        return HttpFactory.httpPost(petitioRoute, secure, body);
+    }
 }

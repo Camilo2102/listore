@@ -19,8 +19,19 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { InventoryService } from "@/app/services/inventoryService";
 import { ProductService } from "@/app/services/productService";
+import TableGeneral from "../tableGeneral";
+import { useHandleInput } from "@/app/hooks/handleInput";
+import Paginator from "@/app/interfaces/paginator";
+import ColumnMeta from "@/app/interfaces/columnMeta";
 
 export default function RegisterSale({ visible, setVisible }: { visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
+
+    const [sales, setSales] = useState<any[]>([]);
+
+    const [newSaleVisible, setNewSaleVisible] = useState(false);
+
+
+
     const saleService = new SaleService();
     const [controls, setControls] = useState<FormControl[]>(
         [
@@ -62,6 +73,14 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 ],
                 icon: "pi-user",
                 service: new InventoryService(),
+                filter: {
+                    category: "",
+                    description: "",
+                    name: "",
+                    company: {
+                        id: AuthUtil.getCredentials().company
+                    }
+                },
                 fieldDependency: "product"
             },
             {
@@ -80,49 +99,164 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 icon: "pi-user",
                 service: new ProductService(),
                 disabled: true,
+                filter: {
+
+                }
             },
         ]
     );
+
+
     const [saleToRegister, form, setSaleToRegister, validateFormControls] = handleForm(controls);
+
     const { sale, setSale } = useContext(saleContext);
 
     const [submited, setSubmited] = useState<boolean>(false);
-    const handleBuy = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const [formControls, valid] = validateFormControls();
-
-        setControls([...formControls]);
-        if (valid) {
-            saleToRegister.user = new User();
-            saleToRegister.user.id = AuthUtil.getCredentials().user;
-            saleToRegister.inventory = undefined;
-            saleToRegister.product = {
-                id: saleToRegister.product
-            }
-            saleService.create(true, saleToRegister).then(
-                res => {
-                    if (!ResErrorHandler.isValidRes(res)) {
-                        return;
-                    }
-                    ToastService.showSuccess(Messages.MESSAGE_SUCCESS, sale ? Messages.MESSAGE_CREATE_SUCCESS : Messages.MESSAGE_UPDATE_SUCCESS)
-                    setVisible(false)
-                    setSubmited(false)
-                    setSale(undefined)
-                }
-            )
-        }
-    }
+    /*  const handleBuy = (e: FormEvent<HTMLFormElement>) => {
+          e.preventDefault();
+          const [formControls, valid] = validateFormControls();
+  
+          setControls([...formControls]);
+          if (valid) {
+              saleToRegister.user = new User();
+              saleToRegister.user.id = AuthUtil.getCredentials().user;
+              saleToRegister.inventory = undefined;
+              saleToRegister.product = {
+                  id: saleToRegister.product
+              }
+              saleService.create(true, saleToRegister).then(
+                  res => {
+                      if (!ResErrorHandler.isValidRes(res)) {
+                          return;
+                      }
+                      ToastService.showSuccess(Messages.MESSAGE_SUCCESS, sale ? Messages.MESSAGE_CREATE_SUCCESS : Messages.MESSAGE_UPDATE_SUCCESS)
+                      setVisible(false)
+                      setSubmited(false)
+                      setSale(undefined)
+                  }
+              )
+          }
+      }*/
     useEffect(() => {
         if (sale !== undefined && !submited) {
+
+
             setSaleToRegister(sale)
         }
     }, [submited])
 
+
+    const columns: ColumnMeta[] = [
+        { field: 'nameInventory', header: 'Inventario' },
+        { field: 'nameProduct', header: 'Producto' },
+        { field: 'amount', header: 'Cantidad' },
+        { field: 'unitaryValue', header: 'Valor unitario' },
+
+    ];
+
+    const [paginator, setPaginator] = useHandleInput<Paginator>({
+        rows: 5,
+        first: 0,
+        page: 0,
+        totalRecords: 0,
+        pagesVisited: 0,
+        loaded: false
+    });
+
+
+
+    const addSale = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault(); // Evita la recarga de la página
+        const [formControls, valid] = validateFormControls();
+
+    
+
+        setControls([...formControls]);
+        if (valid) {
+            const newSale = {
+                unitaryValue: saleToRegister.unitaryValue,
+                amount: saleToRegister.amount,
+                inventory: saleToRegister.inventory,
+                product: saleToRegister.product,
+                nameInventory: saleToRegister.nameinventory,
+                nameProduct: saleToRegister.nameproduct,
+            };
+
+
+            // Agrega la nueva venta al arreglo de sales
+            setSales(prevSales => [...prevSales, newSale]);
+
+            // Limpia los campos del formulario
+            setSaleToRegister({
+                unitaryValue: "",
+                amount: "",
+                inventory: "",
+                product: "",
+                // Limpia campos
+            });
+
+            // Cierra el popup de nueva venta
+            setNewSaleVisible(false);
+        }
+
+    }
+
+    const loadSales = () => {
+
+
+        const modifiedSales = sales.map((sale) => {
+       
+            delete sale.inventory;
+            delete sale.nameInventory;
+            delete sale.nameProduct;
+
+
+            sale.product = {
+                id: sale.product
+            }
+
+            sale.user = {
+                id: AuthUtil.getCredentials().user
+            }
+
+            console.log(sale);
+            return sale;
+        })
+
+        saleService.createAll(true, modifiedSales).then(res => {
+            if (!ResErrorHandler.isValidRes(res)) {
+                return;
+            }
+            ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS)
+            setVisible(false)
+            setSubmited(false)
+            setSale(undefined)
+        })
+
+        
+
+    }
+
     return (
         <>
-            <PopUp title="Nueva Venta" visible={visible} setVisible={setVisible}>
-                <FormGenerator form={form} setValue={setSaleToRegister} submit={handleBuy} value={saleToRegister} buttonLabel="Crear"></FormGenerator>
+
+            <PopUp title="Tabla de ventas" visible={visible} setVisible={setVisible}>
+                <div className="col-12 flex justify-content-start">
+                    <Button label="Agregarrrr" icon="pi pi-plus" onClick={() => setNewSaleVisible(true)} ></Button>
+                </div>
+                <TableGeneral columns={columns} values={sales} paginator={paginator} setPaginator={setPaginator} ></TableGeneral>
+
+                <div className="col-12 flex justify-content-start">
+                    <Button label="Cargar ventas" icon="pi pi-check" onClick={loadSales}   ></Button>
+                </div>
             </PopUp>
+
+
+            <PopUp title="Nueva Venta" visible={newSaleVisible} setVisible={setNewSaleVisible}>
+                <FormGenerator form={form} setValue={setSaleToRegister} submit={addSale} value={saleToRegister} buttonLabel="Agregar"></FormGenerator>
+            </PopUp>
+
+
         </>
     )
 
