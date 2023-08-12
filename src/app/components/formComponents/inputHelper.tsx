@@ -53,7 +53,7 @@ export default function InputHelper({ formControl, value, onValueChange, icon }:
                 <Button type="button" disabled={formControl.disabled} onClick={loadData}></Button>
             </div>
             {visible && formControl.columns && <PopUp title={formControl.description} visible={visible} setVisible={setVisible}>
-                <TableGeneral columns={formControl.columns} values={values} paginator={paginator} setPaginator={setPaginator} onRowSelect={selectValue} ></TableGeneral>
+                <TableGeneral showRepotGenerator={false} columns={formControl.columns} values={values} paginator={paginator} setPaginator={setPaginator} onRowSelect={selectValue} ></TableGeneral>
             </PopUp>}
         </>
     )

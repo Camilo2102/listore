@@ -11,7 +11,7 @@ import * as XLSX from 'xlsx';
 import saveAs from "file-saver";
 
 
-export default function TableGeneral({ values, paginator, setPaginator, columns, gridLines, stripedRows, onRowSelect }: { values: any, paginator: Paginator, setPaginator: (partialT: Partial<Paginator>) => void, columns: ColumnMeta[], gridLines?: boolean, stripedRows?: boolean, onRowSelect?: (e: DataTableSelectEvent ) => void }) {
+export default function TableGeneral({ values, paginator, setPaginator, columns, gridLines, stripedRows, onRowSelect, showRepotGenerator = true}: { values: any, paginator: Paginator, setPaginator: (partialT: Partial<Paginator>) => void, columns: ColumnMeta[], gridLines?: boolean, stripedRows?: boolean, onRowSelect?: (e: DataTableSelectEvent ) => void, showRepotGenerator?: boolean  }) {
 
   // console.log(columns, values);
   
@@ -147,7 +147,7 @@ export default function TableGeneral({ values, paginator, setPaginator, columns,
 
   return (
     <div style={{width: '100%'}}>
-      <DataTable lazy header={header} first={paginator.first} selectionMode="single" onRowSelect={onRowSelect} metaKeySelection={false} onPage={setPage} paginator rows={paginator.rows} totalRecords={paginator.totalRecords} style={{borderRadius: '5px'}} showGridlines={gridLines} stripedRows={stripedRows} value={values} removableSort={columns.some(column => column.sortable)}>
+      <DataTable lazy header={showRepotGenerator && header} first={paginator.first} selectionMode="single" onRowSelect={onRowSelect} metaKeySelection={false} onPage={setPage} paginator rows={paginator.rows} totalRecords={paginator.totalRecords} style={{borderRadius: '5px'}} showGridlines={gridLines} stripedRows={stripedRows} value={values} removableSort={columns.some(column => column.sortable)}>
         {generateColumns()}
       </DataTable>
     </div>

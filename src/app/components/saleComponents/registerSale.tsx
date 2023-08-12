@@ -244,7 +244,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 <div className="col-12 flex justify-content-start">
                     <Button label="Agregarrrr" icon="pi pi-plus" onClick={() => setNewSaleVisible(true)} ></Button>
                 </div>
-                <TableGeneral columns={columns} values={sales} paginator={paginator} setPaginator={setPaginator} ></TableGeneral>
+                <TableGeneral showRepotGenerator={false} columns={columns} values={sales} paginator={paginator} setPaginator={setPaginator} ></TableGeneral>
 
                 <div className="col-12 flex justify-content-start">
                     <Button label="Cargar ventas" icon="pi pi-check" onClick={loadSales}   ></Button>
