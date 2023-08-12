@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 import SelectInventory from './inventoryComponents/SelectInventory';
 
 import './styleNavBar.css';
+import { AuthUtil } from '../utils/authUtil';
+import { StorageService } from '../services/storageService';
 
 export default function NavBar() {
     const router = useRouter();
@@ -75,7 +77,9 @@ export default function NavBar() {
 
 
     const exit = () => {
-        router.push("/pages/auth/login");
+        AuthUtil.setAuthorized(false);
+        StorageService.deleteStorage();
+        router.push('/pages/auth/login');
     };
 
 

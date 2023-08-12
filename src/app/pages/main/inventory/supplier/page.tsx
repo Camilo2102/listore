@@ -19,9 +19,10 @@ import popUp from '../../../../components/popUp';
 import PopUp from "../../../../components/popUp";
 import RegisterSupplier from "@/app/components/supplierComponents/RegisterSupplier";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+import { mainContext } from "../../mainContext";
 
 export default function Supplier(){
-    const {inventory, setInventory} = useContext(inventoryContext);
+    const { mainInventory, setMainInventory } = useContext(mainContext);
     const router = useRouter();
     const supplierService = new SupplierService();
     const [suppliers, setSuppliers] = useState<any[]>([]);
@@ -33,7 +34,7 @@ export default function Supplier(){
         phone: 0,
         mail: "",
         inventory:{
-            id: inventory?.id,
+            id: mainInventory?.id,
         }
     });
 

@@ -36,6 +36,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     }
 
     useEffect(() => {
+        
         validateStatus();
         validateToken();
         const intervalId = setInterval(validateToken, 30000);

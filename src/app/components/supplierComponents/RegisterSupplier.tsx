@@ -16,6 +16,7 @@ import { ToastService } from "@/app/services/toastService";
 import { Messages } from "@/app/constants/messageConstant";
 import { supplierContext } from "@/app/pages/main/inventory/supplier/supplierContext";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+import { mainContext } from "@/app/pages/main/mainContext";
 
 export default function RegisterSupplier({visible, setVisible}:{visible:boolean, setVisible:(partialT: Partial<boolean>) => void}) {
 
@@ -50,7 +51,7 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
                 description: "Email",
                 colSize: 6,
                 type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(17), Validators.minLenght(6)],
+                validators: [Validators.requiered, Validators.maxLenght(30), Validators.minLenght(6)],
                 invalid: false,
                 message: true,
                 icon: "pi-envelope"
@@ -72,7 +73,7 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
                 description: "Descripción",
                 colSize: 12,
                 type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(17), Validators.minLenght(6)],
+                validators: [Validators.requiered, Validators.maxLenght(40), Validators.minLenght(6)],
                 invalid: false,
                 message: true,
                 icon: "pi-pencil"
@@ -81,7 +82,7 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
     );
 
     const [supplierToRegister, form, setSupplierToRegister, validateFormControls] = handleForm(controls);
-    const {inventory, setInventory} = useContext(inventoryContext);
+    const { mainInventory, setMainInventory } = useContext(mainContext);
     const {supplier, setSupplier} = useContext(supplierContext);
     
     const [submited, setSubmited] = useState<boolean>(false);
@@ -93,7 +94,7 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
         if(valid){
             
             supplierToRegister.inventory = new InventoryModel()
-            supplierToRegister.inventory.id = inventory.id
+            supplierToRegister.inventory.id = mainInventory.id
             supplierService.create(true, supplierToRegister).then(
                 res => {
                     if(!ResErrorHandler.isValidRes(res)){
@@ -109,7 +110,7 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
         }
     }
 
-    useEffect(() =>{
+    useEffect(() =>{        
         if(supplier !== undefined && !submited){
             setSupplierToRegister(supplier)
         }

@@ -42,7 +42,6 @@ export default function Inventory({ props }: { props: any }) {
         { field: 'category', header: 'Categoria' },
         {
             field: 'supplier', header: 'Proveedores', action: (t: any) => {
-
                 setMainInventory(t)
                 router.push("/pages/main/inventory/supplier")
             }

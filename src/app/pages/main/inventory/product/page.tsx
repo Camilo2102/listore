@@ -51,7 +51,7 @@ export default function ProductPage() {
         { field: 'name', header: 'Nombre' },
         { field: 'unitaryValue', header: 'Valor Unitario' },
         { field: 'wholeSalePrice', header: 'Precio por Mayor' },
-        { field: 'supplier', header: 'Proveedor' },
+        { field: 'supplierName', header: 'Proveedor' },
         { field: 'category', header: 'Categoria' },
         { field: 'amount', header: 'Cantidad' },
         {
@@ -64,22 +64,6 @@ export default function ProductPage() {
         {
             field: 'CRUDdelete', header: "Eliminar", action: (t: any) => {
                 ConfirmationService.showConfirmDelete(Messages.MESSAGE_BODY_DELETE + t, handleDelete(t));
-
-            }
-        },
-        {
-            field: 'buy', header: "Comprar", action: (t: any) => {
-                
-                setProduct(t);
-                router.push("/pages/main/inventory/product/buy")
-
-            }
-        },
-        {
-            field: 'sale', header: "Vender", action: (t: any) => {
-                
-                setProduct(t);
-                router.push("/pages/main/inventory/product/sale")
 
             }
         }
@@ -117,7 +101,12 @@ export default function ProductPage() {
             if (!ResErrorHandler.isValidRes(res)) {
                 return;
             }
-            setProducts(res);
+            const temporalRes = res.map(product => {
+                product.supplierName = product.supplier.name;
+                return product;
+            } )
+            
+            setProducts(temporalRes);
         })
         productService.countAllByFilter(true, productFilter).then(res => {
             if (!ResErrorHandler.isValidRes(res)) {

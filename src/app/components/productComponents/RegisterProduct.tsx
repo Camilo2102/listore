@@ -15,14 +15,43 @@ import { ProductService } from "@/app/services/productService";
 import { productContext } from "@/app/pages/main/inventory/product/productContext";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { mainContext } from "@/app/pages/main/mainContext";
+import { SupplierService } from "@/app/services/supplierService";
 
 
 export default function RegisterProduct({ inventorySelected, visible, setVisible, onProductCreated  }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void , onProductCreated: () => void}){
+   const { mainInventory, setMainInventory } = useContext(mainContext);
    const productService = new ProductService();
    const router = useRouter();
 
    const [controls, setControls] = useState<FormControl[]>(
       [
+         {
+            field: "supplier",
+            value: "",
+            description: "Proveedores",
+            colSize: 12,
+            type: FormTypes.INPUTHELPER,
+            validators: [Validators.requiered],
+            invalid: false,
+            message: true,
+            columns: [
+                { field: 'name', header: 'Nombre' },
+                { field: 'description', header: 'Descripcion' },
+                { field: 'phone', header: 'Telefono' },
+            ],
+            icon: "pi-user",
+            service: new SupplierService(),
+            filter: {
+               name: "",
+               description: "",
+               address: "",
+               phone: 0,
+               mail: "",
+               inventory:{
+                   id: mainInventory?.id,
+               }
+            },
+        },
          {
             field: "name",
             value: "",
@@ -83,7 +112,6 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
 
    const [productToRegister, form, setProductToRegister, validateFormControls] = handleForm(controls);
    const [submited, setSubmited] = useState<boolean>(false);
-   const { mainInventory, setMainInventory } = useContext(mainContext);
    const { product, setProduct } = useContext(productContext);
   
 
@@ -98,6 +126,13 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
          productToRegister.inventory = {
             id: mainInventory.id
          };
+
+         delete productToRegister.namesupplier;
+
+         productToRegister.supplier = {
+            id: productToRegister.supplier
+         }
+
 
          productService.create(true, productToRegister).then(res => {
             if(!ResErrorHandler.isValidRes(res)){
