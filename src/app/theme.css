@@ -249,6 +249,16 @@
 
 /** CSS personalizado **/
 
+.p-datatable .p-datatable-header{
+    background: transparent !important;
+    border: none !important;
+}
+
+
+
+
+/******************************/
+
 .p-datatable-wrapper {
     border-radius: 10px;
     border: 1px solid rgba(104, 100, 102, 0.2);
