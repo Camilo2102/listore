@@ -10,20 +10,17 @@ export class DateUtil{
   /**
    * Formatea una fecha en una cadena de texto según el formato especificado.
    * @param date La fecha a formatear.
-   * @param format El formato deseado para la fecha.
    * @returns La fecha formateada como una cadena de texto.
    */
-  public static formatDate(date: Date, format: string): string {
-    const options: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    };
-    return new Intl.DateTimeFormat('en-US', options).format(date);
-  }
+  public static formatDate(date: number[]): string {
+    const [year, month, day, hour, minute, second] = date;
+
+   
+    const formattedDate = `${year}/${month}/${day} ${hour}:${minute}`;
+
+    return formattedDate;
+}
+
 
   /**
    * Agrega una cantidad especificada de días a una fecha.

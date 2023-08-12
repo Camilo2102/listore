@@ -11,7 +11,7 @@ import Paginator from "@/app/interfaces/paginator";
 import { DataTableSelectEvent } from "primereact/datatable";
 
 export default function InputHelper({ formControl, value, onValueChange, icon }: { formControl: FormControl, value: any, onValueChange: (value: any, dependecy?: string) => void, icon?: string }) {
-
+    
     const [values, setValues] = useState<any[]>([]);
     const [visible, setVisible] = useState<boolean>(false);
 
@@ -28,17 +28,18 @@ export default function InputHelper({ formControl, value, onValueChange, icon }:
 
 
     const loadData = () => {
-        formControl.service && formControl.service.getAll().then(res => {
+        formControl.service && formControl.service.getAllByFilter(true, paginator, formControl.filter).then(res => {
             setVisible(true);
             setValues(res);
-        })
-    }
+        });
+    };
+    
 
     const selectValue = (value: DataTableSelectEvent) => {
         const {id, name} = value.data;
 
         setShowText(name);
-        onValueChange({ [formControl.field]: id }, formControl.fieldDependency);
+        onValueChange({ [formControl.field]: id, ["name"+formControl.field]: name }, formControl.fieldDependency);
         setVisible(false);
     }
 

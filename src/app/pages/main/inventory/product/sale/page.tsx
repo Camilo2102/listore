@@ -14,6 +14,8 @@ import { SaleService } from "@/app/services/saleService";
 import SaleModel from "@/app/models/sale";
 import { saleContext } from "./saleContext";
 import RegisterSale from "@/app/components/saleComponents/registerSale";
+import { DateUtil } from "@/app/utils/dateUtil";
+import { AuthUtil } from "@/app/utils/authUtil";
 
 export default function SalePage() {
     const { product, setProduct } = useContext(productContext);
@@ -22,22 +24,25 @@ export default function SalePage() {
     const saleService = new SaleService();
     const [visible, setVisible] = useState<boolean>(false);
     const [saleFilter, setSaleFilter] = useState<SaleModel>({
-        saleDate: new Date(),
+        saleDate: DateUtil.removeDaysFromNow(1),
         unitaryValue: 0,
         amount: 0,
         product: {
             id: product?.id,
         },
         user: {
-            id: user?.id,
+            id:  AuthUtil.getCredentials().user,
         }
     });
     const { sale, setSale } = useContext(saleContext);
 
     const columns: ColumnMeta[] = [
+        
         { field: 'saleDate', header: 'Fecha de venta' },
+        { field: 'product', header: 'Producto' },
         { field: 'unitaryValue', header: 'Valor unitario' },
         { field: 'amount', header: 'Cantidad' },
+        { field: 'totalValue', header: 'Valor total' },
     ];
 
     const [paginator, setPaginator] = useHandleInput<Paginator>({
@@ -55,7 +60,17 @@ export default function SalePage() {
                 if (!ResErrorHandler.isValidRes(res)) {
                     return;
                 }
-                setSales(res);
+
+                const copyRes = res.map((r: any) => {
+                    
+                    const nameProduct = r.product.name;
+                    const totalValue = r.unitaryValue * r.amount;
+
+                    return { ...r, saleDate: DateUtil.formatDate(r.saleDate), product: nameProduct, totalValue: totalValue  }
+                })
+           
+                
+                setSales(copyRes);
             })
             saleService.countAllByFilter(true, saleFilter).then(res => {
                 if (!ResErrorHandler.isValidRes(res)) {
@@ -73,7 +88,6 @@ export default function SalePage() {
 
     return (
         <>
-            <NavBar />
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
                 <div className="grid" style={{ width: '90%' }}>
                     <div className="col-12 flex justify-content-start">

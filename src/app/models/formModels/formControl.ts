@@ -24,5 +24,6 @@ export default interface FormControl{
     service?: CRUDFactory<any>;
     columns?: ColumnMeta[];
     fieldDependency?: string;
+    filter?: any;
     numberOption?: number;
 }
