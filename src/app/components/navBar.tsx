@@ -105,7 +105,7 @@ export default function NavBar() {
             </div>
 
             <div className={`navbar-container ${navBarVisible ? 'visible' : ''}`}>
-                <div className="navbar-icons-container" onClick={toggleNavBarVisibility}>
+                <div className="navbar-icons-container" onClick={() => screenWidth <= 767 && toggleNavBarVisibility()}>
 
                     
 
