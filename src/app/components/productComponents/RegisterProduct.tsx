@@ -18,10 +18,10 @@ import { Endpoints } from "@/app/constants/endpointsConstants";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 
 
-export default function RegisterProduct({ inventorySelected, visible, setVisible, onProductCreated  }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void , onProductCreated: () => void}){
+export default function RegisterProduct({ inventorySelected, visible, setVisible  }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void}){
    const { mainInventory, setMainInventory } = useMainContext();
    const {create} = useCRUDService(Endpoints.PRODUCT);
-   const router = useRouter();
+
 
    const [controls, setControls] = useState<FormControl[]>(
       [
@@ -141,7 +141,6 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
             ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, inventorySelected ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
             setVisible(false);
             setProduct(undefined);
-            onProductCreated(); // Llamar a la función de callback al crear el producto
          });
 
       }

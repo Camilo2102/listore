@@ -22,7 +22,7 @@ export function useAuthContext() {
 
 export function AuthProvider({ children }: {children: React.ReactNode}) {
     const [authorized, setAuthorized] = handleContext("authorized");
-    //const {validateToken} = useAuthService();
+    const {validateToken} = useAuthService();
     
     const router = useRouter();
 
@@ -32,25 +32,27 @@ export function AuthProvider({ children }: {children: React.ReactNode}) {
         router.push('/pages/auth/login');
     }
 
-    /*const validateTokenStatus = () => {
+    const validateTokenStatus = () => {
         validateToken().then(res => {
             if (!ResErrorHandler.isValidRes(res)) {
                 redirectToLogin();
             }
         })
-    }*/
+    }
 
     const validateStatus = () => {
         if (!authorized) {
             redirectToLogin();
+            return false;
         }
+        return true;
     }
 
     useEffect(() => {
-        validateStatus();
-        //validateTokenStatus();
-        //const intervalId = setInterval(validateToken, 30000);
-        //return () => clearInterval(intervalId);
+        if(!validateStatus())return;
+        validateTokenStatus();
+        const intervalId = setInterval(validateToken, 30000);
+        return () => clearInterval(intervalId);
     }, [authorized])
 
     

@@ -21,14 +21,16 @@ import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { useMainContext } from "../../../../context/mainContext";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
+import { useTableContext } from "@/app/context/tableContext";
 
 export default function Supplier(){
     const { mainInventory, setMainInventory } = useMainContext();
-    const router = useRouter();
-    const {deleteData, getAllByFilter, countAllByFilter} = useCRUDService(Endpoints.SUPPLIER);
-    const [suppliers, setSuppliers] = useState<any[]>([]);
 
-    const [supplierFilter, setSupplierFilter] = useState<SupplierModel>({
+    const {deleteData} = useCRUDService(Endpoints.SUPPLIER);
+    
+    const { reloadData, setReloadData } = useTableContext();
+
+    const supplierFilter = {
         name: "",
         description: "",
         address: "",
@@ -37,7 +39,7 @@ export default function Supplier(){
         inventory:{
             id: mainInventory?.id,
         }
-    });
+    }
 
     const {supplier, setSupplier} = useContext(supplierContext);
    
@@ -68,45 +70,26 @@ export default function Supplier(){
                  }
                 ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
                 setSupplier(undefined);
-                setVisible(false)
-                setPaginator({loaded: false})
+                setReloadData(true);
             });
         }
         return deletFn;
     }
 
-    const [paginator, setPaginator] = useHandleInput<Paginator>({
-        rows: 5,
-        first: 0,
-        page: 0,
-        totalRecords: 0,
-        pagesVisited: 0,
-        loaded: false
-    });
     
     const [visible, setVisible] = useState<boolean>(false);
     
-    useEffect(() =>{
-        if(!visible && !paginator.loaded){
-            getAllByFilter(true, paginator, supplierFilter).then(res =>{
-                if(!ResErrorHandler.isValidRes(res)){
-                    return;
-                 }
-                setSuppliers(res);
-            })
-            countAllByFilter(true, supplierFilter).then(res=>{
-                if(!ResErrorHandler.isValidRes(res)){
-                    return;
-                 }
-                setPaginator({totalRecords: res, loaded: true})
-            })
-        }
-    }, [visible, paginator])
-
     const handleNewSupplier = () =>{
         setVisible(true)
         setSupplier(undefined)
     }
+
+    useEffect(() => {
+        if(!visible){
+            setReloadData(true);
+        }
+    }, 
+    [visible])
    
     return(
         <>
@@ -118,7 +101,7 @@ export default function Supplier(){
             <Button onClick={handleNewSupplier} label="Nuevo" icon="pi pi-user-plus"></Button>
             </div>
             <div className="col-12 flex justify-content-center">
-                    <TableGeneral columns={columns} values={suppliers} paginator={paginator} setPaginator={setPaginator} ></TableGeneral>
+                    <TableGeneral baseFilter={supplierFilter} endpoint={Endpoints.SUPPLIER} columns={columns}  ></TableGeneral>
                 </div>
            </div>
         </div>

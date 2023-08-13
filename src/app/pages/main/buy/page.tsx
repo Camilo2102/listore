@@ -15,13 +15,13 @@ import BuyAtribute from "@/app/components/buyComponents/registerBuy";
 import RegisterBuy from "@/app/components/buyComponents/registerBuy";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
+import { useTableContext } from "@/app/context/tableContext";
 
 export default function BuyPage(){
     const {product, setProduct} = useContext(productContext);
     const {user, setUser} = useContext(userContext);
-    const [buys, setBuys] = useState<any[]>([]);
 
-    const {getAllByFilter, countAllByFilter} = useCRUDService(Endpoints.BUY);
+    const { reloadData, setReloadData } = useTableContext();
 
     const [visible, setVisible] = useState<boolean>(false);
     const [buyFilter, setBuyFilter] = useState<BuyModel>({
@@ -43,36 +43,19 @@ export default function BuyPage(){
         {field: 'amount', header: 'Cantidad'},
     ];
 
-    const [paginator, setPaginator] = useHandleInput<Paginator>({
-        rows: 5,
-        first: 0,
-        page: 0,
-        totalRecords: 0,
-        pagesVisited: 0,
-        loaded: false
-    });
 
-    useEffect(() =>{
-        if(!visible && !paginator.loaded){
-            getAllByFilter(true, paginator, buyFilter).then(res =>{
-                if(!ResErrorHandler.isValidRes(res)){
-                    return;
-                 }
-                 setBuys(res);
-            })
-            countAllByFilter(true, buyFilter).then(res=>{
-                if(!ResErrorHandler.isValidRes(res)){
-                    return;
-                 }
-                setPaginator({totalRecords: res, loaded: true})
-            })
-        }
-    }, [visible, paginator])
 
     const handleNewBuy = () =>{
         setVisible(true);
         setBuy(undefined)
     }
+
+    useEffect(() => {
+        if(!visible){
+            setReloadData(true);
+        }
+    }, 
+    [visible])
 
     return(
         <>
@@ -84,7 +67,7 @@ export default function BuyPage(){
             <Button onClick={handleNewBuy} label="Nuevo" icon="pi pi-user-plus"></Button>
             </div>
             <div className="col-12 flex justify-content-center">
-                    <TableGeneral columns={columns} values={buys} paginator={paginator} setPaginator={setPaginator} ></TableGeneral>
+                    <TableGeneral columns={columns} baseFilter={buyFilter} endpoint={Endpoints.BUY} ></TableGeneral>
                 </div>
            </div>
            {visible && <RegisterBuy visible={visible} setVisible={setVisible}/>}

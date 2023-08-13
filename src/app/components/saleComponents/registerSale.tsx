@@ -29,7 +29,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
 
     const [newSaleVisible, setNewSaleVisible] = useState(false);
 
-    const {createAll} = useCRUDService(Endpoints.SALE);
+    const { createAll } = useCRUDService(Endpoints.SALE);
 
     const [controls, setControls] = useState<FormControl[]>(
         [
@@ -167,7 +167,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
         e.preventDefault(); // Evita la recarga de la página
         const [formControls, valid] = validateFormControls();
 
-    
+
 
         setControls([...formControls]);
         if (valid) {
@@ -200,10 +200,8 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
     }
 
     const loadSales = () => {
-
-
         const modifiedSales = sales.map((sale) => {
-       
+
             delete sale.inventory;
             delete sale.nameInventory;
             delete sale.nameProduct;
@@ -231,7 +229,6 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
             setSale(undefined)
         })
 
-        
 
     }
 
@@ -240,9 +237,9 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
 
             <PopUp title="Tabla de ventas" visible={visible} setVisible={setVisible}>
                 <div className="col-12 flex justify-content-start">
-                    <Button label="Agregarrrr" icon="pi pi-plus" onClick={() => setNewSaleVisible(true)} ></Button>
+                    <Button label="Agregar" icon="pi pi-plus" onClick={() => setNewSaleVisible(true)} ></Button>
                 </div>
-                <TableGeneral showRepotGenerator={false} columns={columns} values={sales} paginator={paginator} setPaginator={setPaginator} ></TableGeneral>
+                <TableGeneral showRepotGenerator={false} columns={columns} staticValues={sales} ></TableGeneral>
 
                 <div className="col-12 flex justify-content-start">
                     <Button label="Cargar ventas" icon="pi pi-check" onClick={loadSales}   ></Button>

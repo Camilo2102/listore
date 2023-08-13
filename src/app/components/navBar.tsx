@@ -6,12 +6,14 @@ import SelectInventory from './inventoryComponents/SelectInventory';
 import './styleNavBar.css';
 import { AuthUtil } from '../utils/authUtil';
 import { StorageService } from '../services/storageService';
+import { useAuthContext } from '../context/authContext';
 
 export default function NavBar() {
     const router = useRouter();
     const [visibleSelectInventory, setVisibleSelectInventory] = useState<boolean>(false);
     const [navBarVisible, setNavBarVisible] = useState(true);
     const [screenWidth, setScreenWidth] = useState<number>(0);
+    const {authorized, setAuthorized} = useAuthContext();
 
     useEffect(() => {
         // Detectar el ancho de la pantalla y actualizar el estado
@@ -77,9 +79,7 @@ export default function NavBar() {
 
 
     const exit = () => {
-        AuthUtil.setAuthorized(false);
-        StorageService.deleteStorage();
-        router.push('/pages/auth/login');
+        setAuthorized(false);
     };
 
 

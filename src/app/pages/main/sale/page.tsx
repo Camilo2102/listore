@@ -15,15 +15,15 @@ import { productContext } from "../inventory/product/productContext";
 import { userContext } from "../user/userContext";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
+import { useTableContext } from "@/app/context/tableContext";
 
 export default function SalePage() {
     const { product, setProduct } = useContext(productContext);
-    const { user, setUser } = useContext(userContext);
-    const [sales, setSales] = useState<any[]>([]);
-    
-    const {getAllByFilter, countAllByFilter} = useCRUDService(Endpoints.SALE);
 
     const [visible, setVisible] = useState<boolean>(false);
+    
+    const { reloadData, setReloadData } = useTableContext();
+
     const [saleFilter, setSaleFilter] = useState<SaleModel>({
         saleDate: DateUtil.removeDaysFromNow(1),
         unitaryValue: 0,
@@ -38,7 +38,6 @@ export default function SalePage() {
     const { sale, setSale } = useContext(saleContext);
 
     const columns: ColumnMeta[] = [
-        
         { field: 'saleDate', header: 'Fecha de venta' },
         { field: 'product', header: 'Producto' },
         { field: 'unitaryValue', header: 'Valor unitario' },
@@ -46,45 +45,25 @@ export default function SalePage() {
         { field: 'totalValue', header: 'Valor total' },
     ];
 
-    const [paginator, setPaginator] = useHandleInput<Paginator>({
-        rows: 5,
-        first: 0,
-        page: 0,
-        totalRecords: 0,
-        pagesVisited: 0,
-        loaded: false
-    });
-
-    useEffect(() => {
-        if (!visible && !paginator.loaded) {
-            getAllByFilter(true, paginator, saleFilter).then(res => {
-                if (!ResErrorHandler.isValidRes(res)) {
-                    return;
-                }
-
-                const copyRes = res.map((r: any) => {
-                    
-                    const nameProduct = r.product.name;
-                    const totalValue = r.unitaryValue * r.amount;
-
-                    return { ...r, saleDate: DateUtil.formatDate(r.saleDate), product: nameProduct, totalValue: totalValue  }
-                })
-           
-                
-                setSales(copyRes);
-            })
-            countAllByFilter(true, saleFilter).then(res => {
-                if (!ResErrorHandler.isValidRes(res)) {
-                    return;
-                }
-                setPaginator({ totalRecords: res, loaded: true })
-            })
-        }
-    }, [visible, paginator])
 
     const handleNewSale = () => {
         setVisible(true);
         setSale(undefined)
+    }
+
+    useEffect(() => {
+        if(!visible){
+            setReloadData(true);
+        }
+    }, 
+    [visible])
+
+    const customMap = (sales: any) => {
+                    
+        const nameProduct = sales.product.name;
+        const totalValue = sales.unitaryValue * sales.amount;
+
+        return { ...sales, saleDate: DateUtil.formatDate(sales.saleDate), product: nameProduct, totalValue: totalValue  }
     }
 
     return (
@@ -95,7 +74,7 @@ export default function SalePage() {
                         <Button onClick={handleNewSale} label="Nuevo" icon="pi pi-user-plus"></Button>
                     </div>
                     <div className="col-12 flex justify-content-center">
-                        <TableGeneral columns={columns} values={sales} paginator={paginator} setPaginator={setPaginator} ></TableGeneral>
+                        <TableGeneral columns={columns} baseFilter={saleFilter} endpoint={Endpoints.SALE} customMap={customMap} ></TableGeneral>
                     </div>
                 </div>
                 {visible && <RegisterSale visible={visible} setVisible={setVisible} />}

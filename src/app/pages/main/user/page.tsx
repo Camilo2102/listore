@@ -24,20 +24,11 @@ import { Endpoints } from "@/app/constants/endpointsConstants";
 
 
 export default function UserList({ props }: { props: any }) {
-    const {getAllByFilter, countAllByFilter} = useCRUDService(Endpoints.USER);
     const router = useRouter();
 
     const [users, setUsers] = useState<any[]>([]);
     const [userFilter, setUserFilter] = useHandleInput<User>({ active: "", company: { id: AuthUtil.getCredentials().company }, name: "", role: "" });
     const { user, setUser } = useContext(userContext);
-    const [paginator, setPaginator] = useHandleInput<Paginator>({
-        rows: 5,
-        first: 0,
-        page: 0,
-        totalRecords: 0,
-        pagesVisited: 0,
-        loaded: false
-    });
 
     const [deleteUser, setDeleteUser] = useState<User | undefined>();
 
@@ -59,32 +50,9 @@ export default function UserList({ props }: { props: any }) {
     ];
 
 
-    useEffect(() => {
-        if (deleteUser === undefined) {
-            getAllByFilter(true, paginator, userFilter).then((res) => {
-                if(!ResErrorHandler.isValidRes(res)){
-                    return;
-                 }
-                const temporal = res.map((r) => ({ ...r.credential, ...r }));
-                setUsers(temporal);
-            });
-        }
-    }, [userFilter, deleteUser, paginator])
-
-    useEffect(() => {
-        if (deleteUser === undefined) {
-            countAllByFilter(true, userFilter).then((res) => {
-                if(!ResErrorHandler.isValidRes(res)){
-                    return;
-                 }
-                setPaginator({ totalRecords: res });
-            });
-        }
-    }, [userFilter, deleteUser]);
-
     return (
         <>
-           
+
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
                 <div className="grid" style={{ width: '90%' }}>
                     <div className="col-12 flex justify-content-start">
@@ -93,7 +61,7 @@ export default function UserList({ props }: { props: any }) {
                         </Link>
                     </div>
                     <div className="col-12 flex justify-content-center">
-                        <TableGeneral paginator={paginator} setPaginator={setPaginator} columns={columns} values={users}></TableGeneral>
+                        <TableGeneral baseFilter={userFilter} columns={columns} endpoint={Endpoints.USER}></TableGeneral>
                     </div>
                 </div>
             </div>

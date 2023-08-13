@@ -18,22 +18,17 @@ import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { useMainContext } from "@/app/context/mainContext";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
+import { useTableContext } from "@/app/context/tableContext";
+import InventoryTable from "@/app/components/inventoryComponents/intentoryTable";
 
 
 
 export default function Inventory({ props }: { props: any }) {
     const router = useRouter();
-    const {deleteData, getAllByFilter} = useCRUDService(Endpoints.INVENTORY);
-    const [inventorys, setInventorys] = useState<any[]>([]);
+    
+    const {deleteData } = useCRUDService(Endpoints.INVENTORY);
+    const { reloadData, setReloadData } = useTableContext();
 
-    const [inventoryFilter, setInventoryFitler] = useState<InventoryModel>({
-        category: "",
-        company: {
-            id: AuthUtil.getCredentials().company
-        },
-        description: "",
-        name: "",
-    });
 
     const { mainInventory, setMainInventory } = useMainContext();
 
@@ -55,12 +50,16 @@ export default function Inventory({ props }: { props: any }) {
         },
         {
             field: 'CRUDdelete', header: "Eliminar", action: (t: any) => {
-                ConfirmationService.showConfirmDelete(Messages.MESSAGE_BODY_DELETE + t, handleDelete(t));
+                ConfirmationService.showConfirmDelete(Messages.MESSAGE_BODY_DELETE + t.name, handleDelete(t));
             }
         },
 
     ];
 
+    const handleSelection = (inventory: DataTableSelectEvent) => {
+        setMainInventory(inventory.data);
+        router.push("/pages/main/inventory/product")
+    };
 
     const handleDelete = (t: any) => {
         const deleteFn = () => {
@@ -70,55 +69,38 @@ export default function Inventory({ props }: { props: any }) {
                 }
                 ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
                 setMainInventory(undefined);
+                setReloadData(true);
             });
         }
         return deleteFn;
     }
 
-    // select product
-    const handleSelection = (inventory: DataTableSelectEvent) => {
-        setMainInventory(inventory.data);
-        router.push("/pages/main/inventory/product")
-    };
-
-    const [paginator, setPaginator] = useHandleInput<Paginator>({
-        rows: 5,
-        first: 0,
-        page: 0,
-        totalRecords: 0,
-        pagesVisited: 0,
-        loaded: false
-    });
+    
 
     const [visible, setVisible] = useState<boolean>(false);
-    useEffect(() => {
-        getAllByFilter(true, paginator, inventoryFilter).then(res => {
-            if (!ResErrorHandler.isValidRes(res)) {
-                return;
-            }
-            setInventorys(res);
-
-        })
-    }, [visible, paginator])
 
     const handleNewInventory = () => {
         setVisible(true);
         setMainInventory(undefined);
     }
 
+    useEffect(() => {
+        if(!visible){
+            setReloadData(true);
+        }
+    }, 
+    [visible])
+
     return (
         <>
-
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
 
                 <div className="grid" style={{ width: '90%' }}>
                     <div className="col-12 flex justify-content-start">
-
                         <Button label="Nuevo" icon="pi pi-inbox" onClick={handleNewInventory} ></Button>
-
                     </div>
                     <div className="col-12 flex justify-content-center">
-                        <TableGeneral columns={columns} onRowSelect={handleSelection} values={inventorys} paginator={paginator} setPaginator={setPaginator} ></TableGeneral>
+                        <InventoryTable columns={columns} handleSelection={handleSelection}></InventoryTable>
                     </div>
                 </div>
                 {visible && <RegisterInventory visible={visible} setVisible={setVisible} />}

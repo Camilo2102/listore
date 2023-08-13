@@ -19,21 +19,16 @@ import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { useMainContext } from "../../../../context/mainContext";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
+import { useTableContext } from "@/app/context/tableContext";
 
 
 export default function ProductPage() {
     const router = useRouter();
-    const { inventory, setInventory } = useContext(inventoryContext);
     const { mainInventory, setMainInventory } = useMainContext();
     
-    const {deleteData, getAllByFilter, countAllByFilter} = useCRUDService(Endpoints.PRODUCT);
+    const {deleteData} = useCRUDService(Endpoints.PRODUCT);
 
-
-    const [products, setProducts] = useState<any[]>([]);
-
-    
-    const [productCreated, setProductCreated] = useState(false);
-
+    const { reloadData, setReloadData } = useTableContext();
     
     const [productFilter, setProductFilter] = useState<ProductModel>({
         name: "",
@@ -42,7 +37,7 @@ export default function ProductPage() {
         supplier: {},
         category: "",
         inventory: {
-            id: inventory?.id
+            id: mainInventory?.id
         },
         amount: 0
 
@@ -82,64 +77,14 @@ export default function ProductPage() {
                 }
                 ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
                 setProduct(undefined);
-                setVisible(false)
-                setPaginator({ loaded: false })
+                setReloadData(true);
             });
         }
         return deleteFn;
     }
 
-    const [paginator, setPaginator] = useHandleInput<Paginator>({
-        rows: 5,
-        first: 0,
-        page: 0,
-        totalRecords: 0,
-        pagesVisited: 0,
-        loaded: false
-    });
 
     const [visible, setVisible] = useState<boolean>(false);
-
-    const getData = () => {
-        getAllByFilter(true, paginator, productFilter).then(res => {
-            if (!ResErrorHandler.isValidRes(res)) {
-                return;
-            }
-            const temporalRes = res.map(product => {
-                product.supplierName = product.supplier?.name;
-                return product;
-            } )
-            
-            setProducts(temporalRes);
-        })
-        countAllByFilter(true, productFilter).then(res => {
-            if (!ResErrorHandler.isValidRes(res)) {
-                return;
-            }
-            setPaginator({ totalRecords: res, loaded: true })
-        })
-    }
-
-    useEffect(() => {
-       
-        if (!visible && !paginator.loaded) {
-            getData();
-        }
-        if (productCreated) {
-            getData(); // Recargar datos cuando productCreated cambie a true
-            setProductCreated(false); // Restaurar el estado a false
-        }
-    }, [visible, paginator,productCreated])
-
-    useEffect(() => {
-    
-        if(mainInventory !== undefined){
-            setProductFilter({...productFilter, inventory: {id: mainInventory.id}});
-            setPaginator({ loaded: false })
-        }
-    },[mainInventory]);
-
-
 
     const handleNewProduct = () => {
         setVisible(true)
@@ -151,11 +96,18 @@ export default function ProductPage() {
         router.push("/pages/main/inventory/product/atribute")
     }
 
+    useEffect(() => {
+        if(!visible){
+            setReloadData(true);
+        }
+    }, 
+    [visible])
 
-    const handleProductCreated = () => {
-        setProductCreated(true); // Cambia el estado cuando se crea un producto
-    };
 
+    const customMap = (product: any) => {
+        product.supplierName = product.supplier?.name;
+        return product;
+    } 
 
     return (
         <>
@@ -166,10 +118,10 @@ export default function ProductPage() {
                         <Button label="Nuevo" icon="pi pi-inbox" onClick={handleNewProduct} ></Button>
                     </div>
                     <div className="col-12 flex justify-content-center">
-                        <TableGeneral columns={columns} values={products} paginator={paginator} setPaginator={setPaginator} onRowSelect={handleSelection}></TableGeneral>
+                        <TableGeneral columns={columns} baseFilter={productFilter} endpoint={Endpoints.PRODUCT} customMap={customMap} onRowSelect={handleSelection}></TableGeneral>
                     </div>
                 </div>
-                {visible && <RegisterProduct visible={visible} setVisible={setVisible} onProductCreated={handleProductCreated} />}
+                {visible && <RegisterProduct visible={visible} setVisible={setVisible} />}
 
             </div>
         </>

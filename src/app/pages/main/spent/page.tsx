@@ -13,12 +13,13 @@ import { spentContext } from "./spentContext";
 import RegisterSpent from "@/app/components/spentComponets/registerSpent";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
+import { useTableContext } from "@/app/context/tableContext";
 
 export default function SpentPage(){
     const {user, setUser} = useContext(userContext);
-    const [spents, setSpents] = useState<any[]>([]);
 
-    const {getAllByFilter, countAllByFilter} = useCRUDService(Endpoints.SPENT);
+    const { reloadData, setReloadData } = useTableContext();
+
 
     const [visible, setVisible] = useState<boolean>(false);
     const [spentFilter, setSpentFilter] = useState<SpentModel>({
@@ -37,36 +38,18 @@ export default function SpentPage(){
         {field: 'description', header: 'Descripción'},
     ];
 
-    const [paginator, setPaginator] = useHandleInput<Paginator>({
-        rows: 5,
-        first: 0,
-        page: 0,
-        totalRecords: 0,
-        pagesVisited: 0,
-        loaded: false
-    });
-
-    useEffect(() =>{
-        if(!visible && !paginator.loaded){
-            getAllByFilter(true, paginator, spentFilter).then(res =>{
-                if(!ResErrorHandler.isValidRes(res)){
-                    return;
-                 }
-                 setSpents(res);
-            })
-            countAllByFilter(true, spentFilter).then(res=>{
-                if(!ResErrorHandler.isValidRes(res)){
-                    return;
-                 }
-                setPaginator({totalRecords: res, loaded: true})
-            })
-        }
-    }, [visible, paginator])
 
     const handleNewSpent = () =>{
         setVisible(true);
         setSpent(undefined)
     }
+
+    useEffect(() => {
+        if(!visible){
+            setReloadData(true);
+        }
+    }, 
+    [visible])
 
     return(
         <>
@@ -78,7 +61,7 @@ export default function SpentPage(){
             <Button onClick={handleNewSpent} label="Nuevo" icon="pi pi-user-plus"></Button>
             </div>
             <div className="col-12 flex justify-content-center">
-                    <TableGeneral columns={columns} values={spents} paginator={paginator} setPaginator={setPaginator} ></TableGeneral>
+                    <TableGeneral columns={columns} baseFilter={spentFilter} endpoint={Endpoints.SPENT}  ></TableGeneral>
                 </div>
            </div>
            {visible && <RegisterSpent visible={visible} setVisible={setVisible}/>}
