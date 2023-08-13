@@ -20,6 +20,7 @@ import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useTableContext } from "@/app/context/tableContext";
 import InventoryTable from "@/app/components/inventoryComponents/intentoryTable";
+import TitleTables from "@/app/components/titleTables";
 
 
 
@@ -94,8 +95,8 @@ export default function Inventory({ props }: { props: any }) {
     return (
         <>
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-
                 <div className="grid" style={{ width: '90%' }}>
+                    <TitleTables title="Inventario"></TitleTables>
                     <div className="col-12 flex justify-content-start">
                         <Button label="Nuevo" icon="pi pi-inbox" onClick={handleNewInventory} ></Button>
                     </div>

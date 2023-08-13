@@ -16,6 +16,7 @@ import RegisterBuy from "@/app/components/buyComponents/registerBuy";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { useTableContext } from "@/app/context/tableContext";
+import TitleTables from "@/app/components/titleTables";
 
 export default function BuyPage(){
     const {product, setProduct} = useContext(productContext);
@@ -62,17 +63,16 @@ export default function BuyPage(){
             <NavBar/>
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
             <div className="grid" style={{ width: '90%' }}>
-            <div className="col-12 flex justify-content-start">
-            
-            <Button onClick={handleNewBuy} label="Nuevo" icon="pi pi-user-plus"></Button>
-            </div>
-            <div className="col-12 flex justify-content-center">
+                <TitleTables title="Compras"></TitleTables>
+                <div className="col-12 flex justify-content-start">
+                    <Button onClick={handleNewBuy} label="Nuevo" icon="pi pi-user-plus"></Button>
+                </div>
+                <div className="col-12 flex justify-content-center">
                     <TableGeneral columns={columns} baseFilter={buyFilter} endpoint={Endpoints.BUY} ></TableGeneral>
                 </div>
            </div>
            {visible && <RegisterBuy visible={visible} setVisible={setVisible}/>}
             </div>
-       
         </>
     )
     

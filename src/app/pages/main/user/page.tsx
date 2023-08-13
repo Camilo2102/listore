@@ -20,6 +20,7 @@ import Paginator from "@/app/interfaces/paginator";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
+import TitleTables from "@/app/components/titleTables";
 
 
 
@@ -55,9 +56,10 @@ export default function UserList({ props }: { props: any }) {
 
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
                 <div className="grid" style={{ width: '90%' }}>
+                    <TitleTables title="Usuarios"></TitleTables>
                     <div className="col-12 flex justify-content-start">
                         <Link href={"/pages/main/user/mainteance"} >
-                            <Button onClick={() => setUser(undefined)} label="Nuevo"></Button>
+                            <Button onClick={() => setUser(undefined)} label="Nuevo" icon="pi-user-plus"></Button>
                         </Link>
                     </div>
                     <div className="col-12 flex justify-content-center">

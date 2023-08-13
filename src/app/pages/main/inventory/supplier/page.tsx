@@ -22,6 +22,7 @@ import { useMainContext } from "../../../../context/mainContext";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { useTableContext } from "@/app/context/tableContext";
+import TitleTables from "@/app/components/titleTables";
 
 export default function Supplier(){
     const { mainInventory, setMainInventory } = useMainContext();
@@ -96,9 +97,9 @@ export default function Supplier(){
      
         <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
            <div className="grid" style={{ width: '90%' }}>
+            <TitleTables title="Proveedores"></TitleTables>
             <div className="col-12 flex justify-content-start">
-            
-            <Button onClick={handleNewSupplier} label="Nuevo" icon="pi pi-user-plus"></Button>
+                <Button onClick={handleNewSupplier} label="Nuevo" icon="pi pi-user-plus"></Button>
             </div>
             <div className="col-12 flex justify-content-center">
                     <TableGeneral baseFilter={supplierFilter} endpoint={Endpoints.SUPPLIER} columns={columns}  ></TableGeneral>

@@ -16,6 +16,7 @@ import { userContext } from "../user/userContext";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useTableContext } from "@/app/context/tableContext";
+import TitleTables from "@/app/components/titleTables";
 
 export default function SalePage() {
     const { product, setProduct } = useContext(productContext);
@@ -70,6 +71,7 @@ export default function SalePage() {
         <>
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
                 <div className="grid" style={{ width: '90%' }}>
+                    <TitleTables title="Compras"></TitleTables>
                     <div className="col-12 flex justify-content-start">
                         <Button onClick={handleNewSale} label="Nuevo" icon="pi pi-user-plus"></Button>
                     </div>
