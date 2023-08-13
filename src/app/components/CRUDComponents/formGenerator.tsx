@@ -4,7 +4,7 @@ import { Button } from "primereact/button";
 import React, { FormEvent } from "react";
 import { Dropdown } from "primereact/dropdown";
 
-export default function FormGenerator({ form, value, setValue, submit, buttonLabel = "submit", update = false, messages}: { form: Form, value: any, setValue: (partialT: Partial<any>) => void, submit: (e: FormEvent<HTMLFormElement>) => void, buttonLabel?: string, update?: boolean, messages?: React.ReactNode[] }) {
+export default function FormGenerator({ form, value, setValue, submit, buttonLabel = "submit", update = false, messages, register}: { form: Form, value: any, setValue: (partialT: Partial<any>) => void, submit: (e: FormEvent<HTMLFormElement>) => void, buttonLabel?: string, update?: boolean, messages?: React.ReactNode[], register?:  React.ReactNode[]}) {
 
 
     const generateFields = () => {
@@ -25,6 +25,14 @@ export default function FormGenerator({ form, value, setValue, submit, buttonLab
         ));
     }
 
+    const getMessagesRegister = () => {
+        return register?.map((msg, i) => (
+            <div key={i} className="col-12 flex justify-content-center">
+                {msg}
+            </div>
+        ));
+    }
+
 
     return (
         <form onSubmit={(e) => submit(e)} className="grid">
@@ -33,6 +41,7 @@ export default function FormGenerator({ form, value, setValue, submit, buttonLab
             <div className="col-12 text-center" >
                 <Button severity={update ? undefined: "success" } label={buttonLabel} ></Button>
             </div>
+            {getMessagesRegister()}
         </form>
     )
 }

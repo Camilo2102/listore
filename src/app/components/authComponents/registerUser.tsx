@@ -4,16 +4,19 @@ import { FormTypes } from "@/app/constants/formTypeConstant";
 import FormControl from "@/app/models/formModels/formControl";
 import Validators from "@/app/models/formModels/validators";
 import { FormEvent, useState } from "react";
+import { Button } from "primereact/button"
 import Container from "../container";
 import FormGenerator from "../CRUDComponents/formGenerator";
 import { handleForm } from "@/app/hooks/handleForm";
 import { ToastUtil } from "@/app/utils/toastUtil";
 import { Messages } from "@/app/constants/messageConstant";
+import { useRouter } from "next/navigation";
 
 export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: number, value: any) => void}) {
     /**
      * Instancia inicial de los formcontrols
      */
+    const router = useRouter();
     const [controls, setControls] = useState<FormControl[]>(
         [
             {
@@ -74,10 +77,16 @@ export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: num
         }
     }
 
+    const getMessagesRegister = () => {
+        return [
+            <Button type="button" label="Ya tengo cuenta" onClick={() =>  router.push("/pages/auth/login")} text />,
+        ]
+    }
+
 
     return(
         <Container title="Registro de usuario">
-            <FormGenerator buttonLabel="Continuar" form={form} value={user} setValue={setUser} submit={handleRegisterUser}></FormGenerator>
+            <FormGenerator buttonLabel="Continuar" form={form} value={user} setValue={setUser} submit={handleRegisterUser} register={getMessagesRegister()}></FormGenerator>
         </Container>
     )
 }
