@@ -9,11 +9,13 @@ import TableGeneral from "../tableGeneral";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
 import { DataTableSelectEvent } from "primereact/datatable";
+import useCRUDService from "@/app/hooks/services/useCRUDService";
 
 export default function InputHelper({ formControl, value, onValueChange, icon }: { formControl: FormControl, value: any, onValueChange: (value: any, dependecy?: string) => void, icon?: string }) {
     
     const [values, setValues] = useState<any[]>([]);
     const [visible, setVisible] = useState<boolean>(false);
+    const {getAllByFilter} = useCRUDService(formControl.service ? formControl.service : '');
 
     const [paginator, setPaginator] = useHandleInput<Paginator>({
         rows: 5,
@@ -28,7 +30,7 @@ export default function InputHelper({ formControl, value, onValueChange, icon }:
 
 
     const loadData = () => {
-        formControl.service && formControl.service.getAllByFilter(true, paginator, formControl.filter).then(res => {
+        getAllByFilter(true, paginator, formControl.filter).then(res => {
             setVisible(true);
             setValues(res);
         });

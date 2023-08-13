@@ -5,7 +5,6 @@ import { StatusMap } from "@/app/constants/statusMap";
 import UserFilterDTO from "@/app/dto/userFilterDTO";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import ColumnMeta from "@/app/interfaces/columnMeta";
-import { UserService } from "@/app/services/userService";
 import User from "@/app/models/user";
 import { useContext, useEffect, useState } from "react"
 import { Dialog } from 'primereact/dialog';
@@ -19,11 +18,13 @@ import DeleteWorker from "@/app/components/userComponents/DeleteWorker";
 import Paginator from "@/app/interfaces/paginator";
 
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+import useCRUDService from "@/app/hooks/services/useCRUDService";
+import { Endpoints } from "@/app/constants/endpointsConstants";
 
 
 
 export default function UserList({ props }: { props: any }) {
-    const userServices = new UserService();
+    const {getAllByFilter, countAllByFilter} = useCRUDService(Endpoints.USER);
     const router = useRouter();
 
     const [users, setUsers] = useState<any[]>([]);
@@ -60,7 +61,7 @@ export default function UserList({ props }: { props: any }) {
 
     useEffect(() => {
         if (deleteUser === undefined) {
-            userServices.getAllByFilter(true, paginator, userFilter).then((res) => {
+            getAllByFilter(true, paginator, userFilter).then((res) => {
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }
@@ -72,7 +73,7 @@ export default function UserList({ props }: { props: any }) {
 
     useEffect(() => {
         if (deleteUser === undefined) {
-            userServices.countAllByFilter(true, userFilter).then((res) => {
+            countAllByFilter(true, userFilter).then((res) => {
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }

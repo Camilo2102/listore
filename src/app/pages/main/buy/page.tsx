@@ -9,17 +9,20 @@ import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableGeneral";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { userContext } from "../user/userContext";
-import { BuyService } from "@/app/services/buyService";
 import BuyModel from "@/app/models/buy";
 import { buyContext } from "./buyContext";
 import BuyAtribute from "@/app/components/buyComponents/registerBuy";
 import RegisterBuy from "@/app/components/buyComponents/registerBuy";
+import { Endpoints } from "@/app/constants/endpointsConstants";
+import useCRUDService from "@/app/hooks/services/useCRUDService";
 
 export default function BuyPage(){
     const {product, setProduct} = useContext(productContext);
     const {user, setUser} = useContext(userContext);
     const [buys, setBuys] = useState<any[]>([]);
-    const buyService = new BuyService();
+
+    const {getAllByFilter, countAllByFilter} = useCRUDService(Endpoints.BUY);
+
     const [visible, setVisible] = useState<boolean>(false);
     const [buyFilter, setBuyFilter] = useState<BuyModel>({
         buyDate: new Date(),
@@ -51,13 +54,13 @@ export default function BuyPage(){
 
     useEffect(() =>{
         if(!visible && !paginator.loaded){
-            buyService.getAllByFilter(true, paginator, buyFilter).then(res =>{
+            getAllByFilter(true, paginator, buyFilter).then(res =>{
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }
                  setBuys(res);
             })
-            buyService.countAllByFilter(true, buyFilter).then(res=>{
+            countAllByFilter(true, buyFilter).then(res=>{
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }

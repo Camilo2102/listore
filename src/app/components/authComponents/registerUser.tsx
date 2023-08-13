@@ -7,12 +7,10 @@ import { FormEvent, useState } from "react";
 import Container from "../container";
 import FormGenerator from "../CRUDComponents/formGenerator";
 import { handleForm } from "@/app/hooks/handleForm";
-import { ToastService } from "@/app/services/toastService";
+import { ToastUtil } from "@/app/utils/toastUtil";
 import { Messages } from "@/app/constants/messageConstant";
-import {AuthService} from "@/app/services/authService";
 
 export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: number, value: any) => void}) {
-    const authService = new AuthService();
     /**
      * Instancia inicial de los formcontrols
      */

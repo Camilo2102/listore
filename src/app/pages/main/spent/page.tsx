@@ -8,15 +8,18 @@ import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableGeneral";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { userContext } from "../user/userContext";
-import { SpentService } from "@/app/services/spentService";
 import SpentModel from "@/app/models/spent";
 import { spentContext } from "./spentContext";
 import RegisterSpent from "@/app/components/spentComponets/registerSpent";
+import useCRUDService from "@/app/hooks/services/useCRUDService";
+import { Endpoints } from "@/app/constants/endpointsConstants";
 
 export default function SpentPage(){
     const {user, setUser} = useContext(userContext);
     const [spents, setSpents] = useState<any[]>([]);
-    const spentService = new SpentService();
+
+    const {getAllByFilter, countAllByFilter} = useCRUDService(Endpoints.SPENT);
+
     const [visible, setVisible] = useState<boolean>(false);
     const [spentFilter, setSpentFilter] = useState<SpentModel>({
         spentDate: new Date(),
@@ -45,13 +48,13 @@ export default function SpentPage(){
 
     useEffect(() =>{
         if(!visible && !paginator.loaded){
-            spentService.getAllByFilter(true, paginator, spentFilter).then(res =>{
+            getAllByFilter(true, paginator, spentFilter).then(res =>{
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }
                  setSpents(res);
             })
-            spentService.countAllByFilter(true, spentFilter).then(res=>{
+            countAllByFilter(true, spentFilter).then(res=>{
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }

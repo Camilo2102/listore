@@ -1,13 +1,12 @@
 'use client';
 import SupplierModel from "@/app/models/supplier";
-import { SupplierService } from "@/app/services/supplierService";
 import { AuthUtil } from "@/app/utils/authUtil";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { supplierContext } from "./supplierContext";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import { ConfirmationService } from "@/app/services/confirmationService";
-import { ToastService } from "@/app/services/toastService";
+import { ToastUtil } from "@/app/utils/toastUtil";
 import { Messages } from "@/app/constants/messageConstant";
 import Paginator from "@/app/interfaces/paginator";
 import { useHandleInput } from "@/app/hooks/handleInput";
@@ -19,12 +18,14 @@ import popUp from '../../../../components/popUp';
 import PopUp from "../../../../components/popUp";
 import RegisterSupplier from "@/app/components/supplierComponents/RegisterSupplier";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
-import { mainContext } from "../../mainContext";
+import { useMainContext } from "../../../../context/mainContext";
+import { Endpoints } from "@/app/constants/endpointsConstants";
+import useCRUDService from "@/app/hooks/services/useCRUDService";
 
 export default function Supplier(){
-    const { mainInventory, setMainInventory } = useContext(mainContext);
+    const { mainInventory, setMainInventory } = useMainContext();
     const router = useRouter();
-    const supplierService = new SupplierService();
+    const {deleteData, getAllByFilter, countAllByFilter} = useCRUDService(Endpoints.SUPPLIER);
     const [suppliers, setSuppliers] = useState<any[]>([]);
 
     const [supplierFilter, setSupplierFilter] = useState<SupplierModel>({
@@ -61,11 +62,11 @@ export default function Supplier(){
 
     const handleDelete = (t:any) =>{
         const deletFn = () =>{
-            supplierService.delete(true, t.id).then((res) => {
+            deleteData(true, t.id).then((res) => {
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }
-                ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
+                ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
                 setSupplier(undefined);
                 setVisible(false)
                 setPaginator({loaded: false})
@@ -87,13 +88,13 @@ export default function Supplier(){
     
     useEffect(() =>{
         if(!visible && !paginator.loaded){
-            supplierService.getAllByFilter(true, paginator, supplierFilter).then(res =>{
+            getAllByFilter(true, paginator, supplierFilter).then(res =>{
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }
                 setSuppliers(res);
             })
-            supplierService.countAllByFilter(true, supplierFilter).then(res=>{
+            countAllByFilter(true, supplierFilter).then(res=>{
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }

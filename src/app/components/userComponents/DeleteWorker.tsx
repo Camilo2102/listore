@@ -1,13 +1,13 @@
 import { Messages } from "@/app/constants/messageConstant";
-import { AuthService } from "@/app/services/authService";
-import { ToastService } from "@/app/services/toastService";
+import useAuthService from "@/app/hooks/services/useAuthService";
+import { ToastUtil } from "@/app/utils/toastUtil";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 export default function DeleteWorker({ user, visible, setVisible }: { user: any, visible: boolean, setVisible: Dispatch<SetStateAction<any>>}) {
-    const authService = new AuthService();
+    const {disableUser} = useAuthService();
 
     const footerContent = (
         <div>
@@ -17,11 +17,11 @@ export default function DeleteWorker({ user, visible, setVisible }: { user: any,
     );
 
     const deleteUser = () => {
-        authService.disableUser(user.id).then(res => {
+        disableUser(user.id).then(res => {
             if(!ResErrorHandler.isValidRes(res)){
                 return;
              }
-            ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_SUCCESS_DISABLED)
+            ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_SUCCESS_DISABLED)
             setVisible(undefined)
         })
     }

@@ -21,7 +21,7 @@ export default interface FormControl{
     minDate?: Date;
     maxDate?: Date;
     options?:  KeyValueInterface[];
-    service?: CRUDFactory<any>;
+    service?: string;
     columns?: ColumnMeta[];
     fieldDependency?: string;
     filter?: any;

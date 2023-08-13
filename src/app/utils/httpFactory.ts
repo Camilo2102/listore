@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { AuthUtil } from "./authUtil";
 import { withRouter } from 'next/router'
-import { ToastService } from "../services/toastService";
+import { ToastUtil } from "../utils/toastUtil";
 import { Messages } from "../constants/messageConstant";
 
 export class HttpFactory {
@@ -105,9 +105,9 @@ export class HttpFactory {
         err => {
           err.json().then((res: any) => {
             if (res.status === 401) {
-              AuthUtil.setAuthorized(false);
+              
             }
-            ToastService.showError(Messages.MESSAGE_ERROR, res.error);
+            ToastUtil.showError(Messages.MESSAGE_ERROR, res.error);
           });
         }
       );

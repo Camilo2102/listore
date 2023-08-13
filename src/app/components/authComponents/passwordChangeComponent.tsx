@@ -7,20 +7,20 @@ import Container from "../container";
 import { FormTypes } from "@/app/constants/formTypeConstant";
 import Validators from "@/app/models/formModels/validators";
 import FormControl from "@/app/models/formModels/formControl";
-import { AuthService } from "@/app/services/authService";
 import { useRouter, useSearchParams } from "next/navigation";
 import PasswordChange from "@/app/models/passwordChange";
 import FormGenerator from "../CRUDComponents/formGenerator";
-import { ToastService } from "@/app/services/toastService";
+import { ToastUtil } from "@/app/utils/toastUtil";
 import { Messages } from "@/app/constants/messageConstant";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+import useAuthService from "@/app/hooks/services/useAuthService";
 
 
 export default function PasswordChangeComponent() {
     const router = useRouter();
     const searchParams = useSearchParams()
 
-    const authService: AuthService = new AuthService();
+    const {enableUser} = useAuthService();
 
     /**
      * Instancia inicial de los formcontrols
@@ -103,13 +103,13 @@ export default function PasswordChangeComponent() {
                 setSubmited(true);
                 return;
             }
-            ToastService.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_PASSWORD_MISMATCH)
+            ToastUtil.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_PASSWORD_MISMATCH)
         }
     }
 
     useEffect(() => {
         if (submited) {
-            authService.enableUser(passwordToChange).then(res => {
+            enableUser(passwordToChange).then(res => {
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }

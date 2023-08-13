@@ -5,16 +5,17 @@ import FormControl from "@/app/models/formModels/formControl";
 import Validators from "@/app/models/formModels/validators";
 import { atributeContext } from "@/app/pages/main/inventory/product/atribute/atributeContext";
 import { productContext } from "@/app/pages/main/inventory/product/productContext";
-import { AtributeService } from "@/app/services/atributeService";
-import { ToastService } from "@/app/services/toastService";
+import { ToastUtil } from "@/app/utils/toastUtil";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import PopUp from "../popUp";
 import FormGenerator from "../CRUDComponents/formGenerator";
 import ProductModel from "@/app/models/product";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+import useCRUDService from "@/app/hooks/services/useCRUDService";
+import { Endpoints } from "@/app/constants/endpointsConstants";
 
 export default function RegisterAtribute({visible, setVisible}: {visible: boolean, setVisible: (partialT: Partial<boolean>) => void}){
-    const atributesService = new AtributeService()
+    const {create} = useCRUDService(Endpoints.ATTRIBUTES);
     const [controls, setControls] = useState<FormControl[]>(
         [
             {
@@ -54,12 +55,12 @@ export default function RegisterAtribute({visible, setVisible}: {visible: boolea
         if(valid){
            atributeToRegister.product = new ProductModel()
            atributeToRegister.product.id = product.id
-            atributesService.create(true, atributeToRegister).then(
+            create(true, atributeToRegister).then(
                 res => {
                     if(!ResErrorHandler.isValidRes(res)){
                         return;
                      }
-                    ToastService.showSuccess(Messages.MESSAGE_SUCCESS, atribute? Messages.MESSAGE_CREATE_SUCCESS: Messages.MESSAGE_UPDATE_SUCCESS)
+                    ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, atribute? Messages.MESSAGE_CREATE_SUCCESS: Messages.MESSAGE_UPDATE_SUCCESS)
                     setVisible(false)
                     setSubmited(false)
                     setAtribute(undefined)

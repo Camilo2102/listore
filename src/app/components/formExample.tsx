@@ -3,7 +3,6 @@ import Validators from "@/app/models/formModels/validators";
 import { FormEvent, useState } from "react";
 import { DateUtil } from "../utils/dateUtil";
 import { handleForm } from "../hooks/handleForm";
-import { ToastService } from "../services/toastService";
 import { Card } from "primereact/card";
 import InputForm from "./formComponents/inputForm";
 import PasswordForm from "./formComponents/passwordForm";
@@ -13,6 +12,7 @@ import DropDownForm from "./formComponents/dropDownForm";
 import RadioButtonForm from "./formComponents/radioButtonForm";
 import { Button } from "primereact/button";
 import { FormTypes } from "../constants/formTypeConstant";
+import { ToastUtil } from "../utils/toastUtil";
 
 export default function FormExample() {
     /**
@@ -105,7 +105,7 @@ export default function FormExample() {
 
 
         if (valid) {
-            ToastService.showSuccess("Si", "");
+            ToastUtil.showSuccess("Si", "");
         }
 
 

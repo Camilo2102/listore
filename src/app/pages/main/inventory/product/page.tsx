@@ -1,11 +1,10 @@
 'use client';
 
 import ProductModel from "@/app/models/product";
-import { ProductService } from "@/app/services/productService";
 import { useContext, useEffect, useState } from "react";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import { Messages } from "@/app/constants/messageConstant";
-import { ToastService } from "@/app/services/toastService";
+import { ToastUtil } from "@/app/utils/toastUtil";
 import { ConfirmationService } from "@/app/services/confirmationService";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
@@ -17,14 +16,19 @@ import { productContext } from "./productContext";
 import { DataTableSelectEvent } from "primereact/datatable";
 import { useRouter } from "next/navigation";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
-import { mainContext } from "../../mainContext";
+import { useMainContext } from "../../../../context/mainContext";
+import useCRUDService from "@/app/hooks/services/useCRUDService";
+import { Endpoints } from "@/app/constants/endpointsConstants";
 
 
 export default function ProductPage() {
     const router = useRouter();
     const { inventory, setInventory } = useContext(inventoryContext);
-    const { mainInventory, setMainInventory } = useContext(mainContext);
-    const productService = new ProductService();
+    const { mainInventory, setMainInventory } = useMainContext();
+    
+    const {deleteData, getAllByFilter, countAllByFilter} = useCRUDService(Endpoints.PRODUCT);
+
+
     const [products, setProducts] = useState<any[]>([]);
 
     
@@ -72,11 +76,11 @@ export default function ProductPage() {
     const handleDelete = (t: any) => {
 
         const deleteFn = () => {
-            productService.delete(true, t.id).then((res) => {
+            deleteData(true, t.id).then((res) => {
                 if (!ResErrorHandler.isValidRes(res)) {
                     return;
                 }
-                ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
+                ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
                 setProduct(undefined);
                 setVisible(false)
                 setPaginator({ loaded: false })
@@ -97,18 +101,18 @@ export default function ProductPage() {
     const [visible, setVisible] = useState<boolean>(false);
 
     const getData = () => {
-        productService.getAllByFilter(true, paginator, productFilter).then(res => {
+        getAllByFilter(true, paginator, productFilter).then(res => {
             if (!ResErrorHandler.isValidRes(res)) {
                 return;
             }
             const temporalRes = res.map(product => {
-                product.supplierName = product.supplier.name;
+                product.supplierName = product.supplier?.name;
                 return product;
             } )
             
             setProducts(temporalRes);
         })
-        productService.countAllByFilter(true, productFilter).then(res => {
+        countAllByFilter(true, productFilter).then(res => {
             if (!ResErrorHandler.isValidRes(res)) {
                 return;
             }

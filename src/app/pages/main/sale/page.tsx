@@ -6,7 +6,6 @@ import Paginator from "@/app/interfaces/paginator";
 import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableGeneral";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
-import { SaleService } from "@/app/services/saleService";
 import SaleModel from "@/app/models/sale";
 import { saleContext } from "./saleContext";
 import RegisterSale from "@/app/components/saleComponents/registerSale";
@@ -14,12 +13,16 @@ import { DateUtil } from "@/app/utils/dateUtil";
 import { AuthUtil } from "@/app/utils/authUtil";
 import { productContext } from "../inventory/product/productContext";
 import { userContext } from "../user/userContext";
+import useCRUDService from "@/app/hooks/services/useCRUDService";
+import { Endpoints } from "@/app/constants/endpointsConstants";
 
 export default function SalePage() {
     const { product, setProduct } = useContext(productContext);
     const { user, setUser } = useContext(userContext);
     const [sales, setSales] = useState<any[]>([]);
-    const saleService = new SaleService();
+    
+    const {getAllByFilter, countAllByFilter} = useCRUDService(Endpoints.SALE);
+
     const [visible, setVisible] = useState<boolean>(false);
     const [saleFilter, setSaleFilter] = useState<SaleModel>({
         saleDate: DateUtil.removeDaysFromNow(1),
@@ -54,7 +57,7 @@ export default function SalePage() {
 
     useEffect(() => {
         if (!visible && !paginator.loaded) {
-            saleService.getAllByFilter(true, paginator, saleFilter).then(res => {
+            getAllByFilter(true, paginator, saleFilter).then(res => {
                 if (!ResErrorHandler.isValidRes(res)) {
                     return;
                 }
@@ -70,7 +73,7 @@ export default function SalePage() {
                 
                 setSales(copyRes);
             })
-            saleService.countAllByFilter(true, saleFilter).then(res => {
+            countAllByFilter(true, saleFilter).then(res => {
                 if (!ResErrorHandler.isValidRes(res)) {
                     return;
                 }

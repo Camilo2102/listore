@@ -1,6 +1,5 @@
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import { inventoryContext } from "@/app/pages/main/inventory/inventoryContext";
-import { InventoryService } from "@/app/services/inventoryService";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import TableGeneral from "../tableGeneral";
@@ -11,13 +10,15 @@ import { DataTableSelectEvent } from "primereact/datatable";
 import { AuthUtil } from "@/app/utils/authUtil";
 import Paginator from "@/app/interfaces/paginator";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
-import { mainContext } from "@/app/pages/main/mainContext";
+import { useMainContext } from "@/app/context/mainContext";
+import useCRUDService from "@/app/hooks/services/useCRUDService";
+import { Endpoints } from "@/app/constants/endpointsConstants";
 
 
 export default function SelectInventory({ inventorySelected, visible, setVisible }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
 
     const router = useRouter();
-    const inventoryService = new InventoryService();
+    const {getAllByFilter} = useCRUDService(Endpoints.INVENTORY);
     const [inventorys, setInventorys] = useState<any[]>([]);
 
     const [inventoryFilter, setInventoryFitler] = useState<InventoryModel>({
@@ -29,7 +30,7 @@ export default function SelectInventory({ inventorySelected, visible, setVisible
         name: "",
     });
 
-    const { mainInventory, setMainInventory } = useContext(mainContext);
+    const { mainInventory, setMainInventory } = useMainContext();
 
     const columns: ColumnMeta[] = [
         { field: 'name', header: 'Nombre' },
@@ -43,7 +44,7 @@ export default function SelectInventory({ inventorySelected, visible, setVisible
     const handleSelection = (inventory: DataTableSelectEvent) => {
         setMainInventory(inventory.data);
         setVisible(false);
-        
+
         router.push("/pages/main/inventory/product")
     };
 
@@ -57,11 +58,10 @@ export default function SelectInventory({ inventorySelected, visible, setVisible
     });
 
     useEffect(() => {
-       
-        inventoryService.getAllByFilter(true, paginator, inventoryFilter).then(res => {
-            if(!ResErrorHandler.isValidRes(res)){
+        getAllByFilter(true, paginator, inventoryFilter).then(res => {
+            if (!ResErrorHandler.isValidRes(res)) {
                 return;
-             }
+            }
             setInventorys(res);
         })
     }, [visible, paginator])
@@ -70,12 +70,7 @@ export default function SelectInventory({ inventorySelected, visible, setVisible
         <>
 
             <PopUp title="Selecione un inventario" visible={visible} setVisible={setVisible}>
-
-
                 <TableGeneral columns={columns} onRowSelect={handleSelection} values={inventorys} paginator={paginator} setPaginator={setPaginator} ></TableGeneral>
-
-
-
             </PopUp>
         </>
     )

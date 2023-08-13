@@ -7,20 +7,20 @@ import { handleForm } from "@/app/hooks/handleForm";
 import FormGenerator from "@/app/components/CRUDComponents/formGenerator";
 import InventoryModel from "@/app/models/inventory";
 
-import { ToastService } from "@/app/services/toastService";
+import { ToastUtil } from "@/app/utils/toastUtil";
 import { Messages } from "@/app/constants/messageConstant";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ProductService } from "@/app/services/productService";
 import { productContext } from "@/app/pages/main/inventory/product/productContext";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
-import { mainContext } from "@/app/pages/main/mainContext";
-import { SupplierService } from "@/app/services/supplierService";
+import { useMainContext } from "@/app/context/mainContext";
+import { Endpoints } from "@/app/constants/endpointsConstants";
+import useCRUDService from "@/app/hooks/services/useCRUDService";
 
 
 export default function RegisterProduct({ inventorySelected, visible, setVisible, onProductCreated  }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void , onProductCreated: () => void}){
-   const { mainInventory, setMainInventory } = useContext(mainContext);
-   const productService = new ProductService();
+   const { mainInventory, setMainInventory } = useMainContext();
+   const {create} = useCRUDService(Endpoints.PRODUCT);
    const router = useRouter();
 
    const [controls, setControls] = useState<FormControl[]>(
@@ -40,7 +40,7 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
                 { field: 'phone', header: 'Telefono' },
             ],
             icon: "pi-user",
-            service: new SupplierService(),
+            service: Endpoints.SUPPLIER,
             filter: {
                name: "",
                description: "",
@@ -134,11 +134,11 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
          }
 
 
-         productService.create(true, productToRegister).then(res => {
+         create(true, productToRegister).then(res => {
             if(!ResErrorHandler.isValidRes(res)){
                return;
             }
-            ToastService.showSuccess(Messages.MESSAGE_SUCCESS, inventorySelected ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
+            ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, inventorySelected ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
             setVisible(false);
             setProduct(undefined);
             onProductCreated(); // Llamar a la función de callback al crear el producto

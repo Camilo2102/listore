@@ -2,7 +2,6 @@ import { Card } from "primereact/card"
 import InputForm from "../formComponents/inputForm"
 import PasswordForm from "../formComponents/passwordForm"
 import { Button } from "primereact/button"
-import { AuthService } from "../../services/authService";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import FormControl from "@/app/models/formModels/formControl";
@@ -16,15 +15,19 @@ import Link from "next/link";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+import { useAuthContext } from "@/app/context/authContext";
+import useAuthService from "@/app/hooks/services/useAuthService";
 
 export default function LoginComponent() {
 
     const router = useRouter();
 
-    const authService: AuthService = new AuthService();
+    const {login, sendRecoveryEmail} = useAuthService();
 
     const [showRecoveryDialog, setShowRecoveryDialog] = useState<boolean>(false);
     const [recoveryMail, setRecoveryMail] = useState<string>("");
+
+    const {authorized, setAuthorized} = useAuthContext();
     /**
      * Instancia inicial de los formcontrols
      */
@@ -67,12 +70,12 @@ export default function LoginComponent() {
         setControls([...formControls]);
 
         if (valid) {
-            authService.login(credential).then(res => {
+            login(credential).then(res => {
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }
                 AuthUtil.setCredentials(res.token, res.company, res.user);
-                AuthUtil.setAuthorized(true);
+                setAuthorized("true");
                 router.push("/pages/main/user")
             })
         }
@@ -86,7 +89,7 @@ export default function LoginComponent() {
     }
 
     const handleEmailRecovery = () => {
-        authService.sendRecoveryEmail(recoveryMail).then(
+        sendRecoveryEmail(recoveryMail).then(
             res => {
                 if(!ResErrorHandler.isValidRes(res)){
                     return;

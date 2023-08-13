@@ -4,19 +4,21 @@ import { handleForm } from "@/app/hooks/handleForm";
 import FormControl from "@/app/models/formModels/formControl";
 import Validators from "@/app/models/formModels/validators";
 import { productContext } from "@/app/pages/main/inventory/product/productContext";
-import { ToastService } from "@/app/services/toastService";
+import { ToastUtil } from "@/app/utils/toastUtil";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import PopUp from "../popUp";
 import FormGenerator from "../CRUDComponents/formGenerator";
 import ProductModel from "@/app/models/product";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
-import { BuyService } from "@/app/services/buyService";
 import { buyContext } from "@/app/pages/main/buy/buyContext";
 import User from "@/app/models/user";
 import { AuthUtil } from "@/app/utils/authUtil";
+import useCRUDService from "@/app/hooks/services/useCRUDService";
+import { Endpoints } from "@/app/constants/endpointsConstants";
 
 export default function RegisterBuy({visible, setVisible}: {visible: boolean, setVisible: (partialT: Partial<boolean>) => void}){
-    const buyService = new BuyService();
+    const {create} = useCRUDService(Endpoints.BUY);
+
     const [controls, setControls] = useState<FormControl[]>(
         [
             {
@@ -58,12 +60,12 @@ export default function RegisterBuy({visible, setVisible}: {visible: boolean, se
            buyToRegister.user.id =  AuthUtil.getCredentials().user;
            buyToRegister.product = new ProductModel()
            buyToRegister.product.id = product.id
-            buyService.create(true, buyToRegister).then(
+            create(true, buyToRegister).then(
                 res => {
                     if(!ResErrorHandler.isValidRes(res)){
                         return;
                      }
-                    ToastService.showSuccess(Messages.MESSAGE_SUCCESS, buy? Messages.MESSAGE_CREATE_SUCCESS: Messages.MESSAGE_UPDATE_SUCCESS)
+                    ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, buy? Messages.MESSAGE_CREATE_SUCCESS: Messages.MESSAGE_UPDATE_SUCCESS)
                     setVisible(false)
                     setSubmited(false)
                     setBuy(undefined)

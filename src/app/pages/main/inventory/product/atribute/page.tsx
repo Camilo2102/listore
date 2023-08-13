@@ -1,24 +1,27 @@
 'use client';
 import { useContext, useEffect, useState } from "react";
 import { atributeContext } from "./atributeContext";
-import { AtributeService } from "@/app/services/atributeService";
 import AtributesModel from "@/app/models/atribute";
 import { productContext } from "../productContext";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import { ConfirmationService } from "@/app/services/confirmationService";
 import { Messages } from "@/app/constants/messageConstant";
-import { ToastService } from "@/app/services/toastService";
+import { ToastUtil } from "@/app/utils/toastUtil";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
 import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableGeneral";
 import RegisterAtribute from "@/app/components/atributesComponentes/RegisterAtribute";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+import useCRUDService from "@/app/hooks/services/useCRUDService";
+import { Endpoints } from "@/app/constants/endpointsConstants";
 
 export default function AtributePage(){
     const {product, setProduct} = useContext(productContext);
     const [atributes, setAtributes] = useState<any[]>([]);
-    const atributesService = new AtributeService();
+    
+    const {deleteData, getAllByFilter, countAllByFilter } = useCRUDService(Endpoints.ATTRIBUTES);
+
     const [visible, setVisible] = useState<boolean>(false);
     const [atributesFilter, setAtributesFilter] = useState<AtributesModel>({
         name: "",
@@ -47,11 +50,11 @@ export default function AtributePage(){
 
     const handleDelete = (t: any) =>{
         const deletFn = () =>{
-            atributesService.delete(true, t.id).then((res) => {
+            deleteData(true, t.id).then((res) => {
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }
-                ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
+                ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
                 setAtribute(undefined);
                 setVisible(false)
                 setPaginator({loaded: false})
@@ -71,13 +74,13 @@ export default function AtributePage(){
 
     useEffect(() =>{
         if(!visible && !paginator.loaded){
-            atributesService.getAllByFilter(true, paginator, atributesFilter).then(res =>{
+            getAllByFilter(true, paginator, atributesFilter).then(res =>{
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }
                 setAtributes(res);
             })
-            atributesService.countAllByFilter(true, atributesFilter).then(res=>{
+            countAllByFilter(true, atributesFilter).then(res=>{
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }

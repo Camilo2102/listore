@@ -4,7 +4,7 @@ import { handleForm } from "@/app/hooks/handleForm";
 import FormControl from "@/app/models/formModels/formControl";
 import Validators from "@/app/models/formModels/validators";
 import { productContext } from "@/app/pages/main/inventory/product/productContext";
-import { ToastService } from "@/app/services/toastService";
+import { ToastUtil } from "@/app/utils/toastUtil";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import PopUp from "../popUp";
 import FormGenerator from "../CRUDComponents/formGenerator";
@@ -12,17 +12,16 @@ import ProductModel from "@/app/models/product";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import User from "@/app/models/user";
 import { AuthUtil } from "@/app/utils/authUtil";
-import { SaleService } from "@/app/services/saleService";
 import { saleContext } from "@/app/pages/main/sale/saleContext";
 import { CRUDFactory } from "@/app/models/CRUDFactory";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
-import { InventoryService } from "@/app/services/inventoryService";
-import { ProductService } from "@/app/services/productService";
 import TableGeneral from "../tableGeneral";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
 import ColumnMeta from "@/app/interfaces/columnMeta";
+import { Endpoints } from "@/app/constants/endpointsConstants";
+import useCRUDService from "@/app/hooks/services/useCRUDService";
 
 export default function RegisterSale({ visible, setVisible }: { visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
 
@@ -30,9 +29,8 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
 
     const [newSaleVisible, setNewSaleVisible] = useState(false);
 
+    const {createAll} = useCRUDService(Endpoints.SALE);
 
-
-    const saleService = new SaleService();
     const [controls, setControls] = useState<FormControl[]>(
         [
             {
@@ -72,7 +70,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                     { field: 'category', header: 'Categoria' },
                 ],
                 icon: "pi-user",
-                service: new InventoryService(),
+                service: Endpoints.INVENTORY,
                 filter: {
                     category: "",
                     description: "",
@@ -97,7 +95,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                     { field: 'description', header: 'Descripcion' },
                 ],
                 icon: "pi-user",
-                service: new ProductService(),
+                service: Endpoints.PRODUCT,
                 disabled: true,
                 filter: {
 
@@ -129,7 +127,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                       if (!ResErrorHandler.isValidRes(res)) {
                           return;
                       }
-                      ToastService.showSuccess(Messages.MESSAGE_SUCCESS, sale ? Messages.MESSAGE_CREATE_SUCCESS : Messages.MESSAGE_UPDATE_SUCCESS)
+                      ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, sale ? Messages.MESSAGE_CREATE_SUCCESS : Messages.MESSAGE_UPDATE_SUCCESS)
                       setVisible(false)
                       setSubmited(false)
                       setSale(undefined)
@@ -223,11 +221,11 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
             return sale;
         })
 
-        saleService.createAll(true, modifiedSales).then(res => {
+        createAll(true, modifiedSales).then(res => {
             if (!ResErrorHandler.isValidRes(res)) {
                 return;
             }
-            ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS)
+            ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS)
             setVisible(false)
             setSubmited(false)
             setSale(undefined)

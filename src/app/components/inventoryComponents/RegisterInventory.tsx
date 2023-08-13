@@ -6,19 +6,19 @@ import Validators from "@/app/models/formModels/validators";
 import { handleForm } from "@/app/hooks/handleForm";
 import FormGenerator from "@/app/components/CRUDComponents/formGenerator";
 import InventoryModel from "@/app/models/inventory";
-import { InventoryService } from "@/app/services/inventoryService";
-import { ToastService } from "@/app/services/toastService";
+import { ToastUtil } from "@/app/utils/toastUtil";
 import { Messages } from "@/app/constants/messageConstant";
 import { AuthUtil } from "@/app/utils/authUtil";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { inventoryContext } from "@/app/pages/main/inventory/inventoryContext";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
-import { mainContext } from "@/app/pages/main/mainContext";
+import { useMainContext } from "@/app/context/mainContext";
+import useCRUDService from "@/app/hooks/services/useCRUDService";
+import { Endpoints } from "@/app/constants/endpointsConstants";
 
 
 export default function RegisterInventory({ inventorySelected, visible, setVisible }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
-   const inventoryService = new InventoryService();
+   const {create } = useCRUDService(Endpoints.INVENTORY);
    const router = useRouter();
 
    const [controls, setControls] = useState<FormControl[]>(
@@ -62,8 +62,7 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
    const [inventoryToRegister, form, setInventoryToRegister, validateFormControls] = handleForm(controls);
 
    const [submited, setSubmited] = useState<boolean>(false);
-   //const { inventory, setInventory } = useContext(inventoryContext);
-   const { mainInventory, setMainInventory } = useContext(mainContext);
+   const { mainInventory, setMainInventory } = useMainContext();
    const handleInventory = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
@@ -74,7 +73,7 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
       if (valid) {
          const { name, description, category } = inventoryToRegister;
 
-         inventoryService.create(true, {
+         create(true, {
             id: mainInventory?.id,
             name,
             description,
@@ -84,7 +83,7 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
             if(!ResErrorHandler.isValidRes(res)){
                return;
             }
-            ToastService.showSuccess(Messages.MESSAGE_SUCCESS, mainInventory ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
+            ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, mainInventory ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
             setVisible(false);
             setMainInventory(undefined);
          });

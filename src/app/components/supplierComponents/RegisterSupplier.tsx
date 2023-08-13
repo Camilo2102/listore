@@ -11,16 +11,18 @@ import { log } from "console";
 import FormGenerator from "../CRUDComponents/formGenerator";
 import InventoryModel from "@/app/models/inventory";
 import { inventoryContext } from '../../pages/main/inventory/inventoryContext';
-import { SupplierService } from "@/app/services/supplierService";
-import { ToastService } from "@/app/services/toastService";
+import { ToastUtil } from "@/app/utils/toastUtil";
 import { Messages } from "@/app/constants/messageConstant";
 import { supplierContext } from "@/app/pages/main/inventory/supplier/supplierContext";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
-import { mainContext } from "@/app/pages/main/mainContext";
+import { useMainContext } from "@/app/context/mainContext";
+import useCRUDService from "@/app/hooks/services/useCRUDService";
+import { Endpoints } from "@/app/constants/endpointsConstants";
 
 export default function RegisterSupplier({visible, setVisible}:{visible:boolean, setVisible:(partialT: Partial<boolean>) => void}) {
 
-    const supplierService = new SupplierService()
+    const {create} = useCRUDService(Endpoints.SUPPLIER);
+
     const [controls, setControls] = useState<FormControl[]>(
         [
             {
@@ -82,7 +84,7 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
     );
 
     const [supplierToRegister, form, setSupplierToRegister, validateFormControls] = handleForm(controls);
-    const { mainInventory, setMainInventory } = useContext(mainContext);
+    const { mainInventory, setMainInventory } = useMainContext();
     const {supplier, setSupplier} = useContext(supplierContext);
     
     const [submited, setSubmited] = useState<boolean>(false);
@@ -95,12 +97,12 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
             
             supplierToRegister.inventory = new InventoryModel()
             supplierToRegister.inventory.id = mainInventory.id
-            supplierService.create(true, supplierToRegister).then(
+            create(true, supplierToRegister).then(
                 res => {
                     if(!ResErrorHandler.isValidRes(res)){
                         return;
                      }
-                    ToastService.showSuccess(Messages.MESSAGE_SUCCESS, supplier? Messages.MESSAGE_CREATE_SUCCESS: Messages.MESSAGE_UPDATE_SUCCESS)
+                    ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, supplier? Messages.MESSAGE_CREATE_SUCCESS: Messages.MESSAGE_UPDATE_SUCCESS)
                     setVisible(false)
                     setSubmited(false)
                     setSupplier(undefined)

@@ -7,18 +7,19 @@ import { FormTypes } from "@/app/constants/formTypeConstant";
 import Validators from "@/app/models/formModels/validators";
 import FormControl from "@/app/models/formModels/formControl";
 import { RolesOptions } from "@/app/constants/roleValues";
-import { AuthService } from "@/app/services/authService";
-import { ToastService } from "@/app/services/toastService";
 import { Messages } from "@/app/constants/messageConstant";
 import { AuthUtil } from "@/app/utils/authUtil";
 import { useRouter } from "next/navigation";
 import RegisterWorkerDTO from "@/app/dto/registerWorkerDTO";
-import { UserService } from "@/app/services/userService";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+import useAuthService from "@/app/hooks/services/useAuthService";
+import useCRUDService from "@/app/hooks/services/useCRUDService";
+import { Endpoints } from "@/app/constants/endpointsConstants";
+import { ToastUtil } from "@/app/utils/toastUtil";
 
 export default function RegisterWorker({ userSelected }: { userSelected?: User }) {
-    const authService = new AuthService();
-    const userService = new UserService();
+    const {registerUser} = useAuthService();
+    const {update} = useCRUDService(Endpoints.USER);
     const router = useRouter();
 
     const [submited, setSubmited] = useState<boolean>(false);
@@ -130,29 +131,29 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
                 setSubmited(true);
                 return;
             }
-            ToastService.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_PASSWORD_MISMATCH)
+            ToastUtil.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_PASSWORD_MISMATCH)
         }
     }
 
     const registerNewWorker = () => {
-        authService.registerUser(workerToRegister).then(
+        registerUser(workerToRegister).then(
             res => {
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }
-                ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS);
+                ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS);
                 router.push("/pages/main/user")
             }
         );
     }
 
     const updateWorker = () => {
-        userService.update(true, workerToRegister).then(
+        update(true, workerToRegister).then(
             res => {
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }
-                ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_UPDATE_SUCCESS);
+                ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_UPDATE_SUCCESS);
                 router.push("/pages/main/user")
             }
         )

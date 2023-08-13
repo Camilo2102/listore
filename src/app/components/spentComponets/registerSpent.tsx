@@ -3,18 +3,20 @@ import { Messages } from "@/app/constants/messageConstant";
 import { handleForm } from "@/app/hooks/handleForm";
 import FormControl from "@/app/models/formModels/formControl";
 import Validators from "@/app/models/formModels/validators";
-import { ToastService } from "@/app/services/toastService";
+import { ToastUtil } from "@/app/utils/toastUtil";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import PopUp from "../popUp";
 import FormGenerator from "../CRUDComponents/formGenerator";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import User from "@/app/models/user";
 import { AuthUtil } from "@/app/utils/authUtil";
-import { SpentService } from "@/app/services/spentService";
 import { spentContext } from "@/app/pages/main/spent/spentContext";
+import useCRUDService from "@/app/hooks/services/useCRUDService";
+import { Endpoints } from "@/app/constants/endpointsConstants";
 
 export default function RegisterSpent({visible, setVisible}: {visible: boolean, setVisible: (partialT: Partial<boolean>) => void}){
-    const spentService = new SpentService();
+    const {create} = useCRUDService(Endpoints.SPENT);
+
     const [controls, setControls] = useState<FormControl[]>(
         [
             {
@@ -53,12 +55,12 @@ export default function RegisterSpent({visible, setVisible}: {visible: boolean, 
         if(valid){
            spentToRegister.user = new User();
            spentToRegister.user.id =  AuthUtil.getCredentials().user;
-            spentService.create(true, spentToRegister).then(
+            create(true, spentToRegister).then(
                 res => {
                     if(!ResErrorHandler.isValidRes(res)){
                         return;
                      }
-                    ToastService.showSuccess(Messages.MESSAGE_SUCCESS, spent? Messages.MESSAGE_CREATE_SUCCESS: Messages.MESSAGE_UPDATE_SUCCESS)
+                    ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, spent? Messages.MESSAGE_CREATE_SUCCESS: Messages.MESSAGE_UPDATE_SUCCESS)
                     setVisible(false)
                     setSubmited(false)
                     setSpent(undefined)

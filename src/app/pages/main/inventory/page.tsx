@@ -7,22 +7,23 @@ import TableGeneral from "@/app/components/tableGeneral";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
 import { useRouter } from "next/navigation";
-import { InventoryService } from "@/app/services/inventoryService";
 import InventoryModel from "@/app/models/inventory";
 import { AuthUtil } from "@/app/utils/authUtil";
 import { ConfirmationService } from "@/app/services/confirmationService";
 import { Messages } from "@/app/constants/messageConstant";
-import { ToastService } from "@/app/services/toastService";
+import { ToastUtil } from "@/app/utils/toastUtil";
 import { DataTableSelectEvent } from "primereact/datatable";
 import RegisterInventory from "@/app/components/inventoryComponents/RegisterInventory";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
-import { mainContext } from "../mainContext";
+import { useMainContext } from "@/app/context/mainContext";
+import useCRUDService from "@/app/hooks/services/useCRUDService";
+import { Endpoints } from "@/app/constants/endpointsConstants";
 
 
 
 export default function Inventory({ props }: { props: any }) {
     const router = useRouter();
-    const inventoryService = new InventoryService();
+    const {deleteData, getAllByFilter} = useCRUDService(Endpoints.INVENTORY);
     const [inventorys, setInventorys] = useState<any[]>([]);
 
     const [inventoryFilter, setInventoryFitler] = useState<InventoryModel>({
@@ -34,7 +35,7 @@ export default function Inventory({ props }: { props: any }) {
         name: "",
     });
 
-    const { mainInventory, setMainInventory } = useContext(mainContext);
+    const { mainInventory, setMainInventory } = useMainContext();
 
     const columns: ColumnMeta[] = [
         { field: 'name', header: 'Nombre' },
@@ -63,12 +64,11 @@ export default function Inventory({ props }: { props: any }) {
 
     const handleDelete = (t: any) => {
         const deleteFn = () => {
-           
-            inventoryService.delete(true, t.id).then((res) => {
+            deleteData(true, t.id).then((res) => {
                 if (!ResErrorHandler.isValidRes(res)) {
                     return;
                 }
-                ToastService.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
+                ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
                 setMainInventory(undefined);
             });
         }
@@ -92,9 +92,7 @@ export default function Inventory({ props }: { props: any }) {
 
     const [visible, setVisible] = useState<boolean>(false);
     useEffect(() => {
-
-
-        inventoryService.getAllByFilter(true, paginator, inventoryFilter).then(res => {
+        getAllByFilter(true, paginator, inventoryFilter).then(res => {
             if (!ResErrorHandler.isValidRes(res)) {
                 return;
             }

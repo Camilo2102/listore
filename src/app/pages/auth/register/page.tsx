@@ -4,8 +4,7 @@ import RegisterCompany from "@/app/components/authComponents/registerCompany";
 import RegisterUser from "@/app/components/authComponents/registerUser";
 import RegisterUserDTO from "@/app/dto/registerUserDTO";
 import { useHandleInput } from "@/app/hooks/handleInput";
-import { AuthService } from "@/app/services/authService";
-import { ToastService } from "@/app/services/toastService";
+import { ToastUtil } from "@/app/utils/toastUtil";
 import Company from "@/app/models/company";
 import CredentialModel from "@/app/models/credential";
 import User from "@/app/models/user";
@@ -13,10 +12,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Messages } from "@/app/constants/messageConstant";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+import useAuthService from "@/app/hooks/services/useAuthService";
 
 export default function Register() {
     const router = useRouter();
-    const authService: AuthService = new AuthService();
+    const {register} = useAuthService();
     const [part, setPart] = useState<number>(0);
 
     const [user, setUser] = useHandleInput<User>({active: "N", name: "", role: "M"});
@@ -65,12 +65,12 @@ export default function Register() {
 
     useEffect(() => {
         if(submited){
-            authService.register({user: user, credential: credential, company: company}).then(
+            register({user: user, credential: credential, company: company}).then(
                 res => {
                     if(!ResErrorHandler.isValidRes(res)){
                         return;
                      }
-                    ToastService.showSuccess(Messages.MESSAGE_SUCCESS, "Creado con exito");
+                    ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, "Creado con exito");
                     router.push("/pages/auth/passwordChange?token="+res.temporalToken);
                 }
             )

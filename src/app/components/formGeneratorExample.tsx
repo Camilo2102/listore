@@ -5,7 +5,7 @@ import Validators from "@/app/models/formModels/validators";
 import { DateUtil } from "../utils/dateUtil";
 import { handleForm } from "../hooks/handleForm";
 import { FormTypes } from "../constants/formTypeConstant";
-import { ToastService } from "../services/toastService";
+import { ToastUtil } from "../utils/toastUtil";
 
 export default function FormGeneratorExample () {
      /**
@@ -96,7 +96,7 @@ export default function FormGeneratorExample () {
 
 
         if (valid) {
-            ToastService.showSuccess("Si", "");
+            ToastUtil.showSuccess("Si", "");
         }
 
 

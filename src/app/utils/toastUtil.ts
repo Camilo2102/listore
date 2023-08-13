@@ -1,7 +1,7 @@
 import { Toast } from "primereact/toast";
 import { RefObject } from "react";
 
-export class ToastService {
+export class ToastUtil {
     private static toast: RefObject<Toast>;
 
     /**
