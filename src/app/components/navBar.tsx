@@ -63,14 +63,14 @@ export default function NavBar() {
             icon: 'pi pi-shopping-cart',
             label: 'Compras',
             command: () => {
-                //Compas
+                router.push("/pages/main/buy");
             }
         },
         {
             icon: 'pi pi-dollar',
             label: 'Ventas',
             command: () => {
-                router.push("/pages/main/inventory/product/sale");
+                router.push("/pages/main/sale");
             }
         }
     ];

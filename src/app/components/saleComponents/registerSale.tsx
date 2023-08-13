@@ -13,7 +13,7 @@ import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import User from "@/app/models/user";
 import { AuthUtil } from "@/app/utils/authUtil";
 import { SaleService } from "@/app/services/saleService";
-import { saleContext } from "@/app/pages/main/inventory/product/sale/saleContext";
+import { saleContext } from "@/app/pages/main/sale/saleContext";
 import { CRUDFactory } from "@/app/models/CRUDFactory";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";

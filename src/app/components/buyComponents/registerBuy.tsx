@@ -11,7 +11,7 @@ import FormGenerator from "../CRUDComponents/formGenerator";
 import ProductModel from "@/app/models/product";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { BuyService } from "@/app/services/buyService";
-import { buyContext } from "@/app/pages/main/inventory/product/buy/buyContext";
+import { buyContext } from "@/app/pages/main/buy/buyContext";
 import User from "@/app/models/user";
 import { AuthUtil } from "@/app/utils/authUtil";
 

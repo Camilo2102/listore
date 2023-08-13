@@ -1,21 +1,19 @@
 'use client';
 import { useContext, useEffect, useState } from "react";
-import { productContext } from "../productContext";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
-import NavBar from "@/app/components/navBar";
 import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableGeneral";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
-import { userContext } from "../../../user/userContext";
-import BuyAtribute from "@/app/components/buyComponents/registerBuy";
 import { SaleService } from "@/app/services/saleService";
 import SaleModel from "@/app/models/sale";
 import { saleContext } from "./saleContext";
 import RegisterSale from "@/app/components/saleComponents/registerSale";
 import { DateUtil } from "@/app/utils/dateUtil";
 import { AuthUtil } from "@/app/utils/authUtil";
+import { productContext } from "../inventory/product/productContext";
+import { userContext } from "../user/userContext";
 
 export default function SalePage() {
     const { product, setProduct } = useContext(productContext);

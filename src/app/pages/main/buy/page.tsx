@@ -1,6 +1,6 @@
 'use client';
 import { useContext, useEffect, useState } from "react";
-import { productContext } from "../productContext";
+import { productContext } from "../inventory/product/productContext";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
@@ -8,7 +8,7 @@ import NavBar from "@/app/components/navBar";
 import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableGeneral";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
-import { userContext } from "../../../user/userContext";
+import { userContext } from "../user/userContext";
 import { BuyService } from "@/app/services/buyService";
 import BuyModel from "@/app/models/buy";
 import { buyContext } from "./buyContext";
