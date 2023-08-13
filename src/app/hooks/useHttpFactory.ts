@@ -21,6 +21,8 @@ export default function useHttpFactory() {
             const token = AuthUtil.getCredentials().token;
             if (token) {
                 headers.append('Authorization', `${token}`);
+            } else {
+                ToastUtil.showError(Messages.MESSAGE_WARN, Messages.MESSAGE_NO_TOKEN);
             }
         } else {
             headers.delete('Authorization');

@@ -10,6 +10,8 @@ export class Messages {
     public static readonly MESSAGE_UPDATE_SUCCESS: string = "Actualizado con exito";
     public static readonly MESSAGE_DELETE_SUCCESS: string = "Eliminado con exito";
 
+    public static readonly MESSAGE_NO_TOKEN: string = "No hay un token";
+
     // Mensajes de los validadores
     public static readonly MESSAGE_REQUIERED: string = "Campo requerido: ";
     public static readonly MESSAGE_MAX_LENGTH: string = "Longitud maxima: ";
