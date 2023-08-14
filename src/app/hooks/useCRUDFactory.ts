@@ -5,7 +5,6 @@ import useHttpFactory from "./useHttpFactory";
 export default function useCRUDFactory<T>(baseUrl: string){
     const {httpGet, httpPost, httpPut, httpDelete} = useHttpFactory();
 
-
     /**
      * Obtiene la peticion para traer todos los elementos de un objeto T
      * @param baseUrl la url basica para hacer la peticion
@@ -58,13 +57,13 @@ export default function useCRUDFactory<T>(baseUrl: string){
      */
     const getAllByFilter = (secure: boolean = true, paginator: Paginator, t: any): Promise<T[]> => {
         const petitioRoute: string = baseUrl + Routes.GET_ALL_BY_FILTER + `?pageNumber=${paginator.page}&pageSize=${paginator.rows}`;
-        return httpPost(petitioRoute, secure, t);
+        return httpPost(petitioRoute, secure, [t]);
     }
 
     //  todo    
     const countAllByFilter = (secure: boolean = true, t: any): Promise<number> => {
         const petitioRoute: string = baseUrl + Routes.COUNT_ALL_BY_FILTERS;
-        return httpPost(petitioRoute, secure, t);
+        return httpPost(petitioRoute, secure, [t]);
     }
 
     /**
@@ -76,7 +75,7 @@ export default function useCRUDFactory<T>(baseUrl: string){
      */
     const create = (secure: boolean = true, body: T): Promise<T> => {
         const petitioRoute: string = baseUrl + Routes.CREATE_ROUTE;
-        return httpPost(petitioRoute, secure, body);
+        return httpPost(petitioRoute, secure, [body]);
     }
 
     /**
@@ -88,7 +87,7 @@ export default function useCRUDFactory<T>(baseUrl: string){
      */
     const update = (secure: boolean = true, body: T): Promise<T> => {
         const petitioRoute: string = baseUrl + Routes.UPDATE_ROUTE;
-        return httpPut(petitioRoute, secure, body);
+        return httpPut(petitioRoute, secure, [body]);
     }
 
     /**

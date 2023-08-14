@@ -152,14 +152,6 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
 
     ];
 
-    const [paginator, setPaginator] = useHandleInput<Paginator>({
-        rows: 5,
-        first: 0,
-        page: 0,
-        totalRecords: 0,
-        pagesVisited: 0,
-        loaded: false
-    });
 
 
 
