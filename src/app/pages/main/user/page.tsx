@@ -59,7 +59,7 @@ export default function UserList({ props }: { props: any }) {
                     <TitleTables title="Usuarios"></TitleTables>
                     <div className="col-12 flex justify-content-start">
                         <Link href={"/pages/main/user/mainteance"} >
-                            <Button onClick={() => setUser(undefined)} label="Nuevo" icon="pi-user-plus"></Button>
+                            <Button onClick={() => setUser(undefined)} label="Nuevo" icon="pi pi-user-plus"></Button>
                         </Link>
                     </div>
                     <div className="col-12 flex justify-content-center">

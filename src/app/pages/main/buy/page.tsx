@@ -65,7 +65,7 @@ export default function BuyPage(){
             <div className="grid" style={{ width: '90%' }}>
                 <TitleTables title="Compras"></TitleTables>
                 <div className="col-12 flex justify-content-start">
-                    <Button onClick={handleNewBuy} label="Nuevo" icon="pi pi-user-plus"></Button>
+                    <Button onClick={handleNewBuy} label="Nuevo" icon='pi pi-plus'></Button>
                 </div>
                 <div className="col-12 flex justify-content-center">
                     <TableGeneral columns={columns} baseFilter={buyFilter} endpoint={Endpoints.BUY} ></TableGeneral>
