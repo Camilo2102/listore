@@ -14,6 +14,7 @@ import RegisterSpent from "@/app/components/spentComponets/registerSpent";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useTableContext } from "@/app/context/tableContext";
+import TitleTables from "@/app/components/titleTables";
 
 export default function SpentPage(){
     const {user, setUser} = useContext(userContext);
@@ -56,10 +57,10 @@ export default function SpentPage(){
             <NavBar/>
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
             <div className="grid" style={{ width: '90%' }}>
-            <div className="col-12 flex justify-content-start">
-            
-            <Button onClick={handleNewSpent} label="Nuevo" icon="pi pi-user-plus"></Button>
-            </div>
+                <TitleTables title="Gastos"></TitleTables>
+                <div className="col-12 flex justify-content-start">
+                    <Button onClick={handleNewSpent} label="Nuevo" icon="pi pi-user-plus"></Button>
+                </div>
             <div className="col-12 flex justify-content-center">
                     <TableGeneral columns={columns} baseFilter={spentFilter} endpoint={Endpoints.SPENT}  ></TableGeneral>
                 </div>

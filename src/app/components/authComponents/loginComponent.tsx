@@ -88,6 +88,12 @@ export default function LoginComponent() {
         ]
     }
 
+    const getMessagesRegister = () => {
+        return [
+            <Button type="button" label="Crear nueva cuenta" onClick={() =>  router.push("/pages/auth/register")} text />,
+        ]
+    }
+
     const handleEmailRecovery = () => {
         sendRecoveryEmail(recoveryMail).then(
             res => {
@@ -121,7 +127,7 @@ export default function LoginComponent() {
 
             </Dialog>
             <Container title="Login">
-                <FormGenerator messages={getMessages()} buttonLabel="Ingresar" form={form} value={credential} setValue={setCredential} submit={handleLogin}></FormGenerator>
+                <FormGenerator messages={getMessages()} register={getMessagesRegister()} buttonLabel="Ingresar" form={form} value={credential} setValue={setCredential} submit={handleLogin}></FormGenerator>
             </Container>
         </>
     )

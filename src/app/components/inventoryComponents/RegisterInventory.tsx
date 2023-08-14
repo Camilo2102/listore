@@ -103,7 +103,7 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
    return (
       <>
          <PopUp title="Registro de inventario" visible={visible} setVisible={setVisible}>
-            <FormGenerator form={form} value={inventoryToRegister} setValue={setInventoryToRegister} submit={handleInventory} />
+            <FormGenerator form={form} value={inventoryToRegister} setValue={setInventoryToRegister} submit={handleInventory} buttonLabel="Crear"/>
          </PopUp>
       </>
    )

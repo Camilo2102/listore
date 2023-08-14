@@ -155,7 +155,7 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
    return (
       <>
          <PopUp title="Registro de producto" visible={visible} setVisible={setVisible}>
-            <FormGenerator form={form} value={productToRegister} setValue={setProductToRegister} submit={handleProduct} />
+            <FormGenerator form={form} value={productToRegister} setValue={setProductToRegister} submit={handleProduct} buttonLabel="Crear"/>
          </PopUp>
       </>
    )
