@@ -77,7 +77,7 @@ export default function NavBar() {
         },
         {
             icon: 'pi pi-money-bill',
-            label: 'Ventas',
+            label: 'Gastos',
             command: () => {
                 router.push("/pages/main/spent");
             }

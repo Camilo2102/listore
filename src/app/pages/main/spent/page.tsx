@@ -15,6 +15,7 @@ import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useTableContext } from "@/app/context/tableContext";
 import TitleTables from "@/app/components/titleTables";
+import { DateUtil } from "@/app/utils/dateUtil";
 
 export default function SpentPage(){
     const {user, setUser} = useContext(userContext);
@@ -51,6 +52,9 @@ export default function SpentPage(){
         }
     }, 
     [visible])
+    const customMap = (spents: any) =>{
+        return {...spents, spentDate: DateUtil.formatDate(spents.spentDate)}
+    }
 
     return(
         <>
@@ -62,7 +66,7 @@ export default function SpentPage(){
                     <Button onClick={handleNewSpent} label="Nuevo" icon="pi pi-user-plus"></Button>
                 </div>
             <div className="col-12 flex justify-content-center">
-                    <TableGeneral columns={columns} baseFilter={spentFilter} endpoint={Endpoints.SPENT}  ></TableGeneral>
+                    <TableGeneral columns={columns} baseFilter={spentFilter} endpoint={Endpoints.SPENT}  customMap={customMap}></TableGeneral>
                 </div>
            </div>
            {visible && <RegisterSpent visible={visible} setVisible={setVisible}/>}
