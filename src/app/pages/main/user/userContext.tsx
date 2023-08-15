@@ -1,6 +1,5 @@
 "use client"
 
-import User from "@/app/models/user";
 import { createContext } from "react"
 
 type userContext = {

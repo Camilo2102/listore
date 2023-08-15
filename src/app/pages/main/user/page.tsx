@@ -2,12 +2,10 @@
 
 import TableGeneral from "@/app/components/tableGeneral";
 import { StatusMap } from "@/app/constants/statusMap";
-import UserFilterDTO from "@/app/dto/userFilterDTO";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import User from "@/app/models/user";
 import { useContext, useEffect, useState } from "react"
-import { Dialog } from 'primereact/dialog';
 import Link from "next/link";
 import { Button } from "primereact/button";
 import { useRouter } from "next/navigation";
@@ -15,14 +13,10 @@ import { userContext } from "./userContext";
 import { RolesMap } from "@/app/constants/roleValues";
 import { AuthUtil } from "@/app/utils/authUtil";
 import DeleteWorker from "@/app/components/userComponents/DeleteWorker";
-import Paginator from "@/app/interfaces/paginator";
-
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
-import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import TitleTables from "@/app/components/titleTables";
-
-
+import { useTableContext } from "@/app/context/tableContext";
+import RegisterUser from "@/app/components/authComponents/registerUser";
 
 export default function UserList({ props }: { props: any }) {
     const router = useRouter();
@@ -30,8 +24,10 @@ export default function UserList({ props }: { props: any }) {
     const [users, setUsers] = useState<any[]>([]);
     const [userFilter, setUserFilter] = useHandleInput<User>({ active: "", company: { id: AuthUtil.getCredentials().company }, name: "", role: "" });
     const { user, setUser } = useContext(userContext);
-
+    const { reloadData, setReloadData } = useTableContext();
     const [deleteUser, setDeleteUser] = useState<User | undefined>();
+    const [visible, setVisible] = useState<boolean>(false);
+    
 
     const columns: ColumnMeta[] = [
         { field: 'name', header: 'Nombre', },
@@ -50,6 +46,18 @@ export default function UserList({ props }: { props: any }) {
         }
     ];
 
+    const handleNewSale = () => {
+        setVisible(true);
+        setUser(undefined)
+    }
+
+    useEffect(() => {
+        if(!visible){
+            setReloadData(true);
+        }
+    }, 
+    [visible])
+
 
     return (
         <>
@@ -66,8 +74,10 @@ export default function UserList({ props }: { props: any }) {
                         <TableGeneral baseFilter={userFilter} columns={columns} endpoint={Endpoints.USER}></TableGeneral>
                     </div>
                 </div>
+                {}
             </div>
             <DeleteWorker user={deleteUser} visible={deleteUser !== undefined} setVisible={setDeleteUser}></DeleteWorker>
+           
         </>
     )
 }

@@ -74,6 +74,13 @@ export default function NavBar() {
             command: () => {
                 router.push("/pages/main/sale");
             }
+        },
+        {
+            icon: 'pi pi-money-bill',
+            label: 'Ventas',
+            command: () => {
+                router.push("/pages/main/spent");
+            }
         }
     ];
 
