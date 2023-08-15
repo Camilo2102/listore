@@ -24,12 +24,13 @@ import { Endpoints } from "@/app/constants/endpointsConstants";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 
 export default function RegisterSale({ visible, setVisible }: { visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
+    const { createAll } = useCRUDService(Endpoints.SALE);
 
     const [sales, setSales] = useState<any[]>([]);
 
     const [newSaleVisible, setNewSaleVisible] = useState(false);
 
-    const { createAll } = useCRUDService(Endpoints.SALE);
+    
 
     const [controls, setControls] = useState<FormControl[]>(
         [
@@ -110,35 +111,9 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
     const { sale, setSale } = useContext(saleContext);
 
     const [submited, setSubmited] = useState<boolean>(false);
-    /*  const handleBuy = (e: FormEvent<HTMLFormElement>) => {
-          e.preventDefault();
-          const [formControls, valid] = validateFormControls();
-  
-          setControls([...formControls]);
-          if (valid) {
-              saleToRegister.user = new User();
-              saleToRegister.user.id = AuthUtil.getCredentials().user;
-              saleToRegister.inventory = undefined;
-              saleToRegister.product = {
-                  id: saleToRegister.product
-              }
-              saleService.create(true, saleToRegister).then(
-                  res => {
-                      if (!ResErrorHandler.isValidRes(res)) {
-                          return;
-                      }
-                      ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, sale ? Messages.MESSAGE_CREATE_SUCCESS : Messages.MESSAGE_UPDATE_SUCCESS)
-                      setVisible(false)
-                      setSubmited(false)
-                      setSale(undefined)
-                  }
-              )
-          }
-      }*/
+
     useEffect(() => {
         if (sale !== undefined && !submited) {
-
-
             setSaleToRegister(sale)
         }
     }, [submited])
@@ -152,14 +127,9 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
 
     ];
 
-
-
-
     const addSale = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // Evita la recarga de la página
         const [formControls, valid] = validateFormControls();
-
-
 
         setControls([...formControls]);
         if (valid) {
