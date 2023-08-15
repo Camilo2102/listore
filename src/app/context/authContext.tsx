@@ -33,6 +33,9 @@ export function AuthProvider({ children }: {children: React.ReactNode}) {
     }
 
     const validateTokenStatus = () => {
+        if(authorized !== false) {
+            return;
+        }
         validateToken().then(res => {
             if (!ResErrorHandler.isValidRes(res)) {
                 redirectToLogin();

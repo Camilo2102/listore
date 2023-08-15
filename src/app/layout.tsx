@@ -7,6 +7,8 @@ import "primereact/resources/primereact.min.css";
 import 'primeicons/primeicons.css';
 
 import 'primeflex/primeflex.css';
+import { AuthProvider } from "./context/authContext";
+import { LoadingProvider } from "./context/loadingContext";
 
 export default function RootLayout({
   children,
@@ -17,7 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="p-0 m-0">
-          {children}
+        <AuthProvider>
+          <LoadingProvider>
+            {children}
+          </LoadingProvider>
+        </AuthProvider>
       </body>
     </html>
   )
