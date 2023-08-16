@@ -47,7 +47,7 @@ export default function Inventory({ props }: { props: any }) {
         {
             field: 'pattern', header: 'Modelos', action: (t: any) => {
                 setMainInventory(t)
-                router.push("/pages/main/inventory/pattern")
+                goToRoute("/pages/main/inventory/pattern")
             }
         },
         {

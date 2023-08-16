@@ -3,20 +3,15 @@ import { useContext, useEffect, useState } from "react";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import NavBar from "@/app/components/navBar";
 import { Button } from "primereact/button";
-import TableGeneral from "@/app/components/tableGeneral";
-import RegisterSpent from "@/app/components/spentComponets/registerSpent";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useTableContext } from "@/app/context/tableContext";
 import TitleTables from "@/app/components/titleTables";
-import PatternModel from "@/app/models/pattern";
 import { useMainContext } from "@/app/context/mainContext";
 import { patternContext } from "./patternContext";
-import { ConfirmationService } from "@/app/services/confirmationService";
-import { Messages } from "@/app/constants/messageConstant";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
-import { ToastUtil } from "@/app/utils/toastUtil";
 import RegisterPattern from "@/app/components/patternComponents/registerPattern";
+import TableGeneral from "@/app/components/tableComponents/tableGeneral";
+import FilterMeta from "@/app/interfaces/filterMeta";
 
 export default function SpentPage(){
     const { mainInventory, setMainInventory } = useMainContext();
@@ -27,12 +22,17 @@ export default function SpentPage(){
 
     const [visible, setVisible] = useState<boolean>(false);
 
-    const [patternFilter, setPatternFilter] = useState<PatternModel>({
-        name: "",
-        inventory:{
-            id: mainInventory?.id,
-        }
-    });
+    const patternFilter: FilterMeta = {
+        required: {
+            inventory:{
+                id: mainInventory?.id,
+            }
+        },
+        values: [
+            { field: 'name', label: 'Nombre', value: '' },
+        ]
+    }
+
     const {pattern, setPattern} = useContext(patternContext);
     
     const columns: ColumnMeta[]=[
@@ -62,7 +62,7 @@ export default function SpentPage(){
                     <Button onClick={handleNewPattern} label="Nuevo" icon="pi pi-user-plus"></Button>
                 </div>
             <div className="col-12 flex justify-content-center">
-                    <TableGeneral columns={columns} baseFilter={patternFilter} endpoint={Endpoints.PATTERN}  ></TableGeneral>
+                    <TableGeneral columns={columns} baseFilter={patternFilter} endpoint={Endpoints.PATTERN} showRepotGenerator={false} ></TableGeneral>
                 </div>
            </div>
            {visible && <RegisterPattern visible={visible} setVisible={setVisible}/>}
