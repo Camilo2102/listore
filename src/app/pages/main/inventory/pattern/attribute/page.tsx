@@ -3,34 +3,31 @@ import { useContext, useEffect, useState } from "react";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import NavBar from "@/app/components/navBar";
 import { Button } from "primereact/button";
-import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useTableContext } from "@/app/context/tableContext";
 import TitleTables from "@/app/components/titleTables";
-import { useMainContext } from "@/app/context/mainContext";
-import { patternContext } from "./patternContext";
-import RegisterPattern from "@/app/components/patternComponents/registerPattern";
 import TableGeneral from "@/app/components/tableComponents/tableGeneral";
 import FilterMeta from "@/app/interfaces/filterMeta";
 import { useNavigationContext } from "@/app/context/navigationContext";
 import { DataTableSelectEvent } from "primereact/datatable";
+import { attributeContext } from "./attributeContext";
+import { patternContext } from "../patternContext";
+import RegisterAttribute from "@/app/components/atributesComponentes/RegisterAtribute";
 
-export default function PatternPage(){
+export default function AttributePage(){
 
     const {goToRoute}= useNavigationContext();
 
-    const { mainInventory, setMainInventory } = useMainContext();
-
-    const {deleteData} = useCRUDService(Endpoints.PATTERN);
+    const { pattern, setPattern } = useContext(patternContext);
 
     const { reloadData, setReloadData } = useTableContext();
 
     const [visible, setVisible] = useState<boolean>(false);
 
-    const patternFilter: FilterMeta = {
+    const attributeFilter: FilterMeta = {
         required: {
-            inventory:{
-                id: mainInventory?.id,
+            pattern:{
+                id: pattern?.id,
             }
         },
         values: [
@@ -38,16 +35,16 @@ export default function PatternPage(){
         ]
     }
 
-    const {pattern, setPattern} = useContext(patternContext);
+    const {attribute, setAttribute} = useContext(attributeContext);
     
     const columns: ColumnMeta[]=[
         {field: 'name', header: 'Nombre'},
     ];
 
 
-    const handleNewPattern = () =>{
+    const handleNewAttribute = () =>{
         setVisible(true);
-        setPattern(undefined)
+        setAttribute(undefined)
     }
 
     useEffect(() => {
@@ -57,25 +54,20 @@ export default function PatternPage(){
     }, 
     [visible])
 
-    const handleSelection = (pattern: DataTableSelectEvent) => {
-        setPattern(pattern.data);
-        goToRoute("/pages/main/inventory/pattern/attribute")
-    };
-
     return(
         <>
             <NavBar/>
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
             <div className="grid" style={{ width: '90%' }}>
-                <TitleTables title="Modelos"></TitleTables>
+                <TitleTables title="Atributos"></TitleTables>
                 <div className="col-12 flex justify-content-start">
-                    <Button onClick={handleNewPattern} label="Nuevo" icon="pi pi-user-plus"></Button>
+                    <Button onClick={handleNewAttribute} label="Nuevo" icon="pi pi-user-plus"></Button>
                 </div>
             <div className="col-12 flex justify-content-center">
-                    <TableGeneral columns={columns} baseFilter={patternFilter} endpoint={Endpoints.PATTERN} onRowSelect={handleSelection} showRepotGenerator={false} ></TableGeneral>
+                    <TableGeneral columns={columns} baseFilter={attributeFilter} endpoint={Endpoints.ATTRIBUTES} showRepotGenerator={false} ></TableGeneral>
                 </div>
            </div>
-           {visible && <RegisterPattern visible={visible} setVisible={setVisible}/>}
+           {visible && <RegisterAttribute visible={visible} setVisible={setVisible}/>}
             </div>
        
         </>

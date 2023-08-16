@@ -97,11 +97,6 @@ export default function ProductPage() {
         setProduct(undefined)
     }
 
-    const handleSelection = (product: DataTableSelectEvent) => {
-        setProduct(product.data);
-        goToRoute("/pages/main/inventory/product/atribute")
-    }
-
     useEffect(() => {
         if (!visible) {
             setReloadData(true);
@@ -124,7 +119,7 @@ export default function ProductPage() {
                         <Button label="Nuevo" icon="pi pi-inbox" onClick={handleNewProduct} ></Button>
                     </div>
                     <div className="col-12 flex justify-content-center">
-                        <TableGeneral columns={columns} baseFilter={productFilter} endpoint={Endpoints.PRODUCT} customMap={customMap} onRowSelect={handleSelection}></TableGeneral>
+                        <TableGeneral columns={columns} baseFilter={productFilter} endpoint={Endpoints.PRODUCT} customMap={customMap}></TableGeneral>
                     </div>
                 </div>
                 {visible && <RegisterProduct visible={visible} setVisible={setVisible} />}
