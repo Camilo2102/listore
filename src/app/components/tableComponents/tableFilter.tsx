@@ -24,7 +24,9 @@ const chipGenerator = (filter: FilterMeta, setFilter: (partialT: Partial<any>) =
 
         return filter.values.map(value => {
             if(validateInput(value.value)){
-                return (<Chip key={value.field} label={value.label + " : " + value.value} removable onRemove={(e) => handleChipRemove(value.field)}/>)
+                return (
+                    <Chip key={value.field} label={value.label + " : " + value.value} removable onRemove={(e) => handleChipRemove(value.field)}/>
+                )
             }
         })
     
@@ -63,12 +65,14 @@ export default function TableFilter({filter, setFilter}: {filter: FilterMeta, se
     },[applyFilters])
 
     return (
-        <div>
-            <OverlayPanel ref={overlayRef}>
+        <>
+        <OverlayPanel ref={overlayRef}>
                 <FormGenerator buttonLabel="Filtrar" setValue={setTempFilter} value={tempFilter} form={form} submit={handleApplyFilters}></FormGenerator>
             </OverlayPanel>
-            <Button icon="pi pi-filter-fill" rounded outlined aria-label="Filter" onClick={e => (overlayRef.current as any).toggle(e)} />
-            {chipGenerator(filter as FilterMeta, setFilter, setTempFilter)}
-        </div>
+            <div className="flex justify-content-center align-items-center gap-2">
+                <Button icon="pi pi-filter-fill" rounded outlined aria-label="Filter" onClick={e => (overlayRef.current as any).toggle(e)} />
+                {chipGenerator(filter as FilterMeta, setFilter, setTempFilter)}
+            </div>
+        </>
     )
 }
