@@ -2,7 +2,7 @@ import ColumnMeta from "@/app/interfaces/columnMeta";
 import { inventoryContext } from "@/app/pages/main/inventory/inventoryContext";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
-import TableGeneral from "../tableGeneral";
+import TableGeneral from "../tableComponents/tableGeneral";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import PopUp from "../popUp";
 import InventoryModel from "@/app/models/inventory";
@@ -14,11 +14,12 @@ import { useMainContext } from "@/app/context/mainContext";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import InventoryTable from "./intentoryTable";
+import { useNavigationContext } from "@/app/context/navigationContext";
 
 
 export default function SelectInventory({ inventorySelected, visible, setVisible }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
 
-    const router = useRouter();
+    const {goToRoute}= useNavigationContext();
     const {getAllByFilter} = useCRUDService(Endpoints.INVENTORY);
     const [inventorys, setInventorys] = useState<any[]>([]);
 
@@ -46,7 +47,7 @@ export default function SelectInventory({ inventorySelected, visible, setVisible
         setMainInventory(inventory.data);
         setVisible(false);
 
-        router.push("/pages/main/inventory/product")
+        goToRoute("/pages/main/inventory/product")
     };
 
 

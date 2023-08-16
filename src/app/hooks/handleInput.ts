@@ -17,4 +17,3 @@ export function useHandleInput<T>(initialValue: T): [T, (partialT: Partial<T>) =
 
   return [value, setValuePartial];
 }
-

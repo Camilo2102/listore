@@ -5,7 +5,7 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { ChangeEvent, useEffect, useState } from "react";
 import PopUp from "../popUp";
-import TableGeneral from "../tableGeneral";
+import TableGeneral from "../tableComponents/tableGeneral";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
 import { DataTableSelectEvent } from "primereact/datatable";

@@ -11,12 +11,13 @@ import { handleForm } from "@/app/hooks/handleForm";
 import { ToastUtil } from "@/app/utils/toastUtil";
 import { Messages } from "@/app/constants/messageConstant";
 import { useRouter } from "next/navigation";
+import { useNavigationContext } from "@/app/context/navigationContext";
 
 export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: number, value: any) => void}) {
     /**
      * Instancia inicial de los formcontrols
      */
-    const router = useRouter();
+    const {goToRoute}= useNavigationContext();
     const [controls, setControls] = useState<FormControl[]>(
         [
             {
@@ -79,7 +80,7 @@ export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: num
 
     const getMessagesRegister = () => {
         return [
-            <Button type="button" label="Ya tengo cuenta" onClick={() =>  router.push("/pages/auth/login")} text />,
+            <Button type="button" label="Ya tengo cuenta" onClick={() =>  goToRoute("/pages/auth/login")} text />,
         ]
     }
 

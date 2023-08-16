@@ -16,11 +16,12 @@ import useAuthService from "@/app/hooks/services/useAuthService";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import { ToastUtil } from "@/app/utils/toastUtil";
+import { useNavigationContext } from "@/app/context/navigationContext";
 
 export default function RegisterWorker({ userSelected }: { userSelected?: User }) {
     const {registerUser} = useAuthService();
     const {update} = useCRUDService(Endpoints.USER);
-    const router = useRouter();
+    const {goToRoute}= useNavigationContext();
 
     const [submited, setSubmited] = useState<boolean>(false);
     const [workerToRegister, setWorkerToRegister] = useState<User>({
@@ -142,7 +143,7 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
                     return;
                  }
                 ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS);
-                router.push("/pages/main/user")
+                goToRoute("/pages/main/user")
             }
         );
     }
@@ -154,7 +155,7 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
                     return;
                  }
                 ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_UPDATE_SUCCESS);
-                router.push("/pages/main/user")
+                goToRoute("/pages/main/user")
             }
         )
     }

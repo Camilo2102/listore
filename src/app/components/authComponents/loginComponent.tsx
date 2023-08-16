@@ -17,10 +17,11 @@ import { InputText } from "primereact/inputtext";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { useAuthContext } from "@/app/context/authContext";
 import useAuthService from "@/app/hooks/services/useAuthService";
+import { useNavigationContext } from "@/app/context/navigationContext";
 
 export default function LoginComponent() {
 
-    const router = useRouter();
+    const {goToRoute}= useNavigationContext();
 
     const {login, sendRecoveryEmail} = useAuthService();
 
@@ -76,7 +77,7 @@ export default function LoginComponent() {
                  }
                 AuthUtil.setCredentials(res.token, res.company, res.user);
                 setAuthorized("true");
-                router.push("/pages/main/user")
+                goToRoute("/pages/main/user")
             })
         }
 
@@ -90,7 +91,7 @@ export default function LoginComponent() {
 
     const getMessagesRegister = () => {
         return [
-            <Button type="button" label="Crear nueva cuenta" onClick={() =>  router.push("/pages/auth/register")} text />,
+            <Button type="button" label="Crear nueva cuenta" onClick={() =>  goToRoute("/pages/auth/register")} text />,
         ]
     }
 

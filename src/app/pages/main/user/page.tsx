@@ -1,6 +1,6 @@
 'use client';
 
-import TableGeneral from "@/app/components/tableGeneral";
+import TableGeneral from "@/app/components/tableComponents/tableGeneral";
 import { StatusMap } from "@/app/constants/statusMap";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import ColumnMeta from "@/app/interfaces/columnMeta";
@@ -17,12 +17,25 @@ import { Endpoints } from "@/app/constants/endpointsConstants";
 import TitleTables from "@/app/components/titleTables";
 import { useTableContext } from "@/app/context/tableContext";
 import RegisterUser from "@/app/components/authComponents/registerUser";
+import FilterMeta from "@/app/interfaces/filterMeta";
+import { useNavigationContext } from "@/app/context/navigationContext";
 
 export default function UserList({ props }: { props: any }) {
-    const router = useRouter();
+    const {goToRoute}= useNavigationContext();
 
     const [users, setUsers] = useState<any[]>([]);
-    const [userFilter, setUserFilter] = useHandleInput<User>({ active: "", company: { id: AuthUtil.getCredentials().company }, name: "", role: "" });
+    
+    const userFilter: FilterMeta = {
+        required: {
+            company: { id: AuthUtil.getCredentials().company },
+        },
+        values: [
+            { field: 'active', label: 'Estado', value: '' },
+            { field: 'name', label: 'Nombre', value: '' },
+            { field: 'role', label: 'Rol', value: '' }
+        ]
+
+    }
     const { user, setUser } = useContext(userContext);
     const { reloadData, setReloadData } = useTableContext();
     const [deleteUser, setDeleteUser] = useState<User | undefined>();
@@ -35,7 +48,7 @@ export default function UserList({ props }: { props: any }) {
         { field: 'active', header: 'Estado', values: StatusMap },
         {
             field: 'CRUDupdate', header: 'Actualizar', action: (t: any) => {
-                router.push("/pages/main/user/mainteance")
+                goToRoute("/pages/main/user/mainteance")
                 setUser(t)
             }
         },

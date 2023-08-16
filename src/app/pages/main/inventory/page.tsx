@@ -3,7 +3,7 @@
 import { useContext, useEffect, useState } from "react";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import { Button } from "primereact/button";
-import TableGeneral from "@/app/components/tableGeneral";
+import TableGeneral from "@/app/components/tableComponents/tableGeneral";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
 import { useRouter } from "next/navigation";
@@ -21,11 +21,12 @@ import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useTableContext } from "@/app/context/tableContext";
 import InventoryTable from "@/app/components/inventoryComponents/intentoryTable";
 import TitleTables from "@/app/components/titleTables";
+import { useNavigationContext } from "@/app/context/navigationContext";
 
 
 
 export default function Inventory({ props }: { props: any }) {
-    const router = useRouter();
+    const {goToRoute}= useNavigationContext();
     
     const {deleteData } = useCRUDService(Endpoints.INVENTORY);
     const { reloadData, setReloadData } = useTableContext();
@@ -40,7 +41,7 @@ export default function Inventory({ props }: { props: any }) {
         {
             field: 'supplier', header: 'Proveedores', action: (t: any) => {
                 setMainInventory(t)
-                router.push("/pages/main/inventory/supplier")
+                goToRoute("/pages/main/inventory/supplier")
             }
         },
         {
@@ -59,7 +60,7 @@ export default function Inventory({ props }: { props: any }) {
 
     const handleSelection = (inventory: DataTableSelectEvent) => {
         setMainInventory(inventory.data);
-        router.push("/pages/main/inventory/product")
+        goToRoute("/pages/main/inventory/product")
     };
 
     const handleDelete = (t: any) => {

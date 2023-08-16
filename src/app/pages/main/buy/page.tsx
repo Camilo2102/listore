@@ -6,7 +6,7 @@ import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
 import NavBar from "@/app/components/navBar";
 import { Button } from "primereact/button";
-import TableGeneral from "@/app/components/tableGeneral";
+import TableGeneral from "@/app/components/tableComponents/tableGeneral";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { userContext } from "../user/userContext";
 import BuyModel from "@/app/models/buy";

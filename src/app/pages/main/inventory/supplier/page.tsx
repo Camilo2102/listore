@@ -13,7 +13,7 @@ import { useHandleInput } from "@/app/hooks/handleInput";
 import { inventoryContext } from "../inventoryContext";
 import Link from "next/link";
 import { Button } from "primereact/button";
-import TableGeneral from "@/app/components/tableGeneral";
+import TableGeneral from "@/app/components/tableComponents/tableGeneral";
 import popUp from '../../../../components/popUp';
 import PopUp from "../../../../components/popUp";
 import RegisterSupplier from "@/app/components/supplierComponents/RegisterSupplier";
@@ -23,6 +23,7 @@ import { Endpoints } from "@/app/constants/endpointsConstants";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { useTableContext } from "@/app/context/tableContext";
 import TitleTables from "@/app/components/titleTables";
+import FilterMeta from "@/app/interfaces/filterMeta";
 
 export default function Supplier(){
     const { mainInventory, setMainInventory } = useMainContext();
@@ -31,15 +32,19 @@ export default function Supplier(){
     
     const { reloadData, setReloadData } = useTableContext();
 
-    const supplierFilter = {
-        name: "",
-        description: "",
-        address: "",
-        phone: 0,
-        mail: "",
-        inventory:{
-            id: mainInventory?.id,
-        }
+    const supplierFilter: FilterMeta = {
+        required: {
+            inventory:{
+                id: mainInventory?.id,
+            }
+        },
+        values: [
+            { field: 'name', label: 'Nombre', value: '' },
+            {field: "description",label: "Descripcion", value: ""},
+            {field: "address",label: "Dirección", value: ""},
+            {field: "mail",label: "Correo", value: ""},
+            {field: "phone",label: "Télefono", value: 0}
+        ]
     }
 
     const {supplier, setSupplier} = useContext(supplierContext);

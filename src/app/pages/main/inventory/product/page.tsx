@@ -9,7 +9,7 @@ import { ConfirmationService } from "@/app/services/confirmationService";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
 import { Button } from "primereact/button";
-import TableGeneral from "@/app/components/tableGeneral";
+import TableGeneral from "@/app/components/tableComponents/tableGeneral";
 import { inventoryContext } from "../inventoryContext";
 import RegisterProduct from "@/app/components/productComponents/RegisterProduct";
 import { productContext } from "./productContext";
@@ -21,28 +21,33 @@ import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useTableContext } from "@/app/context/tableContext";
 import TitleTables from "@/app/components/titleTables";
+import FilterMeta from "@/app/interfaces/filterMeta";
+import { useNavigationContext } from "@/app/context/navigationContext";
 
 
 export default function ProductPage() {
-    const router = useRouter();
+    const {goToRoute}= useNavigationContext();
     const { mainInventory, setMainInventory } = useMainContext();
-    
-    const {deleteData} = useCRUDService(Endpoints.PRODUCT);
+
+    const { deleteData } = useCRUDService(Endpoints.PRODUCT);
 
     const { reloadData, setReloadData } = useTableContext();
-    
-    const [productFilter, setProductFilter] = useState<ProductModel>({
-        name: "",
-        unitaryValue: 0,
-        wholeSalePrice: 0,
-        supplier: {},
-        category: "",
-        inventory: {
-            id: mainInventory?.id
-        },
-        amount: 0
 
-    });
+    const productFilter: FilterMeta = {
+        required: {
+            inventory: {
+                id: mainInventory?.id
+            },
+            supplier: {},
+        },
+        values: [
+            { field: 'name', label: 'Nombre', value: '' },
+            { field: 'category', label: 'Categoria', value: '' },
+            { field: 'unitaryValue', label: 'Precio unitario', value: 0 },
+            { field: 'wholeSalePrice', label: 'Precio al por mayor', value: 0 },
+            { field: "amount", label: "cantidad", value: 0}
+        ]
+    }
 
     const { product, setProduct } = useContext(productContext);
 
@@ -94,21 +99,21 @@ export default function ProductPage() {
 
     const handleSelection = (product: DataTableSelectEvent) => {
         setProduct(product.data);
-        router.push("/pages/main/inventory/product/atribute")
+        goToRoute("/pages/main/inventory/product/atribute")
     }
 
     useEffect(() => {
-        if(!visible){
+        if (!visible) {
             setReloadData(true);
         }
-    }, 
-    [visible])
+    },
+        [visible])
 
 
     const customMap = (product: any) => {
         product.supplierName = product.supplier?.name;
         return product;
-    } 
+    }
 
     return (
         <>

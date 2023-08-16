@@ -3,7 +3,6 @@
  */
 
 import KeyValueInterface from "@/app/interfaces/keyValueInterface";
-import { CRUDFactory } from "../CRUDFactory";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 
 export default interface FormControl{

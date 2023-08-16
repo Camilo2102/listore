@@ -16,7 +16,7 @@ import { saleContext } from "@/app/pages/main/sale/saleContext";
 import { CRUDFactory } from "@/app/models/CRUDFactory";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
-import TableGeneral from "../tableGeneral";
+import TableGeneral from "../tableComponents/tableGeneral";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
 import ColumnMeta from "@/app/interfaces/columnMeta";

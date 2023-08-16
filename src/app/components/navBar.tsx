@@ -7,9 +7,10 @@ import './styleNavBar.css';
 import { AuthUtil } from '../utils/authUtil';
 import { StorageService } from '../services/storageService';
 import { useAuthContext } from '../context/authContext';
+import { useNavigationContext } from '../context/navigationContext';
 
 export default function NavBar() {
-    const router = useRouter();
+    const {goToRoute}= useNavigationContext();
     const [visibleSelectInventory, setVisibleSelectInventory] = useState<boolean>(false);
     const [navBarVisible, setNavBarVisible] = useState(true);
     const [screenWidth, setScreenWidth] = useState<number>(0);
@@ -37,14 +38,14 @@ export default function NavBar() {
             icon: 'pi pi-user',
             label: 'Usuarios',
             command: () => {
-                router.push("/pages/main/user");
+                goToRoute("/pages/main/user");
             }
         },
         {
             icon: 'pi pi-th-large',
             label: 'Inventarios',
             command: () => {
-                router.push("/pages/main/inventory");
+                goToRoute("/pages/main/inventory");
             }
         },
         {
@@ -58,28 +59,28 @@ export default function NavBar() {
             icon: 'pi pi-users',
             label: 'Proveedores',
             command: () => {
-                router.push("/pages/main/inventory/supplier");
+                goToRoute("/pages/main/inventory/supplier");
             }
         },
         {
             icon: 'pi pi-shopping-cart',
             label: 'Compras',
             command: () => {
-                router.push("/pages/main/buy");
+                goToRoute("/pages/main/buy");
             }
         },
         {
             icon: 'pi pi-dollar',
             label: 'Ventas',
             command: () => {
-                router.push("/pages/main/sale");
+                goToRoute("/pages/main/sale");
             }
         },
         {
             icon: 'pi pi-money-bill',
             label: 'Ventas',
             command: () => {
-                router.push("/pages/main/spent");
+                goToRoute("/pages/main/spent");
             }
         }
     ];
@@ -125,7 +126,7 @@ export default function NavBar() {
                             title={item.label}
                             className="navbar-icon"
                             onClick={item.command}
-                            label={screenWidth <= 767 ? item.label : null}
+                            label={screenWidth <= 767 ? item.label : ''}
                         />
 
                     ))}
@@ -135,7 +136,7 @@ export default function NavBar() {
                         icon="pi pi-power-off"
                         className="navbar-icon2"
                         title='Cerrar sesión'
-                        label={screenWidth <= 767 ? 'Salir' : null}
+                        label={screenWidth <= 767 ? 'Salir' : ''}
                         onClick={exit}
                     />
                 </div>

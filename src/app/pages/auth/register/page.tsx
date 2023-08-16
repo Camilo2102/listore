@@ -13,9 +13,10 @@ import { useEffect, useState } from "react";
 import { Messages } from "@/app/constants/messageConstant";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import useAuthService from "@/app/hooks/services/useAuthService";
+import { useNavigationContext } from "@/app/context/navigationContext";
 
 export default function Register() {
-    const router = useRouter();
+    const {goToRoute}= useNavigationContext();
     const {register} = useAuthService();
     const [part, setPart] = useState<number>(0);
 
@@ -71,7 +72,7 @@ export default function Register() {
                         return;
                      }
                     ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, "Creado con exito");
-                    router.push("/pages/auth/passwordChange?token="+res.temporalToken);
+                    goToRoute("/pages/auth/passwordChange?token="+res.temporalToken);
                 }
             )
         } 

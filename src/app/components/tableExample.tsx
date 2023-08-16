@@ -3,7 +3,7 @@ import { Card } from "primereact/card";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import ColumnMeta from "../interfaces/columnMeta";
-import TableGeneral from "./tableGeneral";
+import TableGeneral from "./tableComponents/tableGeneral";
 import { useState } from "react";
 import { Button } from "primereact/button";
 

@@ -5,7 +5,7 @@ import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
 import NavBar from "@/app/components/navBar";
 import { Button } from "primereact/button";
-import TableGeneral from "@/app/components/tableGeneral";
+import TableGeneral from "@/app/components/tableComponents/tableGeneral";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { userContext } from "../user/userContext";
 import SpentModel from "@/app/models/spent";
@@ -15,6 +15,7 @@ import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useTableContext } from "@/app/context/tableContext";
 import TitleTables from "@/app/components/titleTables";
+import FilterMeta from "@/app/interfaces/filterMeta";
 
 export default function SpentPage(){
     const {user, setUser} = useContext(userContext);
@@ -23,14 +24,19 @@ export default function SpentPage(){
 
 
     const [visible, setVisible] = useState<boolean>(false);
-    const [spentFilter, setSpentFilter] = useState<SpentModel>({
-        spentDate: new Date(),
-        price: 0,
-        description: "",
-        user: {
-            id: user?.id,
-        } 
-    });
+    const spentFilter: FilterMeta = {
+        required: {
+            user: {
+                id: user?.id,
+            } ,
+            spentDate: new Date(),
+        },
+        values: [
+            {field: "price",label: "Precio", value: 0},
+            {field: "description",label: "Descripcion", value: ""}
+        ]
+    }
+
     const {spent, setSpent} = useContext(spentContext);
     
     const columns: ColumnMeta[]=[

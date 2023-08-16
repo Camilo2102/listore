@@ -7,6 +7,7 @@ import { StorageService } from "../services/storageService";
 import { useRouter } from "next/navigation";
 import { HttpFactory } from "../utils/httpFactory";
 import useAuthService from "../hooks/services/useAuthService";
+import { useNavigationContext } from "./navigationContext";
 
 type context = {
     authorized: any | undefined;
@@ -24,12 +25,12 @@ export function AuthProvider({ children }: {children: React.ReactNode}) {
     const [authorized, setAuthorized] = handleContext("authorized");
     const {validateToken} = useAuthService();
     
-    const router = useRouter();
+    const {goToRoute}= useNavigationContext();
 
 
     const redirectToLogin = () => {
         StorageService.deleteStorage();
-        router.push('/pages/auth/login');
+        goToRoute('/pages/auth/login');
     }
 
     const validateTokenStatus = () => {

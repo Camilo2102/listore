@@ -1,23 +1,31 @@
+"use client"
+
 import { Column } from "primereact/column";
 import { DataTable, DataTablePageEvent, DataTableSelectEvent } from "primereact/datatable";
-import ColumnMeta from "../interfaces/columnMeta";
+import ColumnMeta from "../../interfaces/columnMeta";
 import { Button } from "primereact/button";
-import Paginator from "../interfaces/paginator";
+import Paginator from "../../interfaces/paginator";
 import { SetStateAction, useEffect, useMemo, useRef, useState } from "react";
 
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import saveAs from "file-saver";
-import { useHandleInput } from "../hooks/handleInput";
-import useCRUDService from "../hooks/services/useCRUDService";
-import { ResErrorHandler } from "../utils/resErrorHandler";
-import { useTableContext } from "../context/tableContext";
+import { useHandleInput } from "../../hooks/handleInput";
+import useCRUDService from "../../hooks/services/useCRUDService";
+import { ResErrorHandler } from "../../utils/resErrorHandler";
+import { useTableContext } from "../../context/tableContext";
+import TableFilter from "./tableFilter";
+import FilterMeta from "@/app/interfaces/filterMeta";
+import { useCleanFilterInput } from "@/app/hooks/useFilterSelect";
+import useDeepCopy from "@/app/hooks/useDeepCopy";
+import { parseToFilter } from "@/app/utils/selectionUtil";
+import { useLoading } from "@/app/context/loadingContext";
 
 
-export default function TableGeneral({ columns, gridLines, stripedRows, onRowSelect, showRepotGenerator = true, endpoint, baseFilter, customMap, staticValues }: { columns: ColumnMeta[], gridLines?: boolean, stripedRows?: boolean, onRowSelect?: (e: DataTableSelectEvent) => void, showRepotGenerator?: boolean, endpoint?: string, baseFilter?: any, customMap?: (value: any) => any, staticValues?: any[] }) {
+export default function TableGeneral({ columns, gridLines, stripedRows, onRowSelect, showRepotGenerator = true, endpoint, baseFilter, customMap, staticValues }: { columns: ColumnMeta[], gridLines?: boolean, stripedRows?: boolean, onRowSelect?: (e: DataTableSelectEvent) => void, showRepotGenerator?: boolean, endpoint?: string, baseFilter?: FilterMeta, customMap?: (value: any) => any, staticValues?: any[] }) {
   const [values, setValues] = useState<any[]>([]);
-  const { reloadData, setReloadData } = useTableContext();
+  const { reloadData, setReloadData, loadingData, setLoadingData } = useTableContext();
 
   const { getAllByFilter, countAllByFilter } = useCRUDService(endpoint as string);
 
@@ -30,7 +38,7 @@ export default function TableGeneral({ columns, gridLines, stripedRows, onRowSel
     loaded: false,
   });
 
-  const [filter, setFilter] = useHandleInput(baseFilter);
+  const [filter, setFilter] = useCleanFilterInput(useDeepCopy(baseFilter));
 
   const valuesSetter = (e: any, field: string, values?: any, action?: (t: any) => void) => {
     if (values) {
@@ -149,48 +157,67 @@ export default function TableGeneral({ columns, gridLines, stripedRows, onRowSel
     saveAs(blob, 'depende.xlsx');
   };
 
+  const handleFilterChange = (partialT: Partial<any>) => {
+    setFilter(partialT);
+    setPaginator({loaded: false})
+  }
+
 
   const header = (
-    <div className="flex align-items-center justify-content-end gap-2">
-      <Button type="button" icon="pi pi-file-excel" severity="info" rounded onClick={exportToExcel} data-pr-tooltip="XLS" style={{
-        backgroundColor: '#4caf50',
-        borderColor: '#4caf50',
-      }} />
-      <Button type="button" icon="pi pi-file-pdf" severity="danger" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
+    <div className="flex align-items-center justify-content-between gap-2">
+      {baseFilter && <TableFilter filter={filter as FilterMeta} setFilter={handleFilterChange}></TableFilter>}
+      {showRepotGenerator && <div>
+        <Button type="button" icon="pi pi-file-excel" severity="info" rounded onClick={exportToExcel} data-pr-tooltip="XLS" style={{
+          backgroundColor: '#4caf50',
+          borderColor: '#4caf50',
+        }} />
+        <Button type="button" icon="pi pi-file-pdf" severity="danger" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
+      </div>}
     </div>
   );
 
+  const getData = (filter: any) => {
+    getAllByFilter(true, paginator, filter).then(res => {
+      if (!ResErrorHandler.isValidRes(res)) {
+        return;
+      }
+
+      countData(filter);
+
+      let values: any[] = res;
+
+      if (customMap) {
+        values = res.map(customMap);
+      }
+
+      setValues(values);
+    })
+  }
+
+  const countData = (filter: any) => {
+    countAllByFilter(true, filter).then(res => {
+      if (!ResErrorHandler.isValidRes(res)) {
+        return;
+      }
+      setPaginator({ totalRecords: res, loaded: true })
+      setReloadData(false);
+      setLoadingData(false);
+    })
+  }
+
   useEffect(() => {
     if (endpoint && baseFilter && !paginator.loaded || reloadData) {
-      getAllByFilter(true, paginator, filter).then(res => {
-        if (!ResErrorHandler.isValidRes(res)) {
-          return;
-        }
-
-        let values: any[] = res;
-
-        if(customMap){
-          values = res.map(customMap);
-        }
-
-        setValues(values);
-      })
-      countAllByFilter(true, filter).then(res => {
-        if (!ResErrorHandler.isValidRes(res)) {
-          return;
-        }
-        setPaginator({ totalRecords: res, loaded: true })
-        setReloadData(false);
-      })
+      setLoadingData(true);
+      const parsedFilter = parseToFilter(filter);
+      
+      getData(parsedFilter);
     }
-  }, [
-    paginator, reloadData
-  ])
+  }, [paginator, reloadData])
 
 
   return (
     <div style={{ width: '100%' }}>
-      <DataTable lazy header={showRepotGenerator && header} first={paginator.first} selectionMode="single" onRowSelect={onRowSelect} metaKeySelection={false} onPage={setPage} paginator rows={paginator.rows} totalRecords={paginator.totalRecords} style={{ borderRadius: '5px' }} showGridlines={gridLines} stripedRows={stripedRows} value={staticValues ?? values} removableSort={columns.some(column => column.sortable)}>
+      <DataTable loading={loadingData} lazy header={header} first={paginator.first} selectionMode="single" onRowSelect={onRowSelect} metaKeySelection={false} onPage={setPage} paginator rows={paginator.rows} totalRecords={paginator.totalRecords} style={{ borderRadius: '5px' }} showGridlines={gridLines} stripedRows={stripedRows} value={staticValues ?? values} removableSort={columns.some(column => column.sortable)}>
         {generateColumns()}
       </DataTable>
     </div>

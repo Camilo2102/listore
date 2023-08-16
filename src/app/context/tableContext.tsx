@@ -11,6 +11,8 @@ import useAuthService from "../hooks/services/useAuthService";
 type context = {
     reloadData: any | undefined;
     setReloadData: (reloadData: any | undefined) => void
+    loadingData: any | undefined;
+    setLoadingData: (reloadData: any | undefined) => void
 }
 
 const TableContext = createContext<context>({} as context);
@@ -22,9 +24,10 @@ export function useTableContext() {
 
 export function TableProvider({ children }: {children: React.ReactNode}) {
     const [reloadData, setReloadData] = useState<boolean>(false);
+    const [loadingData, setLoadingData] = useState<boolean>(false);
 
     return(
-        <TableContext.Provider value={{reloadData, setReloadData}}>
+        <TableContext.Provider value={{reloadData, setReloadData, loadingData, setLoadingData}}>
             {children}
         </TableContext.Provider>
     )

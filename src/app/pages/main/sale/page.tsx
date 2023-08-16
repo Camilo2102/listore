@@ -4,7 +4,7 @@ import ColumnMeta from "@/app/interfaces/columnMeta";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
 import { Button } from "primereact/button";
-import TableGeneral from "@/app/components/tableGeneral";
+import TableGeneral from "@/app/components/tableComponents/tableGeneral";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import SaleModel from "@/app/models/sale";
 import { saleContext } from "./saleContext";
@@ -17,6 +17,7 @@ import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useTableContext } from "@/app/context/tableContext";
 import TitleTables from "@/app/components/titleTables";
+import FilterMeta from "@/app/interfaces/filterMeta";
 
 export default function SalePage() {
     const { product, setProduct } = useContext(productContext);
@@ -25,17 +26,21 @@ export default function SalePage() {
     
     const { reloadData, setReloadData } = useTableContext();
 
-    const [saleFilter, setSaleFilter] = useState<SaleModel>({
-        saleDate: DateUtil.removeDaysFromNow(1),
-        unitaryValue: 0,
-        amount: 0,
-        product: {
-            id: product?.id,
+    const saleFilter: FilterMeta = {
+        values: [
+            {field: "unitaryValue", label: "Valor Unitario",value: 0},
+            {field: "amount", label: "Cantidad", value: 0}
+        ],
+        required: {
+            saleDate: DateUtil.removeDaysFromNow(1),
+            product: {
+                id: product?.id,
+            },
+            user: {
+                id:  AuthUtil.getCredentials().user,
+            }
         },
-        user: {
-            id:  AuthUtil.getCredentials().user,
-        }
-    });
+    }
     const { sale, setSale } = useContext(saleContext);
 
     const columns: ColumnMeta[] = [

@@ -14,10 +14,11 @@ import { ToastUtil } from "@/app/utils/toastUtil";
 import { Messages } from "@/app/constants/messageConstant";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import useAuthService from "@/app/hooks/services/useAuthService";
+import { useNavigationContext } from "@/app/context/navigationContext";
 
 
 export default function PasswordChangeComponent() {
-    const router = useRouter();
+    const {goToRoute}= useNavigationContext();
     const searchParams = useSearchParams()
 
     const {enableUser} = useAuthService();
@@ -113,7 +114,7 @@ export default function PasswordChangeComponent() {
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }
-                router.push("/pages/auth/login")
+                goToRoute("/pages/auth/login")
             })
             setSubmited(false);
 
