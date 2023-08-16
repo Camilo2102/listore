@@ -23,42 +23,6 @@ export function useAuthContext() {
 
 export function AuthProvider({ children }: {children: React.ReactNode}) {
     const [authorized, setAuthorized] = handleContext("authorized");
-    const {validateToken} = useAuthService();
-    
-    const {goToRoute}= useNavigationContext();
-
-
-    const redirectToLogin = () => {
-        StorageService.deleteStorage();
-        goToRoute('/pages/auth/login');
-    }
-
-    const validateTokenStatus = () => {
-        if(authorized !== false) {
-            return;
-        }
-        validateToken().then(res => {
-            if (!ResErrorHandler.isValidRes(res)) {
-                redirectToLogin();
-            }
-        })
-    }
-
-    const validateStatus = () => {
-        if (!authorized) {
-            redirectToLogin();
-            return false;
-        }
-        return true;
-    }
-
-    useEffect(() => {
-        if(!validateStatus())return;
-        validateTokenStatus();
-        const intervalId = setInterval(validateToken, 30000);
-        return () => clearInterval(intervalId);
-    }, [authorized])
-
     
     return(
         <AuthContext.Provider value={{authorized, setAuthorized}}>

@@ -15,7 +15,7 @@ import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import { Button } from "primereact/button";
-import TableGeneral from "../tableGeneral";
+import TableGeneral from "../tableComponents/tableGeneral";
 
 export default function RegisterSpent({visible, setVisible}: {visible: boolean, setVisible: (partialT: Partial<boolean>) => void}){
     const {createAll} = useCRUDService(Endpoints.SPENT);
@@ -114,7 +114,7 @@ export default function RegisterSpent({visible, setVisible}: {visible: boolean, 
                 <div className="col-12 flex justify-content-start">
                     <Button label="Agregar" icon="pi pi-plus" onClick={() => setNewSpentVisible(true)}></Button>
                 </div>
-               <TableGeneral showRepotGenerator={false} columns={columns} staticValues={spents}></TableGeneral>
+               <TableGeneral  showRepotGenerator={false} columns={columns} staticValues={spents}></TableGeneral>
                <div className="col-12 flex justify-content-start">
                     <Button label="Cargar gastos" icon="pi pi-check" onClick={loadSpents}></Button>
                </div>

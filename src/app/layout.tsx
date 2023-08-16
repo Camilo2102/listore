@@ -11,6 +11,7 @@ import { AuthProvider } from "./context/authContext";
 import { LoadingProvider } from "./context/loadingContext";
 import { useEffect } from "react";
 import { NavigationProvider } from "./context/navigationContext";
+import GlobalProviders from "./providers/globalProviders";
 
 export default function RootLayout({
   children,
@@ -22,13 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="p-0 m-0">
-        <AuthProvider>
-          <LoadingProvider>
-            <NavigationProvider>
-              {children}
-            </NavigationProvider>
-          </LoadingProvider>
-        </AuthProvider>
+        <GlobalProviders>
+          {children}
+        </GlobalProviders>
       </body>
     </html>
   )

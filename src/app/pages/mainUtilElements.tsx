@@ -9,8 +9,6 @@ import { useLoading } from "../context/loadingContext";
 export default function MainUtilElements() {
     const toast = useRef<Toast>(null);
 
-    const {startLoading, stopLoading} = useLoading();
-
     useEffect(() => {
         ToastUtil.initializeToast(toast);
     }, [])
