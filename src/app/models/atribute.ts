@@ -1,8 +1,7 @@
 import General from "./general";
-import  ProductModel  from "./product";
+import PatternModel from "./pattern";
 
 export default class AtributesModel extends General{
     name?: string;
-    value?: string;
-    product?: ProductModel;
+    pattern?: PatternModel;
 }

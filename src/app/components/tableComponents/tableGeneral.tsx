@@ -85,6 +85,14 @@ export default function TableGeneral({ columns, gridLines, stripedRows, onRowSel
       )
     }
 
+    if (field === "pattern") {
+      return (
+        <>
+          <Button icon="pi pi-box" rounded outlined onClick={() => { action && action(e) }} />
+        </>
+      )
+    }
+
     return (
       <div>
         {e[field]}
