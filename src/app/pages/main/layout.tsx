@@ -8,7 +8,9 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     return (
         <MainProvider>
             <NavBar />
-            {children}
+            <div className="lg:ml-5 md:ml-6">
+                {children}
+            </div>
         </MainProvider>
     )
 }

@@ -10,22 +10,25 @@ import { useAuthContext } from '../context/authContext';
 import { useNavigationContext } from '../context/navigationContext';
 
 export default function NavBar() {
-    const {goToRoute}= useNavigationContext();
+    const {goToRoute, version}= useNavigationContext();
     const [visibleSelectInventory, setVisibleSelectInventory] = useState<boolean>(false);
     const [navBarVisible, setNavBarVisible] = useState(true);
     const [screenWidth, setScreenWidth] = useState<number>(0);
     const {authorized, setAuthorized} = useAuthContext();
 
+
+    const handleResize = () => {
+        setScreenWidth(window.innerWidth);
+        if (window.innerWidth <= 767) {
+            setNavBarVisible(false);
+        } else {
+            setNavBarVisible(true);
+        }
+    };
+
     useEffect(() => {
         // Detectar el ancho de la pantalla y actualizar el estado
-        const handleResize = () => {
-            setScreenWidth(window.innerWidth);
-            if (window.innerWidth <= 767) {
-                setNavBarVisible(false);
-            } else {
-                setNavBarVisible(true);
-            }
-        };
+        
         handleResize(); // Llamarlo al principio para establecer el estado inicial
         window.addEventListener('resize', handleResize);
         return () => {
@@ -111,15 +114,13 @@ export default function NavBar() {
     return (
         <div>
 
-            <div className='navigation'>
+            {version !== "" && <div className='navigation'>
                 <Button className='back' icon='pi pi-arrow-left' onClick={goBack} />
                 <Button className='forward' icon='pi pi-arrow-right' onClick={goForward} />
-            </div>
+            </div>}
 
             <div className={`navbar-container ${navBarVisible ? 'visible' : ''}`}>
                 <div className="navbar-icons-container" onClick={() => screenWidth <= 767 && toggleNavBarVisibility()}>
-
-                    
 
                     {items.map((item, index) => (
                         <Button key={index} icon={item.icon}
