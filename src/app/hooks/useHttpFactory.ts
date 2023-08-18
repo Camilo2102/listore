@@ -52,6 +52,10 @@ export default function useHttpFactory() {
                     ToastUtil.showError(Messages.MESSAGE_ERROR, res.error);
                 });
             }
+        ).catch(
+            err => {
+                ToastUtil.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_SERVER_UNAVAIABLE);
+            }
         );
     }
 

@@ -8,6 +8,7 @@ import { AuthUtil } from '../utils/authUtil';
 import { StorageService } from '../services/storageService';
 import { useAuthContext } from '../context/authContext';
 import { useNavigationContext } from '../context/navigationContext';
+import navBarItemMeta from '../interfaces/navBarItemMeta';
 
 export default function NavBar() {
     const {goToRoute, version}= useNavigationContext();
@@ -36,7 +37,7 @@ export default function NavBar() {
         };
     }, []);
 
-    const items = [
+    const items: navBarItemMeta[] = [
         {
             icon: 'pi pi-user',
             label: 'Usuarios',
@@ -68,6 +69,7 @@ export default function NavBar() {
         {
             icon: 'pi pi-shopping-cart',
             label: 'Compras',
+            
             command: () => {
                 goToRoute("/pages/main/buy");
             }

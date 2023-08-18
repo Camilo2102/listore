@@ -28,7 +28,9 @@ export default function SalePage() {
 
     const saleFilter: FilterMeta = {
         values: [
-            {field: "unitaryValue", label: "Valor Unitario",value: 0},
+            {field: "unitaryValue", label: "Valor Unitario", value: 0},
+            {field: "amount", label: "Cantidad", value: 0},
+            {field: "amount", label: "Cantidad", value: 0},
             {field: "amount", label: "Cantidad", value: 0}
         ],
         required: {
@@ -41,6 +43,7 @@ export default function SalePage() {
             }
         },
     }
+
     const { sale, setSale } = useContext(saleContext);
 
     const columns: ColumnMeta[] = [
