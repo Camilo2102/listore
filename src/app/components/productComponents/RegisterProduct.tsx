@@ -42,15 +42,19 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
             icon: "pi-user",
             service: Endpoints.SUPPLIER,
             filter: {
-               name: "",
-               description: "",
-               address: "",
-               phone: 0,
-               mail: "",
-               inventory:{
-                   id: mainInventory?.id,
-               }
-            },
+               required: {
+                   inventory:{
+                       id: mainInventory?.id,
+                   }
+               },
+               values: [
+                   { field: 'name', label: 'Nombre', value: '' },
+                   {field: "description",label: "Descripcion", value: ""},
+                   {field: "address",label: "Dirección", value: ""},
+                   {field: "mail",label: "Correo", value: ""},
+                   {field: "phone",label: "Télefono", value: 0}
+               ]
+           },
         },
          {
             field: "name",

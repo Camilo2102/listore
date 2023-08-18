@@ -1,5 +1,4 @@
 import ColumnMeta from "@/app/interfaces/columnMeta";
-import { CRUDFactory } from "@/app/models/CRUDFactory";
 import FormControl from "@/app/models/formModels/formControl";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";

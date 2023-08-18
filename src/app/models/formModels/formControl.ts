@@ -4,6 +4,7 @@
 
 import KeyValueInterface from "@/app/interfaces/keyValueInterface";
 import ColumnMeta from "@/app/interfaces/columnMeta";
+import FilterMeta from "@/app/interfaces/filterMeta";
 
 export default interface FormControl{
     field: string;
@@ -23,6 +24,6 @@ export default interface FormControl{
     service?: string;
     columns?: ColumnMeta[];
     fieldDependency?: string;
-    filter?: any;
+    filter?: FilterMeta;
     numberOption?: number;
 }

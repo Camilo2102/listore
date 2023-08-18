@@ -23,7 +23,7 @@ import { parseToFilter } from "@/app/utils/selectionUtil";
 import { useLoading } from "@/app/context/loadingContext";
 
 
-export default function TableGeneral({ columns, gridLines, stripedRows, onRowSelect, showRepotGenerator = true, endpoint, baseFilter, customMap, staticValues }: { columns: ColumnMeta[], gridLines?: boolean, stripedRows?: boolean, onRowSelect?: (e: DataTableSelectEvent) => void, showRepotGenerator?: boolean, endpoint?: string, baseFilter?: FilterMeta, customMap?: (value: any) => any, staticValues?: any[] }) {
+export default function TableGeneral({useFilter = true, columns, gridLines, stripedRows, onRowSelect, showRepotGenerator = true, endpoint, baseFilter, customMap, staticValues }: { useFilter?: boolean, columns: ColumnMeta[], gridLines?: boolean, stripedRows?: boolean, onRowSelect?: (e: DataTableSelectEvent) => void, showRepotGenerator?: boolean, endpoint?: string, baseFilter?: FilterMeta, customMap?: (value: any) => any, staticValues?: any[] }) {
   const [values, setValues] = useState<any[]>([]);
   const { reloadData, setReloadData, loadingData, setLoadingData } = useTableContext();
 
@@ -38,7 +38,7 @@ export default function TableGeneral({ columns, gridLines, stripedRows, onRowSel
     loaded: false,
   });
 
-  const [filter, setFilter] = useCleanFilterInput(useDeepCopy(baseFilter));
+  const [filter, setFilter] = useFilter ? useCleanFilterInput(useDeepCopy(baseFilter)) : useHandleInput({});
 
   const valuesSetter = (e: any, field: string, values?: any, action?: (t: any) => void) => {
     if (values) {
@@ -173,7 +173,7 @@ export default function TableGeneral({ columns, gridLines, stripedRows, onRowSel
 
   const header = (
     <div className="flex align-items-center justify-content-between gap-2">
-      {baseFilter && <TableFilter filter={filter as FilterMeta} setFilter={handleFilterChange}></TableFilter>}
+      {baseFilter && useFilter && <TableFilter filter={filter as FilterMeta} setFilter={handleFilterChange}></TableFilter>}
       {showRepotGenerator && <div>
         <Button type="button" icon="pi pi-file-excel" severity="info" rounded onClick={exportToExcel} data-pr-tooltip="XLS" style={{
           backgroundColor: '#4caf50',

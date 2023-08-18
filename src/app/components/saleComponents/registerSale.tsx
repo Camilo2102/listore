@@ -13,7 +13,6 @@ import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import User from "@/app/models/user";
 import { AuthUtil } from "@/app/utils/authUtil";
 import { saleContext } from "@/app/pages/main/sale/saleContext";
-import { CRUDFactory } from "@/app/models/CRUDFactory";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import TableGeneral from "../tableComponents/tableGeneral";
@@ -22,6 +21,7 @@ import Paginator from "@/app/interfaces/paginator";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
+import FilterMeta from "@/app/interfaces/filterMeta";
 
 export default function RegisterSale({ visible, setVisible }: { visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
     const { createAll } = useCRUDService(Endpoints.SALE);
@@ -73,11 +73,15 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 icon: "pi-user",
                 service: Endpoints.INVENTORY,
                 filter: {
-                    category: "",
-                    description: "",
-                    name: "",
-                    company: {
-                        id: AuthUtil.getCredentials().company
+                    values: [
+                        { field: 'category', label: 'Categoría', value: '' },
+                        { field: 'description', label: 'Descripción', value: '' },
+                        { field: 'name', label: 'Nombre', value: '' }
+                      ],
+                    required: {
+                        company: {
+                            id: AuthUtil.getCredentials().company
+                        },
                     }
                 },
                 fieldDependency: "product"
@@ -99,7 +103,10 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 service: Endpoints.PRODUCT,
                 disabled: true,
                 filter: {
+                    required: {},
+                    values: [
 
+                    ]                    
                 }
             },
         ]
@@ -201,7 +208,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 <div className="col-12 flex justify-content-start">
                     <Button label="Agregar" icon="pi pi-plus" onClick={() => setNewSaleVisible(true)} ></Button>
                 </div>
-                <TableGeneral showRepotGenerator={false} columns={columns} staticValues={sales} ></TableGeneral>
+                <TableGeneral useFilter={false} showRepotGenerator={false} columns={columns} staticValues={sales} ></TableGeneral>
 
                 <div className="col-12 flex justify-content-start">
                     <Button label="Cargar ventas" icon="pi pi-check" onClick={loadSales}   ></Button>
