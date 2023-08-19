@@ -13,14 +13,38 @@ export class DateUtil{
    * @returns La fecha formateada como una cadena de texto.
    */
   public static formatDate(date: number[]): string {
-    const [year, month, day, hour, minute, second] = date;
+    const [year, month, day, hour = 0, minute = 0, second = 0] = date;
 
-   
-    const formattedDate = `${year}/${month}/${day} ${hour}:${minute}`;
+    const formattedDay = day.toString().padStart(2, '0');
+    const formattedMonth = month.toString().padStart(2, '0');
+    const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
+    const formattedTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
 
-    return formattedDate;
-}
+    if (hour === 0 && minute === 0 && second === 0) {
+        return formattedDate;
+    } else {
+        return `${formattedDate} - ${formattedTime}`;
+    }
+  }
 
+
+  /**
+   * Valida si el valor es una fecha valida
+   * @param value valor a validar
+   * @returns devuelve si el valor es una instancia valida de una fecha
+   */
+  public static validateDate(value: any): boolean {
+    return value instanceof Date
+  }
+
+
+  public static formatFullDate(value: any): string {
+      if(!this.validateDate(value)){
+        return value;
+      }
+      return value.toLocaleDateString('es-ES');
+
+  }
 
   /**
    * Agrega una cantidad especificada de días a una fecha.
@@ -99,4 +123,6 @@ export class DateUtil{
     const currentDate = this.getCurrentDate();
     return this.differenceInDays(targetDate, currentDate);
   }
+
+
 }

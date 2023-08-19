@@ -30,11 +30,10 @@ export default function SalePage() {
         values: [
             {field: "unitaryValue", label: "Valor Unitario", value: 0},
             {field: "amount", label: "Cantidad", value: 0},
-            {field: "amount", label: "Cantidad", value: 0},
-            {field: "amount", label: "Cantidad", value: 0}
+            {field: "initialDate", label: "Fecha Inicial", value: null},
+            {field: "finalDate", label: "Fecha Final", value: null},
         ],
         required: {
-            saleDate: DateUtil.removeDaysFromNow(1),
             product: {
                 id: product?.id,
             },
