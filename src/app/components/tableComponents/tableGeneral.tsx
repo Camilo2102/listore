@@ -40,7 +40,7 @@ export default function TableGeneral({useFilter = true, columns, gridLines, stri
 
   const [filter, setFilter] = useFilter ? useCleanFilterInput(useDeepCopy(baseFilter)) : useHandleInput({});
 
-  const valuesSetter = (e: any, field: string, values?: any, action?: (t: any) => void) => {
+  const valuesSetter = (e: any, field: string, values?: any, action?: (t: any) => void, format?: (t: any) => void) => {
     if (values) {
       return (
         <>
@@ -48,6 +48,7 @@ export default function TableGeneral({useFilter = true, columns, gridLines, stri
         </>
       )
     }
+
 
     if (field === "supplier") {
       return (
@@ -93,9 +94,15 @@ export default function TableGeneral({useFilter = true, columns, gridLines, stri
       )
     }
 
+    let value = e[field]
+
+    if(format){
+      value = format(value);
+    }
+
     return (
       <div>
-        {e[field]}
+        {value}
       </div>
     )
   }
@@ -107,7 +114,7 @@ export default function TableGeneral({useFilter = true, columns, gridLines, stri
 
   const generateColumns = () => {
     return columns.map(column => (
-      <Column key={column.field} field={column.field} header={column.header} sortable={column.sortable} body={(e) => valuesSetter(e, column.field, column.values, column.action)} />
+      <Column key={column.field} field={column.field} header={column.header} sortable={column.sortable} body={(e) => valuesSetter(e, column.field, column.values, column.action, column.format)} />
     ));
   };
 

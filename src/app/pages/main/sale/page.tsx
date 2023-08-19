@@ -18,6 +18,7 @@ import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useTableContext } from "@/app/context/tableContext";
 import TitleTables from "@/app/components/titleTables";
 import FilterMeta from "@/app/interfaces/filterMeta";
+import { Formats } from "@/app/constants/formatConstants";
 
 export default function SalePage() {
     const { product, setProduct } = useContext(productContext);
@@ -46,11 +47,11 @@ export default function SalePage() {
     const { sale, setSale } = useContext(saleContext);
 
     const columns: ColumnMeta[] = [
-        { field: 'saleDate', header: 'Fecha de venta' },
+        { field: 'saleDate', header: 'Fecha de venta', format: Formats.formatDate },
         { field: 'product', header: 'Producto' },
-        { field: 'unitaryValue', header: 'Valor unitario' },
-        { field: 'amount', header: 'Cantidad' },
-        { field: 'totalValue', header: 'Valor total' },
+        { field: 'unitaryValue', header: 'Valor unitario', format: Formats.formatCurrency },
+        { field: 'amount', header: 'Cantidad', format: Formats.formatCurrency },
+        { field: 'totalValue', header: 'Valor total', format: Formats.formatCurrency },
     ];
 
 
@@ -66,12 +67,10 @@ export default function SalePage() {
     }, 
     [visible])
 
-    const customMap = (sales: any) => {
-                    
+    const customMap = (sales: any) => {                    
         const nameProduct = sales.product.name;
         const totalValue = sales.unitaryValue * sales.amount;
-
-        return { ...sales, saleDate: DateUtil.formatDate(sales.saleDate), product: nameProduct, totalValue: totalValue  }
+        return { ...sales, product: nameProduct, totalValue: totalValue  }
     }
 
     return (
