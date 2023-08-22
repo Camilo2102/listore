@@ -75,9 +75,9 @@ export default function LoginComponent() {
                 if(!ResErrorHandler.isValidRes(res)){
                     return;
                  }
-                AuthUtil.setCredentials(res.token, res.company, res.user);
+                AuthUtil.setCredentials(res.token, res.company, res.user, res.role);
                 setAuthorized("true");
-                goToRoute("/pages/main/user")
+                goToRoute("/pages/main/sale")
             })
         }
 

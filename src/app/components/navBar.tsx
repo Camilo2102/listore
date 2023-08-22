@@ -15,7 +15,8 @@ export default function NavBar() {
     const [visibleSelectInventory, setVisibleSelectInventory] = useState<boolean>(false);
     const [navBarVisible, setNavBarVisible] = useState(true);
     const [screenWidth, setScreenWidth] = useState<number>(0);
-    const {authorized, setAuthorized} = useAuthContext();
+    const {setAuthorized} = useAuthContext();
+    const role = StorageService.getValue("role");
 
 
     const handleResize = () => {
@@ -41,35 +42,43 @@ export default function NavBar() {
         {
             icon: 'pi pi-user',
             label: 'Usuarios',
+            roles: ['C','M'], // Roles autorizados para ver este elemento
             command: () => {
                 goToRoute("/pages/main/user");
             }
+           
         },
         {
             icon: 'pi pi-th-large',
             label: 'Inventarios',
+            roles: ['C','M',],
             command: () => {
                 goToRoute("/pages/main/inventory");
             }
+            
         },
         {
             icon: 'pi pi-inbox',
             label: 'Productos',
+            roles: ['C','M'] ,
             command: () => {
                 setVisibleSelectInventory(true);
-            }
+            },
+            
         },
         {
             icon: 'pi pi-users',
             label: 'Proveedores',
+            roles: ['C','M'],
             command: () => {
                 goToRoute("/pages/main/inventory/supplier");
-            }
+            },
+           
         },
         {
             icon: 'pi pi-shopping-cart',
             label: 'Compras',
-            
+            roles: ['C','M','D'],
             command: () => {
                 goToRoute("/pages/main/buy");
             }
@@ -77,6 +86,7 @@ export default function NavBar() {
         {
             icon: 'pi pi-dollar',
             label: 'Ventas',
+            roles: ['C','M','D','P','G'],
             command: () => {
                 goToRoute("/pages/main/sale");
             }
@@ -84,11 +94,15 @@ export default function NavBar() {
         {
             icon: 'pi pi-money-bill',
             label: 'Gastos',
+            roles: ['C','M','D','P'],
             command: () => {
                 goToRoute("/pages/main/spent");
             }
         }
     ];
+
+    const filteredItems = items.filter(item => role !== null && item.roles.includes(role));
+
 
 
     const exit = () => {
@@ -124,7 +138,7 @@ export default function NavBar() {
             <div className={`navbar-container ${navBarVisible ? 'visible' : ''}`}>
                 <div className="navbar-icons-container" onClick={() => screenWidth <= 767 && toggleNavBarVisibility()}>
 
-                    {items.map((item, index) => (
+                    {filteredItems.map((item, index) => (
                         <Button key={index} icon={item.icon}
                             title={item.label}
                             className="navbar-icon"

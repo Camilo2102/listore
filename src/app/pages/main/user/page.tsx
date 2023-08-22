@@ -59,10 +59,6 @@ export default function UserList({ props }: { props: any }) {
         }
     ];
 
-    const handleNewSale = () => {
-        setVisible(true);
-        setUser(undefined)
-    }
 
     useEffect(() => {
         if(!visible){
