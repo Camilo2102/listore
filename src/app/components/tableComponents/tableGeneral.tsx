@@ -23,7 +23,7 @@ import { parseToFilter } from "@/app/utils/selectionUtil";
 import { useLoading } from "@/app/context/loadingContext";
 
 
-export default function TableGeneral({useFilter = true, columns, gridLines, stripedRows, onRowSelect, showRepotGenerator = true, endpoint, baseFilter, customMap, staticValues }: { useFilter?: boolean, columns: ColumnMeta[], gridLines?: boolean, stripedRows?: boolean, onRowSelect?: (e: DataTableSelectEvent) => void, showRepotGenerator?: boolean, endpoint?: string, baseFilter?: FilterMeta, customMap?: (value: any) => any, staticValues?: any[] }) {
+export default function TableGeneral({useFilter = true, columns, gridLines, stripedRows, onRowSelect, showRepotGenerator = true, endpoint, baseFilter, customMap, staticValues, name = "exportacion" }: { useFilter?: boolean, columns: ColumnMeta[], gridLines?: boolean, stripedRows?: boolean, onRowSelect?: (e: DataTableSelectEvent) => void, showRepotGenerator?: boolean, endpoint?: string, baseFilter?: FilterMeta, customMap?: (value: any) => any, staticValues?: any[], name?: string }) {
   const [values, setValues] = useState<any[]>([]);
   const { reloadData, setReloadData, loadingData, setLoadingData } = useTableContext();
 
@@ -120,7 +120,7 @@ export default function TableGeneral({useFilter = true, columns, gridLines, stri
 
 
   const usefulColumns = useMemo(() =>
-    columns.filter(column => !(column.field === "supplier" || column.field === "CRUDupdate" || column.field === "CRUDdelete" || column.field === "buy" || column.field === "sale")),
+    columns.filter(column => !(column.field === "supplier" || column.field === "CRUDupdate" || column.field === "CRUDdelete" || column.field === "buy" || column.field === "sale" || column.field ==="pattern")),
     [columns]
   );
 
@@ -144,7 +144,7 @@ export default function TableGeneral({useFilter = true, columns, gridLines, stri
       body: exportValues,
     });
 
-    doc.save('nombreDepende.pdf');
+    doc.save(`${name}.pdf`);
   }
 
 
@@ -153,7 +153,7 @@ export default function TableGeneral({useFilter = true, columns, gridLines, stri
     const exportData = exportValues.map((subArray: any[]) => {
       const rowData: { [key: string]: any } = {};
       exportColumns.forEach((column, index) => {
-        if (column.toLowerCase().includes('fecha')) { // El título de la columna debe tener la palabra fecha
+        if (column.toLowerCase().includes('fecha') || column.toLowerCase().includes('date')) { // El título de la columna debe tener la palabra fecha
           const dateArray = subArray[index] as number[];
           const dateObject = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5]);
           rowData[column] = dateObject;
@@ -166,10 +166,10 @@ export default function TableGeneral({useFilter = true, columns, gridLines, stri
 
     const worksheet = XLSX.utils.json_to_sheet(exportData, { header: exportColumns });
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Depende');
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja 1');
     const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    saveAs(blob, 'depende.xlsx');
+    saveAs(blob, `${name}.xlsx`);
   };
 
   const handleFilterChange = (partialT: Partial<any>) => {

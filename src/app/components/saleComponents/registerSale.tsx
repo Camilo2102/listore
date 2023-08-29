@@ -135,7 +135,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
     ];
 
     const addSale = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault(); // Evita la recarga de la página
+        e.preventDefault();
         const [formControls, valid] = validateFormControls();
 
         setControls([...formControls]);
@@ -150,19 +150,15 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
             };
 
 
-            // Agrega la nueva venta al arreglo de sales
             setSales(prevSales => [...prevSales, newSale]);
 
-            // Limpia los campos del formulario
             setSaleToRegister({
                 unitaryValue: "",
                 amount: "",
                 inventory: "",
                 product: "",
-                // Limpia campos
             });
 
-            // Cierra el popup de nueva venta
             setNewSaleVisible(false);
         }
 

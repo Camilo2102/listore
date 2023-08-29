@@ -56,6 +56,31 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
                ]
            },
         },
+        {
+            field: "pattern",
+            value: "",
+            description: "Modelos",
+            colSize: 12,
+            type: FormTypes.INPUTHELPER,
+            validators: [Validators.requiered],
+            invalid: false,
+            message: true,
+            columns: [
+               { field: 'name', header: 'Nombre' },
+            ],
+            icon: "pi-user",
+            service: Endpoints.PATTERN,
+            filter: {
+               required: {
+                  inventory:{
+                     id: mainInventory?.id,
+                  }
+               },
+               values: [
+                  { field: 'name', label: 'Nombre', value: '' }
+               ]
+            },
+         },
          {
             field: "name",
             value: "",
@@ -135,6 +160,12 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
 
          productToRegister.supplier = {
             id: productToRegister.supplier
+         }
+
+         delete productToRegister.namepattern;
+
+         productToRegister.pattern = {
+            id: productToRegister.pattern
          }
 
 

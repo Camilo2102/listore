@@ -86,8 +86,10 @@ export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: num
 
 
     return(
-        <Container title="Registro de usuario">
-            <FormGenerator buttonLabel="Continuar" form={form} value={user} setValue={setUser} submit={handleRegisterUser} register={getMessagesRegister()}></FormGenerator>
-        </Container>
+        <div className="lg:p-6 md:p-10 p-4">
+            <Container title="Registro de usuario">
+                <FormGenerator buttonLabel="Continuar" form={form} value={user} setValue={setUser} submit={handleRegisterUser} register={getMessagesRegister()}></FormGenerator>
+            </Container>
+        </div>
     )
 }

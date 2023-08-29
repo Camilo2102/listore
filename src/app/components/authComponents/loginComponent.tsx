@@ -109,7 +109,7 @@ export default function LoginComponent() {
 
     return (
         <>
-            <Dialog header="Email de verificacion" visible={showRecoveryDialog} style={{ width: '50vw' }} onHide={() => setShowRecoveryDialog(false)}>
+            <Dialog header="Email de verificacion" visible={showRecoveryDialog} style={{ width: 'md:50vw 70vm' }} onHide={() => setShowRecoveryDialog(false)}>
                 <form className="pt-5 grid" onSubmit={handleEmailRecovery}>
                     <div className="col-12">
                         <p className="text-900 font-bold text-xl">Escribe tu dirección de correo, y recibiras un mensaje en caso de que este registrada</p>
