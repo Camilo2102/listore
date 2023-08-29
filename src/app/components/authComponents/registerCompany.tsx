@@ -71,8 +71,11 @@ export default function RegisterCompany({onValidSubmit}: {onValidSubmit: (value:
 
 
     return(
-        <Container title="Registro de compañia">
-            <FormGenerator buttonLabel="Continuar" form={form} value={user} setValue={setUser} submit={handleLogin}></FormGenerator>
-        </Container>
+        <div className="lg:p-6 md:p-10 p-4">
+            <Container title="Registro de compañia" >
+                <FormGenerator buttonLabel="Continuar" form={form} value={user} setValue={setUser} submit={handleLogin}></FormGenerator>
+            </Container>
+        </div>
+       
     )
 }

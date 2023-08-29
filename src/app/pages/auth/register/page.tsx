@@ -42,10 +42,10 @@ export default function Register() {
         if (part === 0) {
             return (
                 <div className="flex justify-content-center align-items-center" style={{ height: '100vh', width: '100vw' }}>
-                    <div className='lg:col-6 md:col-6 col-12 p-8'>
+                    <div className='lg:col-6 md:col-6 col-12 lg:p-8'>
                         <RegisterUser onValidSubmit={(part, value) => handlePartialSumbit(part, value)}></RegisterUser>
                     </div>
-                    <div className="lg:col-6 md:col-6 hidden md:flex justify-content-center align-items-center">
+                    <div className="lg:col-6 md:col-6 hidden md:flex justify-content-center align-items-center ">
                         <img src='/registerUser.svg' alt='register' width={'80%'} style={{ maxWidth: '750px' }}></img>
                     </div>
                 </div>
@@ -56,7 +56,7 @@ export default function Register() {
                     <div className="lg:col-6 md:col-6 hidden md:flex justify-content-center align-items-center">
                         <img src='/registerCompany.svg' alt='register' width={'80%'} style={{ maxWidth: '750px' }}></img>
                     </div>
-                    <div className='lg:col-6 md:col-6 col-12 p-8'>
+                    <div className='lg:col-6 md:col-6 col-12 lg:p-8'>
                         <RegisterCompany onValidSubmit={(value: any) => handleRegister(value)}></RegisterCompany>
                     </div>
                 </div>

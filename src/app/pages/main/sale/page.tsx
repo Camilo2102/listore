@@ -53,7 +53,7 @@ export default function SalePage() {
         { field: 'saleDate', header: 'Fecha de venta', format: Formats.formatDate },
         { field: 'product', header: 'Producto' },
         { field: 'unitaryValue', header: 'Valor unitario', format: Formats.formatCurrency },
-        { field: 'amount', header: 'Cantidad', format: Formats.formatCurrency },
+        { field: 'amount', header: 'Cantidad' },
         { field: 'totalValue', header: 'Valor total', format: Formats.formatCurrency },
         ...(role === 'M' || role === 'C'
         ? [{ field: 'nameUser', header: 'Usuario'}]:[] 

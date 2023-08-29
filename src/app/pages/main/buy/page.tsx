@@ -17,6 +17,9 @@ import { Endpoints } from "@/app/constants/endpointsConstants";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { useTableContext } from "@/app/context/tableContext";
 import TitleTables from "@/app/components/titleTables";
+import FilterMeta from "@/app/interfaces/filterMeta";
+import { AuthUtil } from "@/app/utils/authUtil";
+import { Formats } from "@/app/constants/formatConstants";
 
 export default function BuyPage(){
     const {product, setProduct} = useContext(productContext);
@@ -25,23 +28,27 @@ export default function BuyPage(){
     const { reloadData, setReloadData } = useTableContext();
 
     const [visible, setVisible] = useState<boolean>(false);
-    const [buyFilter, setBuyFilter] = useState<BuyModel>({
-        buyDate: new Date(),
-        price: 0,
-        amount: 0,
-        product:{
-            id: product?.id,
-        },
-        user: {
-            id: user?.id,
-        } 
-    });
+
+    const buyFilter: FilterMeta ={
+        values:[
+            {field: "price", label: "Precio", value: 0},
+            {field: "amount", label: "Cantidad", value: 0},
+            {field: "initialDate", label: "Fecha Inicial", value: null},
+            {field: "finalDate", label: "Fecha Final", value: null},
+        ],
+        required:{
+            user: {
+                id: AuthUtil.getCredentials().user,
+            }
+        }
+
+    }
     const {buy, setBuy} = useContext(buyContext);
     
     const columns: ColumnMeta[]=[
-        {field: 'buyDate', header: 'Fecha de compra'},
-        {field: 'price', header: 'Precio'},
-        {field: 'amount', header: 'Cantidad'},
+        {field: 'buyDate', header: 'Fecha de compra', format: Formats.formatDate},
+        {field: 'price', header: 'Precio', format: Formats.formatCurrency},
+        {field: 'amount', header: 'Cantidad', format: Formats.formatCurrency},
     ];
 
 

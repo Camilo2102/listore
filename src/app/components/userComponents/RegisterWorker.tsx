@@ -177,8 +177,11 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
 
 
     return (
-        <Container title="Registro de trabajador">
-            <FormGenerator buttonLabel={userSelected === undefined ? 'Guardar' : 'Actualizar'} update={userSelected === undefined} form={form} value={user} setValue={setUser} submit={handleRegisterWorker}></FormGenerator>
-        </Container>
+        <div className="lg:p-6 md:p-10 p-4">
+            <Container title="Registro de trabajador">
+                <FormGenerator buttonLabel={userSelected === undefined ? 'Guardar' : 'Actualizar'} update={userSelected === undefined} form={form} value={user} setValue={setUser} submit={handleRegisterWorker}></FormGenerator>
+            </Container>
+        </div>
+        
     )
 }

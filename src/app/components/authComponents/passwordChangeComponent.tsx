@@ -122,8 +122,10 @@ export default function PasswordChangeComponent() {
     }, [submited]);
 
     return (
-        <Container title="Contraseña">
-            <FormGenerator buttonLabel="Ingresar" form={form} value={passwordForm} setValue={setPasswordForm} submit={handleLogin}></FormGenerator>
-        </Container>
+        <div className="md:p-8 p-4">
+            <Container title="Contraseña" >
+                <FormGenerator buttonLabel="Ingresar" form={form} value={passwordForm} setValue={setPasswordForm} submit={handleLogin}></FormGenerator>
+            </Container>
+        </div>
     )
 }
