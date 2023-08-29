@@ -30,7 +30,7 @@ export default function TableGeneral({useFilter = true, columns, gridLines, stri
   const { getAllByFilter, countAllByFilter } = useCRUDService(endpoint as string);
 
   const [paginator, setPaginator] = useHandleInput<Paginator>({
-    rows: 5,
+    rows: 10,
     first: 0,
     page: 0,
     totalRecords: 0,
@@ -181,12 +181,9 @@ export default function TableGeneral({useFilter = true, columns, gridLines, stri
   const header = (
     <div className="flex align-items-center justify-content-between gap-2">
       {baseFilter && useFilter && <TableFilter filter={filter as FilterMeta} setFilter={handleFilterChange}></TableFilter>}
-      {showRepotGenerator && <div>
-        <Button type="button" icon="pi pi-file-excel" severity="info" rounded onClick={exportToExcel} data-pr-tooltip="XLS" style={{
-          backgroundColor: '#4caf50',
-          borderColor: '#4caf50',
-        }} />
-        <Button type="button" icon="pi pi-file-pdf" severity="danger" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
+      {showRepotGenerator && <div className="flex justify-content-between gap-2">
+        <Button type="button" icon="pi pi-file-excel" severity="info" rounded outlined onClick={exportToExcel} data-pr-tooltip="XLS"  />
+        <Button type="button" icon="pi pi-file-pdf" severity="danger" rounded outlined onClick={exportPdf} data-pr-tooltip="PDF" />
       </div>}
     </div>
   );
@@ -232,7 +229,7 @@ export default function TableGeneral({useFilter = true, columns, gridLines, stri
 
   return (
     <div style={{ width: '100%' }}>
-      <DataTable loading={loadingData} lazy header={header} first={paginator.first} selectionMode="single" onRowSelect={onRowSelect} metaKeySelection={false} onPage={setPage} paginator rows={paginator.rows} totalRecords={paginator.totalRecords} style={{ borderRadius: '5px' }} showGridlines={gridLines} stripedRows={stripedRows} value={staticValues ?? values} removableSort={columns.some(column => column.sortable)}>
+      <DataTable  loading={loadingData} lazy header={header} first={paginator.first} selectionMode="single" onRowSelect={onRowSelect} metaKeySelection={false} onPage={setPage} paginator rows={paginator.rows} totalRecords={paginator.totalRecords} style={{ borderRadius: '5px' }} showGridlines={gridLines} stripedRows={true} value={staticValues ?? values} removableSort={columns.some(column => column.sortable)}>
         {generateColumns()}
       </DataTable>
     </div>

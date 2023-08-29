@@ -74,11 +74,7 @@ export default function SalePage() {
     [visible])
 
     const customMap = (sales: any) => {
-        console.log(sales);
-        
-        const nameUser = sales.user.name; 
-        console.log(nameUser);
-                           
+        const nameUser = sales.user.name;
         const nameProduct = sales.product.name;
         const totalValue = sales.unitaryValue * sales.amount;
         return { ...sales, product: nameProduct, totalValue: totalValue, nameUser: nameUser  }
