@@ -14,6 +14,7 @@ import TableGeneral from "@/app/components/tableComponents/tableGeneral";
 import FilterMeta from "@/app/interfaces/filterMeta";
 import { useNavigationContext } from "@/app/context/navigationContext";
 import { DataTableSelectEvent } from "primereact/datatable";
+import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 
 export default function PatternPage(){
 
@@ -50,7 +51,7 @@ export default function PatternPage(){
         setPattern(undefined)
     }
 
-    useEffect(() => {
+    useDidMountEffect(() => {
         if(!visible){
             setReloadData(true);
         }

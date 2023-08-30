@@ -17,6 +17,8 @@ import { useTableContext } from "@/app/context/tableContext";
 import TitleTables from "@/app/components/titleTables";
 import { DateUtil } from "@/app/utils/dateUtil";
 import FilterMeta from "@/app/interfaces/filterMeta";
+import { Formats } from "@/app/constants/formatConstants";
+import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 
 export default function SpentPage(){
     const {user, setUser} = useContext(userContext);
@@ -52,14 +54,14 @@ export default function SpentPage(){
         setSpent(undefined)
     }
 
-    useEffect(() => {
+    useDidMountEffect(() => {
         if(!visible){
             setReloadData(true);
         }
     }, 
     [visible])
     const customMap = (spents: any) =>{
-        return {...spents, spentDate: DateUtil.formatDate(spents.spentDate)}
+        return {...spents, spentDate: Formats.formatDate(spents.spentDate)}
     }
 
     return(

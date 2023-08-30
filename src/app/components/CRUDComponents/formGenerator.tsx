@@ -11,7 +11,7 @@ export default function FormGenerator({ form, value, setValue, submit, buttonLab
         const controls = form.getFormControls();
 
         return controls.map(control => (
-            <div className={`col-${control.colSize || '6'} py-4`} key={control.field}>
+            <div className={`col-12 md:col-${control.colSize || '6'} py-4`} key={control.field}>
                 {inputTypeSelector(control, value, setValue)}
             </div>
         ))
@@ -19,7 +19,7 @@ export default function FormGenerator({ form, value, setValue, submit, buttonLab
 
     const getMessages = () => {
         return messages?.map((msg, i) => (
-            <div key={i} className="col-12 flex justify-content-end">
+            <div key={i} className="col-12 flex justify-content-center md:justify-content-end">
                 {msg}
             </div>
         ));

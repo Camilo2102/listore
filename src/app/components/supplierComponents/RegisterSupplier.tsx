@@ -13,11 +13,11 @@ import InventoryModel from "@/app/models/inventory";
 import { inventoryContext } from '../../pages/main/inventory/inventoryContext';
 import { ToastUtil } from "@/app/utils/toastUtil";
 import { Messages } from "@/app/constants/messageConstant";
-import { supplierContext } from "@/app/pages/main/inventory/supplier/supplierContext";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { useMainContext } from "@/app/context/mainContext";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
+import { useSupplier } from "@/app/context/supplierContext";
 
 export default function RegisterSupplier({visible, setVisible}:{visible:boolean, setVisible:(partialT: Partial<boolean>) => void}) {
 
@@ -85,7 +85,7 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
 
     const [supplierToRegister, form, setSupplierToRegister, validateFormControls] = handleForm(controls);
     const { mainInventory, setMainInventory } = useMainContext();
-    const {supplier, setSupplier} = useContext(supplierContext);
+    const {supplier, setSupplier} = useSupplier();
     
     const [submited, setSubmited] = useState<boolean>(false);
     const handleSupplier = (e: FormEvent<HTMLFormElement>) => {

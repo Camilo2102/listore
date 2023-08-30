@@ -19,6 +19,7 @@ import { useTableContext } from "@/app/context/tableContext";
 import RegisterUser from "@/app/components/authComponents/registerUser";
 import FilterMeta from "@/app/interfaces/filterMeta";
 import { useNavigationContext } from "@/app/context/navigationContext";
+import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 
 export default function UserList({ props }: { props: any }) {
     const {goToRoute}= useNavigationContext();
@@ -60,7 +61,7 @@ export default function UserList({ props }: { props: any }) {
     ];
 
 
-    useEffect(() => {
+    useDidMountEffect(() => {
         if(!visible){
             setReloadData(true);
         }

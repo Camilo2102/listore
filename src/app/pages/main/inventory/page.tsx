@@ -9,7 +9,6 @@ import Paginator from "@/app/interfaces/paginator";
 import { useRouter } from "next/navigation";
 import InventoryModel from "@/app/models/inventory";
 import { AuthUtil } from "@/app/utils/authUtil";
-import { ConfirmationService } from "@/app/services/confirmationService";
 import { Messages } from "@/app/constants/messageConstant";
 import { ToastUtil } from "@/app/utils/toastUtil";
 import { DataTableSelectEvent } from "primereact/datatable";
@@ -22,6 +21,9 @@ import { useTableContext } from "@/app/context/tableContext";
 import InventoryTable from "@/app/components/inventoryComponents/intentoryTable";
 import TitleTables from "@/app/components/titleTables";
 import { useNavigationContext } from "@/app/context/navigationContext";
+import { useSupplier } from "../../../context/supplierContext";
+import useConfirmationService from "@/app/hooks/services/useConfirmationService";
+import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 
 
 
@@ -33,6 +35,10 @@ export default function Inventory({ props }: { props: any }) {
 
 
     const { mainInventory, setMainInventory } = useMainContext();
+    const {setSupplier} = useSupplier();
+
+    const {showConfirmDelete} = useConfirmationService();
+
 
     const columns: ColumnMeta[] = [
         { field: 'name', header: 'Nombre' },
@@ -58,7 +64,7 @@ export default function Inventory({ props }: { props: any }) {
         },
         {
             field: 'CRUDdelete', header: "Eliminar", action: (t: any) => {
-                ConfirmationService.showConfirmDelete(Messages.MESSAGE_BODY_DELETE + t.name, handleDelete(t));
+                showConfirmDelete(Messages.MESSAGE_BODY_DELETE + t.name, handleDelete(t));
             }
         },
 
@@ -66,6 +72,7 @@ export default function Inventory({ props }: { props: any }) {
 
     const handleSelection = (inventory: DataTableSelectEvent) => {
         setMainInventory(inventory.data);
+        setSupplier(undefined);
         goToRoute("/pages/main/inventory/product")
     };
 
@@ -83,8 +90,6 @@ export default function Inventory({ props }: { props: any }) {
         return deleteFn;
     }
 
-    
-
     const [visible, setVisible] = useState<boolean>(false);
 
     const handleNewInventory = () => {
@@ -92,7 +97,7 @@ export default function Inventory({ props }: { props: any }) {
         setMainInventory(undefined);
     }
 
-    useEffect(() => {
+    useDidMountEffect(() => {
         if(!visible){
             setReloadData(true);
         }
@@ -112,7 +117,6 @@ export default function Inventory({ props }: { props: any }) {
                     </div>
                 </div>
                 {visible && <RegisterInventory visible={visible} setVisible={setVisible} />}
-
             </div>
         </>
     )
