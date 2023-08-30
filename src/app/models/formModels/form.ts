@@ -58,7 +58,8 @@ export default class Form {
     public updateFilter(field:string, value: any){
         this.formControls.forEach(control => {
             if(control.field === field){
-                control.filter = {values: [...control.filter?.values as []], required: {...value}}                
+                debugger
+                control.filter = {values: [], required: {...control.filter?.required, ...value}}                
             }
         })
     }

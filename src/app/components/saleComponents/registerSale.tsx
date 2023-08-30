@@ -103,9 +103,11 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 service: Endpoints.PRODUCT,
                 disabled: true,
                 filter: {
-                    required: {},
+                    required: {
+                        supplier: {
+                        }
+                    },
                     values: [
-
                     ]                    
                 }
             },

@@ -254,6 +254,16 @@
     border: none !important;
 }
 
+.p-paginator .p-dropdown {
+    width: 60.5px;
+}
+
+.p-paginator .p-dropdown .p-dropdown-label {
+    display: flex;
+    align-items: center;
+}
+
+
 /******************************/
 
 .p-datatable-wrapper {
@@ -901,7 +911,7 @@
 .p-dropdown .p-dropdown-trigger {
     background: rgba(0, 0, 0, 0);
     color: #686466;
-    width: 3rem;
+    width: 1.6rem;
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px
 }

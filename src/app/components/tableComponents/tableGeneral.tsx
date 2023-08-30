@@ -23,7 +23,7 @@ import { parseToFilter } from "@/app/utils/selectionUtil";
 import { useLoading } from "@/app/context/loadingContext";
 
 
-export default function TableGeneral({useFilter = true, columns, gridLines, stripedRows, onRowSelect, showRepotGenerator = true, endpoint, baseFilter, customMap, staticValues, name = "exportacion" }: { useFilter?: boolean, columns: ColumnMeta[], gridLines?: boolean, stripedRows?: boolean, onRowSelect?: (e: DataTableSelectEvent) => void, showRepotGenerator?: boolean, endpoint?: string, baseFilter?: FilterMeta, customMap?: (value: any) => any, staticValues?: any[], name?: string }) {
+export default function TableGeneral({ useFilter = true, columns, gridLines, stripedRows, onRowSelect, showRepotGenerator = true, endpoint, baseFilter, customMap, staticValues, name = "exportacion" }: { useFilter?: boolean, columns: ColumnMeta[], gridLines?: boolean, stripedRows?: boolean, onRowSelect?: (e: DataTableSelectEvent) => void, showRepotGenerator?: boolean, endpoint?: string, baseFilter?: FilterMeta, customMap?: (value: any) => any, staticValues?: any[], name?: string }) {
   const [values, setValues] = useState<any[]>([]);
   const { reloadData, setReloadData, loadingData, setLoadingData } = useTableContext();
 
@@ -96,7 +96,7 @@ export default function TableGeneral({useFilter = true, columns, gridLines, stri
 
     let value = e[field]
 
-    if(format){
+    if (format) {
       value = format(value);
     }
 
@@ -108,7 +108,7 @@ export default function TableGeneral({useFilter = true, columns, gridLines, stri
   }
 
   const setPage = (e: DataTablePageEvent) => {
-    setPaginator({ page: e.page, first: e.first, pagesVisited: ++paginator.pagesVisited, loaded: false });
+    setPaginator({ rows: e.rows, page: e.page, first: e.first, pagesVisited: ++paginator.pagesVisited, loaded: false });
 
   }
 
@@ -120,7 +120,7 @@ export default function TableGeneral({useFilter = true, columns, gridLines, stri
 
 
   const usefulColumns = useMemo(() =>
-    columns.filter(column => !(column.field === "supplier" || column.field === "CRUDupdate" || column.field === "CRUDdelete" || column.field === "buy" || column.field === "sale" || column.field ==="pattern")),
+    columns.filter(column => !(column.field === "supplier" || column.field === "CRUDupdate" || column.field === "CRUDdelete" || column.field === "buy" || column.field === "sale" || column.field === "pattern")),
     [columns]
   );
 
@@ -174,7 +174,7 @@ export default function TableGeneral({useFilter = true, columns, gridLines, stri
 
   const handleFilterChange = (partialT: Partial<any>) => {
     setFilter(partialT);
-    setPaginator({loaded: false})
+    setPaginator({ loaded: false })
   }
 
 
@@ -182,7 +182,7 @@ export default function TableGeneral({useFilter = true, columns, gridLines, stri
     <div className="flex align-items-center justify-content-between gap-2">
       {baseFilter && useFilter && <TableFilter filter={filter as FilterMeta} setFilter={handleFilterChange}></TableFilter>}
       {showRepotGenerator && <div className="flex justify-content-between gap-2">
-        <Button type="button" icon="pi pi-file-excel" severity="info" rounded outlined onClick={exportToExcel} data-pr-tooltip="XLS"  />
+        <Button type="button" icon="pi pi-file-excel" severity="info" rounded outlined onClick={exportToExcel} data-pr-tooltip="XLS" />
         <Button type="button" icon="pi pi-file-pdf" severity="danger" rounded outlined onClick={exportPdf} data-pr-tooltip="PDF" />
       </div>}
     </div>
@@ -221,7 +221,7 @@ export default function TableGeneral({useFilter = true, columns, gridLines, stri
     if (endpoint && baseFilter && !paginator.loaded || reloadData) {
       setLoadingData(true);
       const parsedFilter = parseToFilter(filter);
-      
+
       getData(parsedFilter);
     }
   }, [paginator, reloadData])
@@ -229,7 +229,7 @@ export default function TableGeneral({useFilter = true, columns, gridLines, stri
 
   return (
     <div style={{ width: '100%' }}>
-      <DataTable  loading={loadingData} lazy header={header} first={paginator.first} selectionMode="single" onRowSelect={onRowSelect} metaKeySelection={false} onPage={setPage} paginator rows={paginator.rows} totalRecords={paginator.totalRecords} style={{ borderRadius: '5px' }} showGridlines={gridLines} stripedRows={true} value={staticValues ?? values} removableSort={columns.some(column => column.sortable)}>
+      <DataTable loading={loadingData} lazy header={header} rowsPerPageOptions={[5, 10, 25, 50]} paginatorTemplate={paginator.totalRecords > 10 ? "RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink" : ''} currentPageReportTemplate="{first} a {last} de {totalRecords}" first={paginator.first} selectionMode="single" onRowSelect={onRowSelect} metaKeySelection={false} onPage={setPage} paginator rows={paginator.rows} totalRecords={paginator.totalRecords} style={{ borderRadius: '5px' }} showGridlines={gridLines} stripedRows={true} value={staticValues ?? values} removableSort={columns.some(column => column.sortable)}>
         {generateColumns()}
       </DataTable>
     </div>
