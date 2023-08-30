@@ -112,7 +112,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 description: "Cantidad",
                 colSize: 6,
                 type: FormTypes.NUMBER,
-                validators: [Validators.requiered, Validators.maxLenght(200), Validators.minLenght(3)],
+                validators: [Validators.requiered, Validators.maxLenght(7), Validators.minLenght(1)],
                 invalid: false,
                 message: true,
                 icon: "pi-user"
@@ -181,14 +181,12 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
 
 
             sale.product = {
-                id: sale.product
+                id: sale.product.id
             }
 
             sale.user = {
                 id: AuthUtil.getCredentials().user
             }
-
-            console.log(sale);
             return sale;
         })
 

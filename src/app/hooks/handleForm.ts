@@ -39,8 +39,6 @@ export const handleForm = (formControls: FormControl[]) : [any, Form, (partialT:
         Object.keys(partialT).forEach( key => {
             form.resetStatus(key);
         }) 
-    debugger
-
         setValue(partialT);
 
     } 
