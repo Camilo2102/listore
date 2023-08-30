@@ -10,8 +10,9 @@ import Paginator from "@/app/interfaces/paginator";
 import { DataTableSelectEvent } from "primereact/datatable";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+import dependence from "@/app/interfaces/dependence";
 
-export default function InputHelper({ formControl, value, onValueChange, icon }: { formControl: FormControl, value: any, onValueChange: (value: any, dependecy?: string) => void, icon?: string }) {
+export default function InputHelper({ formControl, value, onValueChange, icon }: { formControl: FormControl, value: any, onValueChange: (value: any, dependecy?: dependence[]) => void, icon?: string }) {
     const [visible, setVisible] = useState<boolean>(false);
 
     const [showText, setShowText] = useState<string>('');
@@ -24,10 +25,10 @@ export default function InputHelper({ formControl, value, onValueChange, icon }:
 
 
     const selectValue = (value: DataTableSelectEvent) => {
-        const { id, name } = value.data;
+        const item = value.data;
 
-        setShowText(name);
-        onValueChange({ [formControl.field]: id, ["name" + formControl.field]: name }, formControl.fieldDependency);
+        setShowText(item.name);
+        onValueChange({ [formControl.field]: item, ["name" + formControl.field]: item.name}, formControl.fieldDependency);
         setVisible(false);
     }
 

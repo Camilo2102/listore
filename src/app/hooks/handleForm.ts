@@ -1,9 +1,10 @@
 import Form from "@/app/models/formModels/form";
 import { useHandleInput } from "./handleInput";
 import FormControl from "@/app/models/formModels/formControl";
+import dependence from "../interfaces/dependence";
 
 
-export const handleForm = (formControls: FormControl[]) : [any, Form, (partialT: Partial<any>, dependency?: string) => void,() => [FormControl[], boolean]
+export const handleForm = (formControls: FormControl[]) : [any, Form, (partialT: Partial<any>, dependency?: dependence[]) => void,() => [FormControl[], boolean]
 ] => {
     const form = new Form(formControls);
     const [value, setValue] = useHandleInput<any>(form.getFormControlValues());
@@ -12,20 +13,34 @@ export const handleForm = (formControls: FormControl[]) : [any, Form, (partialT:
      * Se encarga de validar cuando se ejecute un cambio en el input y resetea el status del formcontrol
      * @param partialT el objeto parcial a ingresar
      */
-    const inputChange = (partialT: Partial<any>, dependency?: string) =>{
+    const inputChange = (partialT: Partial<any>, dependency?: dependence[]) =>{
         if(dependency !== undefined){
-            form.enableField(dependency);
-            const obj = {
-                [Object.keys(partialT)[0]]: {
-                    id: partialT[Object.keys(partialT)[0]],
+            dependency.forEach(dependence => {
+                dependence.enable && form.enableField(dependence.field);
+                const value = partialT[Object.keys(partialT)[0]][dependence.value];
+                if(dependence.toInput){
+                    const field = Object.keys(partialT)[0];
+                    const obj = {
+                        [field]: {
+                            id: value
+                        }
+                    }            
+                    form.updateFilter(dependence.field, obj);
+                } else {
+                    partialT = {
+                        ...partialT,
+                        [dependence.field]: value
+                    }
                 }
-            }            
-            form.updateFilter(dependency, obj);
+            })
+
         }        
-        
+
         Object.keys(partialT).forEach( key => {
             form.resetStatus(key);
         }) 
+    debugger
+
         setValue(partialT);
 
     } 
