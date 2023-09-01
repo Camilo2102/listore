@@ -159,13 +159,13 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
          delete productToRegister.namesupplier;
 
          productToRegister.supplier = {
-            id: productToRegister.supplier
+            id: productToRegister.supplier.id
          }
 
          delete productToRegister.namepattern;
 
          productToRegister.pattern = {
-            id: productToRegister.pattern
+            id: productToRegister.pattern.id
          }
 
 
