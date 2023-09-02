@@ -20,14 +20,14 @@ import TitleTables from "@/app/components/titleTables";
 import FilterMeta from "@/app/interfaces/filterMeta";
 import { AuthUtil } from "@/app/utils/authUtil";
 import { Formats } from "@/app/constants/formatConstants";
+import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 
 export default function BuyPage() {
-    const { product, setProduct } = useContext(productContext);
-    const { user, setUser } = useContext(userContext);
-
-    const { reloadData, setReloadData } = useTableContext();
+    const { product} = useContext(productContext);
 
     const [visible, setVisible] = useState<boolean>(false);
+
+    const { setReloadData } = useTableContext();
 
     const buyFilter: FilterMeta ={
         values:[
@@ -37,33 +37,42 @@ export default function BuyPage() {
             {field: "finalDate", label: "Fecha Final", value: null},
         ],
         required:{
+            product: {
+                id: product?.id,
+            },
             user: {
                 id: AuthUtil.getCredentials().user,
             }
         }
 
     }
-    const {buy, setBuy} = useContext(buyContext);
+    const {setBuy} = useContext(buyContext);
     
     const columns: ColumnMeta[]=[
         {field: 'buyDate', header: 'Fecha de compra', format: Formats.formatDate},
+        {field: 'product', header: 'Producto' },
         {field: 'price', header: 'Precio', format: Formats.formatCurrency},
-        {field: 'amount', header: 'Cantidad', format: Formats.formatCurrency},
+        {field: 'amount', header: 'Cantidad'},
+        {field: 'totalValue', header: 'Valor total', format: Formats.formatCurrency },
     ];
-
-
 
     const handleNewBuy = () => {
         setVisible(true);
         setBuy(undefined)
     }
 
-    useEffect(() => {
-        if (!visible) {
+    useDidMountEffect(() => {
+        if(!visible){
             setReloadData(true);
         }
-    },
-        [visible])
+    }, [visible])
+
+    const customMap = (buys: any) =>{
+        const nameProduct = buys.product?.name;
+        const totalValue = buys.price * buys.amount;
+        return {...buys, product: nameProduct!, totalValue: totalValue}
+    }
+
 
     return (
         <>
@@ -75,7 +84,7 @@ export default function BuyPage() {
                         <Button onClick={handleNewBuy} label="Nuevo" icon='pi pi-plus'></Button>
                     </div>
                     <div className="col-12 flex justify-content-center">
-                        <TableGeneral columns={columns} baseFilter={buyFilter} endpoint={Endpoints.BUY} ></TableGeneral>
+                        <TableGeneral columns={columns} baseFilter={buyFilter} endpoint={Endpoints.BUY} customMap={customMap}></TableGeneral>
                     </div>
                 </div>
                 {visible && <RegisterBuy visible={visible} setVisible={setVisible} />}

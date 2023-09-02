@@ -8,7 +8,6 @@ import { ToastUtil } from "@/app/utils/toastUtil";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import PopUp from "../popUp";
 import FormGenerator from "../CRUDComponents/formGenerator";
-import ProductModel from "@/app/models/product";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import User from "@/app/models/user";
 import { AuthUtil } from "@/app/utils/authUtil";
@@ -205,7 +204,6 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
 
     return (
         <>
-
             <PopUp title="Tabla de ventas" visible={visible} setVisible={setVisible}>
                 <div className="col-12 flex justify-content-start">
                     <Button label="Agregar" icon="pi pi-plus" onClick={() => setNewSaleVisible(true)} ></Button>
@@ -216,13 +214,9 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                     <Button label="Cargar ventas" icon="pi pi-check" onClick={loadSales}   ></Button>
                 </div>
             </PopUp>
-
-
             <PopUp title="Nueva Venta" visible={newSaleVisible} setVisible={setNewSaleVisible}>
                 <FormGenerator form={form} setValue={setSaleToRegister} submit={addSale} value={saleToRegister} buttonLabel="Agregar"></FormGenerator>
             </PopUp>
-
-
         </>
     )
 
