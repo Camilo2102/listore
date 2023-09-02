@@ -5,7 +5,6 @@ import { useContext, useEffect, useState } from "react";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import { Messages } from "@/app/constants/messageConstant";
 import { ToastUtil } from "@/app/utils/toastUtil";
-import { ConfirmationService } from "@/app/services/confirmationService";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
 import { Button } from "primereact/button";
@@ -23,6 +22,9 @@ import { useTableContext } from "@/app/context/tableContext";
 import TitleTables from "@/app/components/titleTables";
 import FilterMeta from "@/app/interfaces/filterMeta";
 import { useNavigationContext } from "@/app/context/navigationContext";
+import { useSupplier } from "../../../../context/supplierContext";
+import useConfirmationService from "@/app/hooks/services/useConfirmationService";
+import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 
 
 export default function ProductPage() {
@@ -33,12 +35,20 @@ export default function ProductPage() {
 
     const { reloadData, setReloadData } = useTableContext();
 
+    const { supplier, setSupplier } = useSupplier();
+
+    const {showConfirmDelete} = useConfirmationService();
+
+
+
     const productFilter: FilterMeta = {
         required: {
             inventory: {
-                id: mainInventory?.id
+                id: supplier ? supplier.inventory.id : mainInventory?.id
             },
-            supplier: {},
+            supplier: {
+                id: supplier ? supplier?.id : undefined
+            },
         },
         values: [
             { field: 'name', label: 'Nombre', value: '' },
@@ -68,7 +78,7 @@ export default function ProductPage() {
         },
         {
             field: 'CRUDdelete', header: "Eliminar", action: (t: any) => {
-                ConfirmationService.showConfirmDelete(Messages.MESSAGE_BODY_DELETE + t, handleDelete(t));
+                showConfirmDelete(Messages.MESSAGE_BODY_DELETE + t, handleDelete(t));
 
             }
         }
@@ -97,7 +107,7 @@ export default function ProductPage() {
         setProduct(undefined)
     }
 
-    useEffect(() => {
+    useDidMountEffect(() => {
         if (!visible) {
             setReloadData(true);
         }

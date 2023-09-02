@@ -3,9 +3,8 @@ import SupplierModel from "@/app/models/supplier";
 import { AuthUtil } from "@/app/utils/authUtil";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
-import { supplierContext } from "./supplierContext";
+import { useSupplier } from "../../../../context/supplierContext";
 import ColumnMeta from "@/app/interfaces/columnMeta";
-import { ConfirmationService } from "@/app/services/confirmationService";
 import { ToastUtil } from "@/app/utils/toastUtil";
 import { Messages } from "@/app/constants/messageConstant";
 import Paginator from "@/app/interfaces/paginator";
@@ -24,13 +23,22 @@ import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { useTableContext } from "@/app/context/tableContext";
 import TitleTables from "@/app/components/titleTables";
 import FilterMeta from "@/app/interfaces/filterMeta";
+import { useNavigationContext } from "@/app/context/navigationContext";
+import { DataTableSelectEvent } from "primereact/datatable";
+import useConfirmationService from "@/app/hooks/services/useConfirmationService";
+import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 
-export default function Supplier(){
+export default function SupplierPage(){
     const { mainInventory, setMainInventory } = useMainContext();
 
     const {deleteData} = useCRUDService(Endpoints.SUPPLIER);
+
+    const {goToRoute} = useNavigationContext();
     
     const { reloadData, setReloadData } = useTableContext();
+
+    const {showConfirmDelete} = useConfirmationService();
+
 
     const supplierFilter: FilterMeta = {
         required: {
@@ -47,7 +55,7 @@ export default function Supplier(){
         ]
     }
 
-    const {supplier, setSupplier} = useContext(supplierContext);
+    const {supplier, setSupplier} = useSupplier();
    
     const columns: ColumnMeta[]=[
         {field: 'name', header: 'Nombre'},
@@ -63,7 +71,7 @@ export default function Supplier(){
         },
         {
             field: 'CRUDdelete', header: "Eliminar", action: (t: any) => {
-               ConfirmationService.showConfirmDelete(Messages.MESSAGE_BODY_DELETE + t, handleDelete(t));
+               showConfirmDelete(Messages.MESSAGE_BODY_DELETE + t, handleDelete(t));
             }
         },
     ];
@@ -82,6 +90,11 @@ export default function Supplier(){
         return deletFn;
     }
 
+    const handleSupplierSelect = (supplier: DataTableSelectEvent) => {
+        setSupplier(supplier.data);
+        goToRoute("/pages/main/inventory/product");
+    }
+
     
     const [visible, setVisible] = useState<boolean>(false);
     
@@ -90,7 +103,7 @@ export default function Supplier(){
         setSupplier(undefined)
     }
 
-    useEffect(() => {
+    useDidMountEffect(() => {
         if(!visible){
             setReloadData(true);
         }
@@ -107,7 +120,7 @@ export default function Supplier(){
                 <Button onClick={handleNewSupplier} label="Nuevo" icon="pi pi-user-plus"></Button>
             </div>
             <div className="col-12 flex justify-content-center">
-                    <TableGeneral baseFilter={supplierFilter} endpoint={Endpoints.SUPPLIER} columns={columns}  ></TableGeneral>
+                    <TableGeneral baseFilter={supplierFilter} endpoint={Endpoints.SUPPLIER} columns={columns} onRowSelect={handleSupplierSelect} ></TableGeneral>
                 </div>
            </div>
         </div>

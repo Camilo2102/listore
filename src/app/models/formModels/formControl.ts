@@ -5,6 +5,8 @@
 import KeyValueInterface from "@/app/interfaces/keyValueInterface";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import FilterMeta from "@/app/interfaces/filterMeta";
+import dependence from "@/app/interfaces/dependence";
+
 
 export default interface FormControl{
     field: string;
@@ -23,7 +25,7 @@ export default interface FormControl{
     options?:  KeyValueInterface[];
     service?: string;
     columns?: ColumnMeta[];
-    fieldDependency?: string;
+    fieldDependency?: dependence[];
     filter?: FilterMeta;
     numberOption?: number;
 }

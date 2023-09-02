@@ -35,28 +35,6 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
     const [controls, setControls] = useState<FormControl[]>(
         [
             {
-                field: "unitaryValue",
-                value: "",
-                description: "Valor unitario",
-                colSize: 6,
-                type: FormTypes.NUMBER,
-                validators: [Validators.requiered, Validators.maxLenght(200), Validators.minLenght(3)],
-                invalid: false,
-                message: true,
-                icon: "pi-user"
-            },
-            {
-                field: "amount",
-                value: "",
-                description: "Cantidad",
-                colSize: 6,
-                type: FormTypes.NUMBER,
-                validators: [Validators.requiered, Validators.maxLenght(200), Validators.minLenght(3)],
-                invalid: false,
-                message: true,
-                icon: "pi-user"
-            },
-            {
                 field: "inventory",
                 value: "",
                 description: "Inventario",
@@ -84,7 +62,9 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                         },
                     }
                 },
-                fieldDependency: "product"
+                fieldDependency: [
+                    {field: "product", value: "id", toInput: true, enable: true}
+                ]
             },
             {
                 field: "product",
@@ -102,12 +82,40 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 icon: "pi-user",
                 service: Endpoints.PRODUCT,
                 disabled: true,
+                fieldDependency: [
+                    {field: "unitaryValue", value: "unitaryValue", toInput: false, enable: false}
+                ],
                 filter: {
-                    required: {},
+                    required: {
+                        supplier: {
+                        },
+                    },
                     values: [
-
                     ]                    
-                }
+                },
+            },
+            {
+                field: "unitaryValue",
+                value: "",
+                description: "Valor unitario",
+                colSize: 6,
+                type: FormTypes.NUMBER,
+                validators: [Validators.requiered, Validators.maxLenght(200), Validators.minLenght(3)],
+                invalid: false,
+                message: true,
+                icon: "pi-user",
+                disabled: true
+            },
+            {
+                field: "amount",
+                value: "",
+                description: "Cantidad",
+                colSize: 6,
+                type: FormTypes.NUMBER,
+                validators: [Validators.requiered, Validators.maxLenght(7), Validators.minLenght(1)],
+                invalid: false,
+                message: true,
+                icon: "pi-user"
             },
         ]
     );
@@ -173,14 +181,12 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
 
 
             sale.product = {
-                id: sale.product
+                id: sale.product.id
             }
 
             sale.user = {
                 id: AuthUtil.getCredentials().user
             }
-
-            console.log(sale);
             return sale;
         })
 

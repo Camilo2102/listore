@@ -21,9 +21,9 @@ import FilterMeta from "@/app/interfaces/filterMeta";
 import { AuthUtil } from "@/app/utils/authUtil";
 import { Formats } from "@/app/constants/formatConstants";
 
-export default function BuyPage(){
-    const {product, setProduct} = useContext(productContext);
-    const {user, setUser} = useContext(userContext);
+export default function BuyPage() {
+    const { product, setProduct } = useContext(productContext);
+    const { user, setUser } = useContext(userContext);
 
     const { reloadData, setReloadData } = useTableContext();
 
@@ -53,34 +53,34 @@ export default function BuyPage(){
 
 
 
-    const handleNewBuy = () =>{
+    const handleNewBuy = () => {
         setVisible(true);
         setBuy(undefined)
     }
 
     useEffect(() => {
-        if(!visible){
+        if (!visible) {
             setReloadData(true);
         }
-    }, 
-    [visible])
+    },
+        [visible])
 
-    return(
+    return (
         <>
-            <NavBar/>
+            <NavBar />
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-            <div className="grid" style={{ width: '90%' }}>
-                <TitleTables title="Compras"></TitleTables>
-                <div className="col-12 flex justify-content-start">
-                    <Button onClick={handleNewBuy} label="Nuevo" icon='pi pi-plus'></Button>
+                <div className="grid" style={{ width: '90%' }}>
+                    <TitleTables title="Compras"></TitleTables>
+                    <div className="col-12 flex justify-content-start">
+                        <Button onClick={handleNewBuy} label="Nuevo" icon='pi pi-plus'></Button>
+                    </div>
+                    <div className="col-12 flex justify-content-center">
+                        <TableGeneral columns={columns} baseFilter={buyFilter} endpoint={Endpoints.BUY} ></TableGeneral>
+                    </div>
                 </div>
-                <div className="col-12 flex justify-content-center">
-                    <TableGeneral columns={columns} baseFilter={buyFilter} endpoint={Endpoints.BUY} ></TableGeneral>
-                </div>
-           </div>
-           {visible && <RegisterBuy visible={visible} setVisible={setVisible}/>}
+                {visible && <RegisterBuy visible={visible} setVisible={setVisible} />}
             </div>
         </>
     )
-    
+
 }

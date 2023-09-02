@@ -13,6 +13,7 @@ import { DataTableSelectEvent } from "primereact/datatable";
 import { attributeContext } from "./attributeContext";
 import { patternContext } from "../patternContext";
 import RegisterAttribute from "@/app/components/atributesComponentes/RegisterAtribute";
+import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 
 export default function AttributePage(){
 
@@ -47,7 +48,7 @@ export default function AttributePage(){
         setAttribute(undefined)
     }
 
-    useEffect(() => {
+    useDidMountEffect(() => {
         if(!visible){
             setReloadData(true);
         }

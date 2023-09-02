@@ -20,6 +20,7 @@ import TitleTables from "@/app/components/titleTables";
 import FilterMeta from "@/app/interfaces/filterMeta";
 import { Formats } from "@/app/constants/formatConstants";
 import { StorageService } from "@/app/services/storageService";
+import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 
 export default function SalePage() {
     const { product } = useContext(productContext);
@@ -42,7 +43,7 @@ export default function SalePage() {
                 id: product?.id,
             },
             user: {
-                id: role === 'M' || role === 'C' ? '' : AuthUtil.getCredentials().user,
+                id: role === 'M' || role === 'C' ? undefined : AuthUtil.getCredentials().user,
             }
         },
     }
@@ -66,19 +67,14 @@ export default function SalePage() {
         setSale(undefined)
     }
 
-    useEffect(() => {
+    useDidMountEffect(() => {
         if(!visible){
             setReloadData(true);
         }
-    }, 
-    [visible])
+    }, [visible])
 
     const customMap = (sales: any) => {
-        console.log(sales);
-        
-        const nameUser = sales.user.name; 
-        console.log(nameUser);
-                           
+        const nameUser = sales.user.name;
         const nameProduct = sales.product.name;
         const totalValue = sales.unitaryValue * sales.amount;
         return { ...sales, product: nameProduct, totalValue: totalValue, nameUser: nameUser  }
