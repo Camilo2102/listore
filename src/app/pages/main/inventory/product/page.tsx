@@ -11,7 +11,7 @@ import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableComponents/tableGeneral";
 import { inventoryContext } from "../inventoryContext";
 import RegisterProduct from "@/app/components/productComponents/RegisterProduct";
-import { productContext } from "./productContext";
+import { ProductContext, useProductContext } from "../../../../context/productContext";
 import { DataTableSelectEvent } from "primereact/datatable";
 import { useRouter } from "next/navigation";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
@@ -59,7 +59,7 @@ export default function ProductPage() {
         ]
     }
 
-    const { product, setProduct } = useContext(productContext);
+    const { product, setProduct } = useProductContext();
 
 
     const columns: ColumnMeta[] = [
@@ -79,7 +79,6 @@ export default function ProductPage() {
         {
             field: 'CRUDdelete', header: "Eliminar", action: (t: any) => {
                 showConfirmDelete(Messages.MESSAGE_BODY_DELETE + t, handleDelete(t));
-
             }
         }
     ];
@@ -120,6 +119,11 @@ export default function ProductPage() {
         return product;
     }
 
+    const handleSelection = (product: DataTableSelectEvent) => {
+        setProduct(product.data);
+        goToRoute("/pages/main/inventory/product/subProduct");
+    }
+
     return (
         <>
             <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
@@ -129,7 +133,7 @@ export default function ProductPage() {
                         <Button label="Nuevo" icon="pi pi-inbox" onClick={handleNewProduct} ></Button>
                     </div>
                     <div className="col-12 flex justify-content-center">
-                        <TableGeneral columns={columns} baseFilter={productFilter} endpoint={Endpoints.PRODUCT} customMap={customMap}></TableGeneral>
+                        <TableGeneral columns={columns} baseFilter={productFilter} onRowSelect={handleSelection} endpoint={Endpoints.PRODUCT} customMap={customMap}></TableGeneral>
                     </div>
                 </div>
                 {visible && <RegisterProduct visible={visible} setVisible={setVisible} />}

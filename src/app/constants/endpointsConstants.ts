@@ -8,5 +8,7 @@ export class Endpoints {
     public static readonly SALE: string = "sale";
     public static readonly BUY: string = "buy";
     public static readonly PATTERN: string = "pattern";
+    public static readonly KINDOFPRODUCT: string = "kindOfProduct";
+    public static readonly CHARACTERISTIC: string = "characteristic";
     
 }

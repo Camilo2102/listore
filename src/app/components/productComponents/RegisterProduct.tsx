@@ -11,16 +11,16 @@ import { ToastUtil } from "@/app/utils/toastUtil";
 import { Messages } from "@/app/constants/messageConstant";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { productContext } from "@/app/pages/main/inventory/product/productContext";
+import { ProductContext, useProductContext } from "@/app/context/productContext";
 import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { useMainContext } from "@/app/context/mainContext";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 
 
-export default function RegisterProduct({ inventorySelected, visible, setVisible  }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void}){
+export default function RegisterProduct({ inventorySelected, visible, setVisible }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
    const { mainInventory, setMainInventory } = useMainContext();
-   const {create} = useCRUDService(Endpoints.PRODUCT);
+   const { create } = useCRUDService(Endpoints.PRODUCT);
 
 
    const [controls, setControls] = useState<FormControl[]>(
@@ -35,49 +35,24 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
             invalid: false,
             message: true,
             columns: [
-                { field: 'name', header: 'Nombre' },
-                { field: 'description', header: 'Descripcion' },
-                { field: 'phone', header: 'Telefono' },
+               { field: 'name', header: 'Nombre' },
+               { field: 'description', header: 'Descripcion' },
+               { field: 'phone', header: 'Telefono' },
             ],
             icon: "pi-user",
             service: Endpoints.SUPPLIER,
             filter: {
                required: {
-                   inventory:{
-                       id: mainInventory?.id,
-                   }
-               },
-               values: [
-                   { field: 'name', label: 'Nombre', value: '' },
-                   {field: "description",label: "Descripcion", value: ""},
-                   {field: "address",label: "Dirección", value: ""},
-                   {field: "mail",label: "Correo", value: ""},
-                   {field: "phone",label: "Télefono", value: 0}
-               ]
-           },
-        },
-        {
-            field: "pattern",
-            value: "",
-            description: "Modelos",
-            colSize: 12,
-            type: FormTypes.INPUTHELPER,
-            validators: [Validators.requiered],
-            invalid: false,
-            message: true,
-            columns: [
-               { field: 'name', header: 'Nombre' },
-            ],
-            icon: "pi-user",
-            service: Endpoints.PATTERN,
-            filter: {
-               required: {
-                  inventory:{
+                  inventory: {
                      id: mainInventory?.id,
                   }
                },
                values: [
-                  { field: 'name', label: 'Nombre', value: '' }
+                  { field: 'name', label: 'Nombre', value: '' },
+                  { field: "description", label: "Descripcion", value: "" },
+                  { field: "address", label: "Dirección", value: "" },
+                  { field: "mail", label: "Correo", value: "" },
+                  { field: "phone", label: "Télefono", value: 0 }
                ]
             },
          },
@@ -141,8 +116,8 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
 
    const [productToRegister, form, setProductToRegister, validateFormControls] = handleForm(controls);
    const [submited, setSubmited] = useState<boolean>(false);
-   const { product, setProduct } = useContext(productContext);
-  
+   const { product, setProduct } = useProductContext();
+
 
    const handleProduct = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -162,15 +137,8 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
             id: productToRegister.supplier.id
          }
 
-         delete productToRegister.namepattern;
-
-         productToRegister.pattern = {
-            id: productToRegister.pattern.id
-         }
-
-
          create(true, productToRegister).then(res => {
-            if(!ResErrorHandler.isValidRes(res)){
+            if (!ResErrorHandler.isValidRes(res)) {
                return;
             }
             ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, inventorySelected ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
@@ -190,7 +158,7 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
    return (
       <>
          <PopUp title="Registro de producto" visible={visible} setVisible={setVisible}>
-            <FormGenerator form={form} value={productToRegister} setValue={setProductToRegister} submit={handleProduct} buttonLabel="Crear"/>
+            <FormGenerator form={form} value={productToRegister} setValue={setProductToRegister} submit={handleProduct} buttonLabel="Crear" />
          </PopUp>
       </>
    )

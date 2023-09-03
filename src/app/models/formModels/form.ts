@@ -1,3 +1,4 @@
+import useDeepCopy from "@/app/hooks/useDeepCopy";
 import FormControl from "./formControl";
 
 /**
@@ -8,6 +9,7 @@ export default class Form {
      * Atributos
      */
     private formControls: FormControl[];
+    private initialFormControls: FormControl[];
     private valid: boolean = true;
 
     constructor(formControl: FormControl[]) {
@@ -111,4 +113,5 @@ export default class Form {
     public getFormControls(): FormControl[] {
         return this.formControls;
     }
+
 }

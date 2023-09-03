@@ -107,6 +107,11 @@ export default function useCRUDFactory<T>(baseUrl: string){
         return httpPost(petitioRoute, secure, body);
     }
 
+    const deleteAll = (secure: boolean = true, id: string): Promise<any> =>{
+        const petitioRoute: string = baseUrl + Routes.DELETEALL_ROUTE  + `?id=${id}`;
+        return httpDelete(petitioRoute, secure);
+    }
+
     const getById = (secure: boolean= true, id: string): Promise<any> => {
         const petitioRoute: string = baseUrl + Routes.GET_BY_ID_ROUTE + `?id=${id}`;
         return httpGet(petitioRoute, secure);
@@ -123,6 +128,7 @@ export default function useCRUDFactory<T>(baseUrl: string){
         update,
         deleteData,
         createAll,
-        getById
+        getById,
+        deleteAll
     };
 }

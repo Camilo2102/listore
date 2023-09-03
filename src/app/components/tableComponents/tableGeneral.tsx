@@ -218,7 +218,7 @@ export default function TableGeneral({ useFilter = true, columns, gridLines, str
   }
 
   useEffect(() => {
-    if (endpoint && baseFilter && !paginator.loaded || reloadData) {
+    if (endpoint && (baseFilter) && !paginator.loaded || reloadData) {
       setLoadingData(true);
       const parsedFilter = parseToFilter(filter);
 

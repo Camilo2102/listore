@@ -11,7 +11,7 @@ import { saleContext } from "./saleContext";
 import RegisterSale from "@/app/components/saleComponents/registerSale";
 import { DateUtil } from "@/app/utils/dateUtil";
 import { AuthUtil } from "@/app/utils/authUtil";
-import { productContext } from "../inventory/product/productContext";
+import { ProductContext, useProductContext } from "../../../context/productContext";
 import { userContext } from "../user/userContext";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
@@ -23,7 +23,7 @@ import { StorageService } from "@/app/services/storageService";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 
 export default function SalePage() {
-    const { product } = useContext(productContext);
+    const { product } = useProductContext();
 
     const [visible, setVisible] = useState<boolean>(false);
     

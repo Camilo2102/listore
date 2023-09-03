@@ -3,7 +3,7 @@ import { Messages } from "@/app/constants/messageConstant";
 import { handleForm } from "@/app/hooks/handleForm";
 import FormControl from "@/app/models/formModels/formControl";
 import Validators from "@/app/models/formModels/validators";
-import { productContext } from "@/app/pages/main/inventory/product/productContext";
+import { ProductContext } from "@/app/context/productContext";
 import { ToastUtil } from "@/app/utils/toastUtil";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import PopUp from "../popUp";

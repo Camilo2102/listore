@@ -1,6 +1,6 @@
 'use client';
 import { useContext, useEffect, useState } from "react";
-import { productContext } from "../inventory/product/productContext";
+import { ProductContext, useProductContext } from "../../../context/productContext";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
@@ -22,7 +22,7 @@ import { AuthUtil } from "@/app/utils/authUtil";
 import { Formats } from "@/app/constants/formatConstants";
 
 export default function BuyPage() {
-    const { product, setProduct } = useContext(productContext);
+    const { product, setProduct } = useProductContext();
     const { user, setUser } = useContext(userContext);
 
     const { reloadData, setReloadData } = useTableContext();

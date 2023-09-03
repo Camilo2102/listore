@@ -9,6 +9,7 @@ export class Routes {
     public static readonly UPDATE_ROUTE: string = "/update";
     public static readonly DELETE_ROUTE: string = "/delete";
     public static readonly CREATE_ALL_ROUTE: string = "/createAll";
+    public static readonly DELETEALL_ROUTE: string = "/deleteAll";
     
 
   }
