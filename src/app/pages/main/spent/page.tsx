@@ -18,20 +18,20 @@ import TitleTables from "@/app/components/titleTables";
 import { DateUtil } from "@/app/utils/dateUtil";
 import FilterMeta from "@/app/interfaces/filterMeta";
 import { Formats } from "@/app/constants/formatConstants";
+import { AuthUtil } from "@/app/utils/authUtil";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 
 export default function SpentPage(){
     const {user, setUser} = useContext(userContext);
 
-    const { reloadData, setReloadData } = useTableContext();
-
-
     const [visible, setVisible] = useState<boolean>(false);
+
+    const { setReloadData } = useTableContext();
     const spentFilter: FilterMeta = {
         required: {
             user: {
-                id: user?.id,
-            } ,
+                id:  AuthUtil.getCredentials().user,
+            },
             spentDate: new Date(),
         },
         values: [
@@ -40,7 +40,7 @@ export default function SpentPage(){
         ]
     }
 
-    const {spent, setSpent} = useContext(spentContext);
+    const {setSpent} = useContext(spentContext);
     
     const columns: ColumnMeta[]=[
         {field: 'spentDate', header: 'Fecha de gasto'},
@@ -60,6 +60,7 @@ export default function SpentPage(){
         }
     }, 
     [visible])
+
     const customMap = (spents: any) =>{
         return {...spents, spentDate: Formats.formatDate(spents.spentDate)}
     }
@@ -67,13 +68,13 @@ export default function SpentPage(){
     return(
         <>
             <NavBar/>
-            <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+            <div className="flex justify-content-center align-items-center" style={{ minHeight: '100vh', overflowY: 'auto' }}>
             <div className="grid" style={{ width: '90%' }}>
                 <TitleTables title="Gastos"></TitleTables>
                 <div className="col-12 flex justify-content-start">
                     <Button onClick={handleNewSpent} label="Nuevo" icon="pi pi-user-plus"></Button>
                 </div>
-            <div className="col-12 flex justify-content-center">
+                <div className="col-12 flex justify-content-center">
                     <TableGeneral columns={columns} baseFilter={spentFilter} endpoint={Endpoints.SPENT}  customMap={customMap}></TableGeneral>
                 </div>
            </div>

@@ -9,7 +9,7 @@ export default function UserMainteance() {
 
 
     return (
-        <div className="flex justify-content-center align-items-center" style={{ height: '100vh', width: '100vw' }}>
+        <div className="flex justify-content-center align-items-center" style={{ minHeight: '100vh', overflowY: 'auto'  }}>
             <div className='lg:col-6 md:col-6 col-12 lg:p-8'>
                 <RegisterWorker  userSelected={user}></RegisterWorker>
             </div>

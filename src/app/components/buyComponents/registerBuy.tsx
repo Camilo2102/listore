@@ -29,28 +29,6 @@ export default function RegisterBuy({ visible, setVisible }: { visible: boolean,
     const [controls, setControls] = useState<FormControl[]>(
         [
             {
-                field: "price",
-                value: "",
-                description: "Precio",
-                colSize: 6,
-                type: FormTypes.NUMBER,
-                validators: [Validators.requiered, Validators.maxLenght(200), Validators.minLenght(3)],
-                invalid: false,
-                message: true,
-                icon: "pi-user"
-            },
-            {
-                field: "amount",
-                value: "",
-                description: "Cantidad",
-                colSize: 6,
-                type: FormTypes.NUMBER,
-                validators: [Validators.requiered, Validators.maxLenght(200), Validators.minLenght(3)],
-                invalid: false,
-                message: true,
-                icon: "pi-user"
-            },
-            {
                 field: "inventory",
                 value: "",
                 description: "Inventario",
@@ -78,14 +56,8 @@ export default function RegisterBuy({ visible, setVisible }: { visible: boolean,
                         },
                     }
                 },
-                
                 fieldDependency: [
-                    {
-                        enable: true,
-                        field: "product",
-                        toInput: true,
-                        value: "product"
-                    }
+                    {field: "product", value: "id", toInput: true, enable: true}
                 ]
             },
             {
@@ -104,13 +76,42 @@ export default function RegisterBuy({ visible, setVisible }: { visible: boolean,
                 icon: "pi-user",
                 service: Endpoints.PRODUCT,
                 disabled: true,
+                fieldDependency: [
+                    {field: "unitaryValue", value: "unitaryValue", toInput: false, enable: false}
+                ],
                 filter: {
-                    required: {},
+                    required: {
+                        supplier: {
+                        },
+                    },
                     values: [
 
                     ]
                 }
             },
+            {
+                field: "price",
+                value: "",
+                description: "Precio",
+                colSize: 6,
+                type: FormTypes.NUMBER,
+                validators: [Validators.requiered, Validators.maxLenght(200), Validators.minLenght(3)],
+                invalid: false,
+                message: true,
+                icon: "pi-user"
+            },
+            {
+                field: "amount",
+                value: "",
+                description: "Cantidad",
+                colSize: 6,
+                type: FormTypes.NUMBER,
+                validators: [Validators.requiered, Validators.maxLenght(200), Validators.minLenght(3)],
+                invalid: false,
+                message: true,
+                icon: "pi-user"
+            },
+           
 
         ]
     );
@@ -143,11 +144,11 @@ export default function RegisterBuy({ visible, setVisible }: { visible: boolean,
                 amount: buyToRegister.amount,
                 inventory: buyToRegister.inventory,
                 product: buyToRegister.product,
-                nameIntentory: buyToRegister.nameinventory,
+                nameInventory: buyToRegister.nameinventory,
                 nameProduct: buyToRegister.nameproduct
             };
 
-            setBuy((prevBuy: any) => [...prevBuy, newBuy]);
+            setBuys(prevBuy => [...prevBuy, newBuy]);
 
             setBuyToRegister({
                 price: "",
@@ -163,11 +164,11 @@ export default function RegisterBuy({ visible, setVisible }: { visible: boolean,
     const loadBuys = () => {
         const modifiedBuys = buys.map((buy) =>{
             delete buy.inventory;
-            delete buy.nameinventory;
-            delete buy.nameproduct;
+            delete buy.nameInventory;
+            delete buy.nameProduct;
 
             buy.product = {
-                id: buy.product
+                id: buy.product.id
             }
 
             buy.user = {
@@ -197,6 +198,9 @@ export default function RegisterBuy({ visible, setVisible }: { visible: boolean,
                     <Button label="Agregar" icon="pi pi-plus" onClick={ () => setNewBuyVisible(true)}></Button>
                 </div>
                 <TableGeneral useFilter={false} showRepotGenerator={false} columns={columns} staticValues={buys}></TableGeneral>
+                <div className="col-12 flex justify-content-start">
+                    <Button  label="Cargar compras" icon="pi pi-check" onClick={loadBuys}></Button>
+                </div>
             </PopUp>
             <PopUp title="Nueva Compra" visible={newBuyVisible} setVisible={setNewBuyVisible}>
                 <FormGenerator form={form} setValue={setBuyToRegister} submit={addBuy} value={buyToRegister} buttonLabel="Agregar"></FormGenerator>
