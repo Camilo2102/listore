@@ -1,20 +1,18 @@
 "use client";
 import { handleForm } from "@/app/hooks/handleForm";
-import { AuthUtil } from "@/app/utils/authUtil";
 import { FormEvent, useEffect, useState } from "react";
 import Container from "../container";
-
 import { FormTypes } from "@/app/constants/formTypeConstant";
-import Validators from "@/app/models/formModels/validators";
+import useValidators from "@/app/models/formModels/validators";
 import FormControl from "@/app/models/formModels/formControl";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import PasswordChange from "@/app/models/passwordChange";
 import FormGenerator from "../CRUDComponents/formGenerator";
-import { ToastUtil } from "@/app/utils/toastUtil";
 import { Messages } from "@/app/constants/messageConstant";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import useAuthService from "@/app/hooks/services/useAuthService";
 import { useNavigationContext } from "@/app/context/navigationContext";
+import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
+import toastUtil from "@/app/hooks/utils/toastUtils";
 
 
 export default function PasswordChangeComponent() {
@@ -22,7 +20,10 @@ export default function PasswordChangeComponent() {
     const searchParams = useSearchParams()
 
     const {enableUser} = useAuthService();
+    const {isValidRes} = ResErrorHandler();
+    const { showError} = toastUtil();
 
+    const {requiered, maxLenght, minLenght} = useValidators();
     /**
      * Instancia inicial de los formcontrols
      */
@@ -34,7 +35,7 @@ export default function PasswordChangeComponent() {
                 description: "Código de verificación",
                 colSize: 12,
                 type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(6), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(6), minLenght(3)],
                 invalid: false,
                 message: true,
                 icon: "pi-envelope"
@@ -46,7 +47,7 @@ export default function PasswordChangeComponent() {
                 colSize: 12,
                 feedback: true,
                 description: "Contraseña",
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(36), minLenght(3)],
                 invalid: false,
                 message: true,
             },
@@ -56,7 +57,7 @@ export default function PasswordChangeComponent() {
                 type: FormTypes.PASSWORD,
                 colSize: 12,
                 description: "Confirmar Contraseña",
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(36), minLenght(3)],
                 invalid: false,
                 message: true,
             }
@@ -104,14 +105,14 @@ export default function PasswordChangeComponent() {
                 setSubmited(true);
                 return;
             }
-            ToastUtil.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_PASSWORD_MISMATCH)
+            showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_PASSWORD_MISMATCH)
         }
     }
 
     useEffect(() => {
         if (submited) {
             enableUser(passwordToChange).then(res => {
-                if(!ResErrorHandler.isValidRes(res)){
+                if(!isValidRes(res)){
                     return;
                  }
                 goToRoute("/pages/auth/login")

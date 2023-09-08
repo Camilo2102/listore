@@ -2,25 +2,19 @@ import { FormTypes } from "@/app/constants/formTypeConstant";
 import { Messages } from "@/app/constants/messageConstant";
 import { handleForm } from "@/app/hooks/handleForm";
 import FormControl from "@/app/models/formModels/formControl";
-import Validators from "@/app/models/formModels/validators";
-import { ProductContext } from "@/app/context/productContext";
-import { ToastUtil } from "@/app/utils/toastUtil";
+import useValidators from "@/app/models/formModels/validators";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import PopUp from "../popUp";
 import FormGenerator from "../CRUDComponents/formGenerator";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
-import User from "@/app/models/user";
-import { AuthUtil } from "@/app/utils/authUtil";
 import { saleContext } from "@/app/pages/main/sale/saleContext";
-import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import TableGeneral from "../tableComponents/tableGeneral";
-import { useHandleInput } from "@/app/hooks/handleInput";
-import Paginator from "@/app/interfaces/paginator";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
-import FilterMeta from "@/app/interfaces/filterMeta";
+import AuthUtil from "@/app/hooks/utils/authUtils";
+import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
+import toastUtil from "@/app/hooks/utils/toastUtils";
 
 export default function RegisterSale({ visible, setVisible }: { visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
     const { createAll } = useCRUDService(Endpoints.SALE);
@@ -29,8 +23,11 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
 
     const [newSaleVisible, setNewSaleVisible] = useState(false);
 
-    
+    const {getCredentials} = AuthUtil();
+    const {isValidRes} = ResErrorHandler();
+    const {showSuccess} = toastUtil();
 
+    const {requiered, maxLenght, minLenght} = useValidators();
     const [controls, setControls] = useState<FormControl[]>(
         [
             {
@@ -39,7 +36,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 description: "Inventario",
                 colSize: 6,
                 type: FormTypes.INPUTHELPER,
-                validators: [Validators.requiered, Validators.maxLenght(200), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(200), minLenght(3)],
                 invalid: false,
                 message: true,
                 columns: [
@@ -57,7 +54,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                       ],
                     required: {
                         company: {
-                            id: AuthUtil.getCredentials().company
+                            id: getCredentials().company
                         },
                     }
                 },
@@ -71,7 +68,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 description: "Producto",
                 colSize: 6,
                 type: FormTypes.INPUTHELPER,
-                validators: [Validators.requiered, Validators.maxLenght(200), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(200), minLenght(3)],
                 invalid: false,
                 message: true,
                 columns: [
@@ -99,7 +96,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 description: "Valor unitario",
                 colSize: 6,
                 type: FormTypes.NUMBER,
-                validators: [Validators.requiered, Validators.maxLenght(200), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(200), minLenght(3)],
                 invalid: false,
                 message: true,
                 icon: "pi-user",
@@ -111,7 +108,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 description: "Cantidad",
                 colSize: 6,
                 type: FormTypes.NUMBER,
-                validators: [Validators.requiered, Validators.maxLenght(7), Validators.minLenght(1)],
+                validators: [requiered, maxLenght(7), minLenght(1)],
                 invalid: false,
                 message: true,
                 icon: "pi-user"
@@ -184,16 +181,16 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
             }
 
             sale.user = {
-                id: AuthUtil.getCredentials().user
+                id: getCredentials().user
             }
             return sale;
         })
 
         createAll(true, modifiedSales).then(res => {
-            if (!ResErrorHandler.isValidRes(res)) {
+            if (!isValidRes(res)) {
                 return;
             }
-            ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS)
+            showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS)
             setVisible(false)
             setSubmited(false)
             setSale(undefined)

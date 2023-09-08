@@ -1,7 +1,7 @@
 import FormControl from "@/app/models/formModels/formControl";
-import Validators from "@/app/models/formModels/validators";
+import useValidators from "@/app/models/formModels/validators";
 import { FormEvent, useState } from "react";
-import { DateUtil } from "../utils/dateUtil";
+
 import { handleForm } from "../hooks/handleForm";
 import { Card } from "primereact/card";
 import InputForm from "./formComponents/inputForm";
@@ -12,9 +12,12 @@ import DropDownForm from "./formComponents/dropDownForm";
 import RadioButtonForm from "./formComponents/radioButtonForm";
 import { Button } from "primereact/button";
 import { FormTypes } from "../constants/formTypeConstant";
-import { ToastUtil } from "../utils/toastUtil";
+import DateUtil from "../hooks/utils/dateUtils";
+import toastUtil from "../hooks/utils/toastUtils";
 
 export default function FormExample() {
+    const {addDaysFromNow} = DateUtil();
+    const {showSuccess} = toastUtil();
     /**
    * Instancia inicial de los formcontrols
    */
@@ -25,7 +28,7 @@ export default function FormExample() {
                 value: "",
                 description: "Input",
                 type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(10), Validators.minLenght(3)],
+                validators: [useValidators.requiered, useValidators.maxLenght(10), useValidators.minLenght(3)],
                 invalid: false,
                 message: true,
             },
@@ -34,7 +37,7 @@ export default function FormExample() {
                 value: "",
                 type: FormTypes.PASSWORD,
                 description: "Password",
-                validators: [Validators.requiered],
+                validators: [useValidators.requiered],
                 invalid: false,
                 message: true,
             },
@@ -43,18 +46,18 @@ export default function FormExample() {
                 value: null,
                 type: FormTypes.DATE,
                 description: "Date",
-                validators: [Validators.requiered],
+                validators: [useValidators.requiered],
                 invalid: false,
                 message: true,
                 minDate: new Date(),
-                maxDate: DateUtil.addDaysFromNow(2),
+                maxDate: addDaysFromNow(2),
             },
             {
                 field: "checkBox",
                 value: [],
                 description: "CheckBox",
                 type: FormTypes.CHECKBOX,
-                validators: [Validators.requiered, Validators.minLenght(2)],
+                validators: [useValidators.requiered, useValidators.minLenght(2)],
                 invalid: false,
                 message: true,
                 options: [
@@ -67,7 +70,7 @@ export default function FormExample() {
                 value: null,
                 description: "DropDown",
                 type: FormTypes.DROPDOWN,
-                validators: [Validators.requiered],
+                validators: [useValidators.requiered],
                 invalid: false,
                 message: true,
                 options: [
@@ -80,7 +83,7 @@ export default function FormExample() {
                 value: null,
                 description: "RadioButton",
                 type: FormTypes.RADIO,
-                validators: [Validators.requiered],
+                validators: [useValidators.requiered],
                 invalid: false,
                 message: true,
                 options: [
@@ -105,7 +108,7 @@ export default function FormExample() {
 
 
         if (valid) {
-            ToastUtil.showSuccess("Si", "");
+            showSuccess("Si", "");
         }
 
 

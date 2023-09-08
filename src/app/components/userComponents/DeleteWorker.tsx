@@ -1,14 +1,15 @@
 import { Messages } from "@/app/constants/messageConstant";
 import useAuthService from "@/app/hooks/services/useAuthService";
-import { ToastUtil } from "@/app/utils/toastUtil";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
+import toastUtil from "@/app/hooks/utils/toastUtils";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 export default function DeleteWorker({ user, visible, setVisible }: { user: any, visible: boolean, setVisible: Dispatch<SetStateAction<any>>}) {
     const {disableUser} = useAuthService();
-
+    const {isValidRes} = ResErrorHandler();
+    const {showSuccess} = toastUtil();
     const footerContent = (
         <div>
             <Button label="No" icon="pi pi-times" onClick={() => setVisible(undefined)} className="p-button-text" />
@@ -18,10 +19,10 @@ export default function DeleteWorker({ user, visible, setVisible }: { user: any,
 
     const deleteUser = () => {
         disableUser(user.id).then(res => {
-            if(!ResErrorHandler.isValidRes(res)){
+            if(!isValidRes(res)){
                 return;
              }
-            ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_SUCCESS_DISABLED)
+            showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_SUCCESS_DISABLED)
             setVisible(undefined)
         })
     }

@@ -1,22 +1,19 @@
-import ColumnMeta from "@/app/interfaces/columnMeta";
 import FormControl from "@/app/models/formModels/formControl";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PopUp from "../popUp";
 import TableGeneral from "../tableComponents/tableGeneral";
-import { useHandleInput } from "@/app/hooks/handleInput";
-import Paginator from "@/app/interfaces/paginator";
 import { DataTableSelectEvent } from "primereact/datatable";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import dependence from "@/app/interfaces/dependence";
+import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
 
 export default function InputHelper({ formControl, value, onValueChange, icon }: { formControl: FormControl, value: any, onValueChange: (value: any, dependecy?: dependence[]) => void, icon?: string }) {
     const [visible, setVisible] = useState<boolean>(false);
 
     const [showText, setShowText] = useState<string>('');
-
+    const {isValidRes} = ResErrorHandler();
     const { getById } = useCRUDService(formControl.service as string);
 
     const loadData = () => {
@@ -38,7 +35,7 @@ export default function InputHelper({ formControl, value, onValueChange, icon }:
             return;
         }
         getById(true, value[formControl.field].id).then(res => {
-            if (!ResErrorHandler.isValidRes(res)) {
+            if (!isValidRes(res)) {
                 return;
             }
             const { id, name } = res;

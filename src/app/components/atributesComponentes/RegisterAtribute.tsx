@@ -2,20 +2,24 @@ import { FormTypes } from "@/app/constants/formTypeConstant";
 import { Messages } from "@/app/constants/messageConstant";
 import { handleForm } from "@/app/hooks/handleForm";
 import FormControl from "@/app/models/formModels/formControl";
-import Validators from "@/app/models/formModels/validators";
-import { ToastUtil } from "@/app/utils/toastUtil";
+import useValidators from "@/app/models/formModels/validators";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import PopUp from "../popUp";
 import FormGenerator from "../CRUDComponents/formGenerator";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import { patternContext } from "@/app/pages/main/inventory/pattern/patternContext";
 import { attributeContext } from "@/app/pages/main/inventory/pattern/attribute/attributeContext";
 import PatternModel from "@/app/models/pattern";
+import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
+import toastUtil from "@/app/hooks/utils/toastUtils";
 
 export default function RegisterAttribute({visible, setVisible}: {visible: boolean, setVisible: (partialT: Partial<boolean>) => void}){
     const {create} = useCRUDService(Endpoints.ATTRIBUTES);
+    const {isValidRes} = ResErrorHandler();
+    const {showSuccess} = toastUtil();
+
+    const {requiered, maxLenght, minLenght} = useValidators();
 
     const [controls, setControls] = useState<FormControl[]>(
         [
@@ -25,7 +29,7 @@ export default function RegisterAttribute({visible, setVisible}: {visible: boole
                 description: "Nombre",
                 colSize: 12,
                 type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(60), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(60), minLenght(3)],
                 invalid: false,
                 message: true,
                 icon: "pi-user"
@@ -47,10 +51,10 @@ export default function RegisterAttribute({visible, setVisible}: {visible: boole
            attributeToRegister.pattern.id = pattern.id;
             create(true, attributeToRegister).then(
                 res => {
-                    if(!ResErrorHandler.isValidRes(res)){
+                    if(!isValidRes(res)){
                         return;
                      }
-                    ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, attribute? Messages.MESSAGE_CREATE_SUCCESS: Messages.MESSAGE_UPDATE_SUCCESS)
+                    showSuccess(Messages.MESSAGE_SUCCESS, attribute? Messages.MESSAGE_CREATE_SUCCESS: Messages.MESSAGE_UPDATE_SUCCESS)
                     setVisible(false)
                     setSubmited(false)
                     setAttribute(undefined)

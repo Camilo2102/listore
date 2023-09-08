@@ -2,28 +2,27 @@
 
 import RegisterCompany from "@/app/components/authComponents/registerCompany";
 import RegisterUser from "@/app/components/authComponents/registerUser";
-import RegisterUserDTO from "@/app/dto/registerUserDTO";
 import { useHandleInput } from "@/app/hooks/handleInput";
-import { ToastUtil } from "@/app/utils/toastUtil";
 import Company from "@/app/models/company";
 import CredentialModel from "@/app/models/credential";
 import User from "@/app/models/user";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Messages } from "@/app/constants/messageConstant";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import useAuthService from "@/app/hooks/services/useAuthService";
 import { useNavigationContext } from "@/app/context/navigationContext";
+import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
+import toastUtil from "@/app/hooks/utils/toastUtils";
 
 export default function Register() {
     const {goToRoute}= useNavigationContext();
     const {register} = useAuthService();
     const [part, setPart] = useState<number>(0);
-
+    const {isValidRes} = ResErrorHandler();
     const [user, setUser] = useHandleInput<User>({active: "N", name: "", role: "M"});
     const [credential, setCredential] = useHandleInput<CredentialModel>({mail: "", password: "", userName: ""});
     const [company, setCompany] = useHandleInput<Company>({name: "", description: "", phone: ""});
     const [submited, setSubmited] = useState<boolean>();
+    const {showSuccess} = toastUtil();
 
 
     const handlePartialSumbit = (part: number, value: any) => {
@@ -68,10 +67,10 @@ export default function Register() {
         if(submited){
             register({user: user, credential: credential, company: company}).then(
                 res => {
-                    if(!ResErrorHandler.isValidRes(res)){
+                    if(!isValidRes(res)){
                         return;
                      }
-                    ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, "Creado con exito");
+                    showSuccess(Messages.MESSAGE_SUCCESS, "Creado con exito");
                     goToRoute("/pages/auth/passwordChange?token="+res.temporalToken);
                 }
             )

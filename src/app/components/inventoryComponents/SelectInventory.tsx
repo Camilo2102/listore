@@ -1,20 +1,14 @@
 import ColumnMeta from "@/app/interfaces/columnMeta";
-import { inventoryContext } from "@/app/pages/main/inventory/inventoryContext";
-import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
-import TableGeneral from "../tableComponents/tableGeneral";
-import { useHandleInput } from "@/app/hooks/handleInput";
+import { useState } from "react";
 import PopUp from "../popUp";
 import InventoryModel from "@/app/models/inventory";
 import { DataTableSelectEvent } from "primereact/datatable";
-import { AuthUtil } from "@/app/utils/authUtil";
-import Paginator from "@/app/interfaces/paginator";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { useMainContext } from "@/app/context/mainContext";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import InventoryTable from "./intentoryTable";
 import { useNavigationContext } from "@/app/context/navigationContext";
+import AuthUtil from "@/app/hooks/utils/authUtils";
 
 
 export default function SelectInventory({ inventorySelected, visible, setVisible }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
@@ -22,11 +16,12 @@ export default function SelectInventory({ inventorySelected, visible, setVisible
     const {goToRoute}= useNavigationContext();
     const {getAllByFilter} = useCRUDService(Endpoints.INVENTORY);
     const [inventorys, setInventorys] = useState<any[]>([]);
-
+    const {getCredentials} = AuthUtil();
+    
     const [inventoryFilter, setInventoryFitler] = useState<InventoryModel>({
         category: "",
         company: {
-            id: AuthUtil.getCredentials().company
+            id: getCredentials().company
         },
         description: "",
         name: "",

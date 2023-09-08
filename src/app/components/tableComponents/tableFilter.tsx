@@ -9,14 +9,16 @@ import { handleForm } from "@/app/hooks/handleForm";
 import useDeepCopy from "@/app/hooks/useDeepCopy";
 import { validateInput } from "@/app/utils/selectionUtil";
 import { Chip } from 'primereact/chip';
-import { DateUtil } from "@/app/utils/dateUtil";
+import DateUtil from "@/app/hooks/utils/dateUtils";
+
 
 
 const chipGenerator = (filter: FilterMeta, setFilter: (partialT: Partial<any>) => void, setTempFilter: (partialT: Partial<any>) => void) => {
+    const {validateDate, formatFullDate} = DateUtil();
         const handleChipRemove = (key: string) => {
             filter.values.forEach(value => {
                 if(value.field === key){
-                    const asignValue = DateUtil.validateDate(value.value) ? null : "";
+                    const asignValue = validateDate(value.value) ? null : "";
                     value.value = asignValue;
                     setTempFilter({[key]:  asignValue});
                 }
@@ -27,7 +29,7 @@ const chipGenerator = (filter: FilterMeta, setFilter: (partialT: Partial<any>) =
 
         return filter.values.map(value => {
             if(validateInput(value.value)){
-                const asignValue = DateUtil.formatFullDate(value.value);
+                const asignValue = formatFullDate(value.value);
                 return (
                     <Chip key={value.field} label={value.label + " : " + asignValue} removable onRemove={(e) => handleChipRemove(value.field)}/>
                 )

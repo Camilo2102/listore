@@ -1,14 +1,13 @@
 import FormControl from "@/app/models/formModels/formControl";
-import { FormTypes } from "../constants/formTypeConstant";
-import InputForm from "../components/formComponents/inputForm";
-import CheckBoxForm from "../components/formComponents/checkBoxForm";
-import CalendarForm from "../components/formComponents/calendarForm";
-import DropDownForm from "../components/formComponents/dropDownForm";
-import PasswordForm from "../components/formComponents/passwordForm";
-import RadioButtonForm from "../components/formComponents/radioButtonForm";
-import NumberForm from "../components/formComponents/numberForm";
-import InputHelper from "../components/formComponents/inputHelper";
-import dependence from "../interfaces/dependence";
+import { FormTypes } from "../../constants/formTypeConstant";
+import InputForm from "../../components/formComponents/inputForm";
+import CheckBoxForm from "../../components/formComponents/checkBoxForm";
+import CalendarForm from "../../components/formComponents/calendarForm";
+import DropDownForm from "../../components/formComponents/dropDownForm";
+import PasswordForm from "../../components/formComponents/passwordForm";
+import RadioButtonForm from "../../components/formComponents/radioButtonForm";
+import InputHelper from "../../components/formComponents/inputHelper";
+import dependence from "../../interfaces/dependence";
 
 /**
  * Se encarga de convertir el formControl en un field ya listo para ser usado

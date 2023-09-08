@@ -4,19 +4,20 @@ import { useRouter } from 'next/navigation';
 import SelectInventory from './inventoryComponents/SelectInventory';
 
 import './styleNavBar.css';
-import { AuthUtil } from '../utils/authUtil';
-import { StorageService } from '../services/storageService';
+
 import { useAuthContext } from '../context/authContext';
 import { useNavigationContext } from '../context/navigationContext';
 import navBarItemMeta from '../interfaces/navBarItemMeta';
+import StorageService from '../hooks/services/storageService';
 
 export default function NavBar() {
+    const {getValue} = StorageService();
     const {goToRoute, version}= useNavigationContext();
     const [visibleSelectInventory, setVisibleSelectInventory] = useState<boolean>(false);
     const [navBarVisible, setNavBarVisible] = useState(true);
     const [screenWidth, setScreenWidth] = useState<number>(0);
     const {setAuthorized} = useAuthContext();
-    const role = StorageService.getValue("role");
+    const role = getValue("role");
 
 
     const handleResize = () => {

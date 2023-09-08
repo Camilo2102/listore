@@ -1,17 +1,19 @@
 import { useEffect } from "react";
 import { useAuthContext } from "../context/authContext";
 import { useNavigationContext } from "../context/navigationContext";
-import { StorageService } from "../services/storageService";
-import { ResErrorHandler } from "../utils/resErrorHandler";
+
 import useAuthService from "./services/useAuthService";
+import ResErrorHandler from "./utils/resErrorHandler";
+import StorageService from "./services/storageService";
 
 export default function useTokenValidator() {
     const {goToRoute} = useNavigationContext();
     const {validateToken} = useAuthService();
     const {authorized, setAuthorized} = useAuthContext();
-
+    const {isValidRes} = ResErrorHandler();
+    const {deleteStorage} = StorageService();
     const redirectToLogin = () => {
-        StorageService.deleteStorage();
+        deleteStorage();
         goToRoute('/pages/auth/login');
     }
 
@@ -20,7 +22,7 @@ export default function useTokenValidator() {
             return;
         }
         validateToken().then(res => {
-            if (!ResErrorHandler.isValidRes(res)) {
+            if (!isValidRes(res)) {
                 redirectToLogin();
             }
         })

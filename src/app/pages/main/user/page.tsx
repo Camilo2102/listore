@@ -11,7 +11,6 @@ import { Button } from "primereact/button";
 import { useRouter } from "next/navigation";
 import { userContext } from "./userContext";
 import { RolesMap } from "@/app/constants/roleValues";
-import { AuthUtil } from "@/app/utils/authUtil";
 import DeleteWorker from "@/app/components/userComponents/DeleteWorker";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import TitleTables from "@/app/components/titleTables";
@@ -20,15 +19,16 @@ import RegisterUser from "@/app/components/authComponents/registerUser";
 import FilterMeta from "@/app/interfaces/filterMeta";
 import { useNavigationContext } from "@/app/context/navigationContext";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
+import AuthUtil from "@/app/hooks/utils/authUtils";
 
 export default function UserList({ props }: { props: any }) {
     const {goToRoute}= useNavigationContext();
 
     const [users, setUsers] = useState<any[]>([]);
-    
+    const {getCredentials} = AuthUtil();
     const userFilter: FilterMeta = {
         required: {
-            company: { id: AuthUtil.getCredentials().company },
+            company: { id: getCredentials().company },
         },
         values: [
             { field: 'active', label: 'Estado', value: '' },

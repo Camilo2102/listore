@@ -2,29 +2,32 @@ import { FormTypes } from "@/app/constants/formTypeConstant";
 import { Messages } from "@/app/constants/messageConstant";
 import { handleForm } from "@/app/hooks/handleForm";
 import FormControl from "@/app/models/formModels/formControl";
-import Validators from "@/app/models/formModels/validators";
-import { ProductContext } from "@/app/context/productContext";
-import { ToastUtil } from "@/app/utils/toastUtil";
+import useValidators from "@/app/models/formModels/validators";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import PopUp from "../popUp";
 import FormGenerator from "../CRUDComponents/formGenerator";
-import ProductModel from "@/app/models/product";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { buyContext } from "@/app/pages/main/buy/buyContext";
-import User from "@/app/models/user";
-import { AuthUtil } from "@/app/utils/authUtil";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import { Button } from "primereact/button";
 import TableGeneral from "../tableComponents/tableGeneral";
+import AuthUtil  from "@/app/hooks/utils/authUtils";
+import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
+import toastUtil from "@/app/hooks/utils/toastUtils";
 
 export default function RegisterBuy({ visible, setVisible }: { visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
     const { createAll } = useCRUDService(Endpoints.BUY);
+    
+    const {getCredentials} = AuthUtil();
 
     const [buys, setBuys] = useState<any[]>([]);
 
+    const {showSuccess} = toastUtil();
+
     const [newBuyVisible, setNewBuyVisible] = useState(false);
+    const {isValidRes} = ResErrorHandler();
+    const {requiered, maxLenght, minLenght} = useValidators();
 
     const [controls, setControls] = useState<FormControl[]>(
         [
@@ -34,7 +37,7 @@ export default function RegisterBuy({ visible, setVisible }: { visible: boolean,
                 description: "Inventario",
                 colSize: 6,
                 type: FormTypes.INPUTHELPER,
-                validators: [Validators.requiered, Validators.maxLenght(200), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(200), minLenght(3)],
                 invalid: false,
                 message: true,
                 columns: [
@@ -52,7 +55,7 @@ export default function RegisterBuy({ visible, setVisible }: { visible: boolean,
                     ],
                     required: {
                         company: {
-                            id: AuthUtil.getCredentials().company
+                            id: getCredentials().company
                         },
                     }
                 },
@@ -66,7 +69,7 @@ export default function RegisterBuy({ visible, setVisible }: { visible: boolean,
                 description: "Producto",
                 colSize: 6,
                 type: FormTypes.INPUTHELPER,
-                validators: [Validators.requiered, Validators.maxLenght(200), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(200), minLenght(3)],
                 invalid: false,
                 message: true,
                 columns: [
@@ -95,7 +98,7 @@ export default function RegisterBuy({ visible, setVisible }: { visible: boolean,
                 description: "Precio",
                 colSize: 6,
                 type: FormTypes.NUMBER,
-                validators: [Validators.requiered, Validators.maxLenght(200), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(200), minLenght(3)],
                 invalid: false,
                 message: true,
                 icon: "pi-user"
@@ -106,7 +109,7 @@ export default function RegisterBuy({ visible, setVisible }: { visible: boolean,
                 description: "Cantidad",
                 colSize: 6,
                 type: FormTypes.NUMBER,
-                validators: [Validators.requiered, Validators.maxLenght(200), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(200), minLenght(3)],
                 invalid: false,
                 message: true,
                 icon: "pi-user"
@@ -172,17 +175,17 @@ export default function RegisterBuy({ visible, setVisible }: { visible: boolean,
             }
 
             buy.user = {
-                id: AuthUtil.getCredentials().user
+                id: getCredentials().user
             }
 
             return buy;
         })
 
         createAll(true, modifiedBuys).then(res =>{
-            if(!ResErrorHandler.isValidRes(res)){
+            if(!isValidRes(res)){
                 return;
             }
-            ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS)
+            showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS)
             setVisible(false)
             setSubmited(false)
             setBuy(undefined)

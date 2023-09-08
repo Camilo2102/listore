@@ -1,36 +1,29 @@
 'use client';
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import ColumnMeta from "@/app/interfaces/columnMeta";
-import { useHandleInput } from "@/app/hooks/handleInput";
-import Paginator from "@/app/interfaces/paginator";
 import NavBar from "@/app/components/navBar";
 import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableComponents/tableGeneral";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { userContext } from "../user/userContext";
-import SpentModel from "@/app/models/spent";
 import { spentContext } from "./spentContext";
 import RegisterSpent from "@/app/components/spentComponets/registerSpent";
-import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useTableContext } from "@/app/context/tableContext";
 import TitleTables from "@/app/components/titleTables";
-import { DateUtil } from "@/app/utils/dateUtil";
 import FilterMeta from "@/app/interfaces/filterMeta";
 import { Formats } from "@/app/constants/formatConstants";
-import { AuthUtil } from "@/app/utils/authUtil";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
+import AuthUtil from "@/app/hooks/utils/authUtils";
 
 export default function SpentPage(){
-    const {user, setUser} = useContext(userContext);
-
     const [visible, setVisible] = useState<boolean>(false);
+    const {getCredentials} = AuthUtil();
 
     const { setReloadData } = useTableContext();
     const spentFilter: FilterMeta = {
         required: {
             user: {
-                id:  AuthUtil.getCredentials().user,
+                id:  getCredentials().user,
             },
             spentDate: new Date(),
         },

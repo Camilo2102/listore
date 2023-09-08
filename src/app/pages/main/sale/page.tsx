@@ -1,26 +1,20 @@
 'use client';
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import ColumnMeta from "@/app/interfaces/columnMeta";
-import { useHandleInput } from "@/app/hooks/handleInput";
-import Paginator from "@/app/interfaces/paginator";
 import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableComponents/tableGeneral";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
-import SaleModel from "@/app/models/sale";
 import { saleContext } from "./saleContext";
 import RegisterSale from "@/app/components/saleComponents/registerSale";
-import { DateUtil } from "@/app/utils/dateUtil";
-import { AuthUtil } from "@/app/utils/authUtil";
-import { ProductContext, useProductContext } from "../../../context/productContext";
-import { userContext } from "../user/userContext";
-import useCRUDService from "@/app/hooks/services/useCRUDService";
+import { useProductContext } from "../../../context/productContext";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useTableContext } from "@/app/context/tableContext";
 import TitleTables from "@/app/components/titleTables";
 import FilterMeta from "@/app/interfaces/filterMeta";
 import { Formats } from "@/app/constants/formatConstants";
-import { StorageService } from "@/app/services/storageService";
+
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
+import AuthUtil from "@/app/hooks/utils/authUtils";
+import StorageService from "@/app/hooks/services/storageService";
 
 export default function SalePage() {
     const { product } = useProductContext();
@@ -28,8 +22,10 @@ export default function SalePage() {
     const [visible, setVisible] = useState<boolean>(false);
     
     const { setReloadData } = useTableContext();
+    const {getCredentials} = AuthUtil();
+    const {getValue} = StorageService();
 
-    const role = StorageService.getValue("role");
+    const role = getValue("role");
 
     const saleFilter: FilterMeta = {
         values: [
@@ -43,7 +39,7 @@ export default function SalePage() {
                 id: product?.id,
             },
             user: {
-                id: role === 'M' || role === 'C' ? undefined : AuthUtil.getCredentials().user,
+                id: role === 'M' || role === 'C' ? undefined : getCredentials().user,
             }
         },
     }

@@ -2,21 +2,23 @@ import { FormTypes } from "@/app/constants/formTypeConstant";
 import { Messages } from "@/app/constants/messageConstant";
 import { handleForm } from "@/app/hooks/handleForm";
 import FormControl from "@/app/models/formModels/formControl";
-import Validators from "@/app/models/formModels/validators";
-import { ToastUtil } from "@/app/utils/toastUtil";
+import useValidators from "@/app/models/formModels/validators";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import PopUp from "../popUp";
 import FormGenerator from "../CRUDComponents/formGenerator";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import InventoryModel from "@/app/models/inventory";
 import { useMainContext } from "@/app/context/mainContext";
 import { patternContext } from "@/app/pages/main/inventory/pattern/patternContext";
+import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
+import toastUtil from "@/app/hooks/utils/toastUtils";
 
 export default function RegisterPattern({visible, setVisible}: {visible: boolean, setVisible: (partialT: Partial<boolean>) => void}){
     const {create} = useCRUDService(Endpoints.PATTERN);
-
+    const {isValidRes} = ResErrorHandler();
+    const {requiered, maxLenght, minLenght} = useValidators();
+    const {showSuccess} = toastUtil();
     const [controls, setControls] = useState<FormControl[]>(
         [
             {
@@ -25,7 +27,7 @@ export default function RegisterPattern({visible, setVisible}: {visible: boolean
                 description: "Nombre",
                 colSize: 12,
                 type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(60), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(60), minLenght(3)],
                 invalid: false,
                 message: true,
                 icon: "pi-user"
@@ -47,10 +49,10 @@ export default function RegisterPattern({visible, setVisible}: {visible: boolean
            patternToRegister.inventory.id = mainInventory.id
             create(true, patternToRegister).then(
                 res => {
-                    if(!ResErrorHandler.isValidRes(res)){
+                    if(!isValidRes(res)){
                         return;
                      }
-                    ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, pattern? Messages.MESSAGE_CREATE_SUCCESS: Messages.MESSAGE_UPDATE_SUCCESS)
+                    showSuccess(Messages.MESSAGE_SUCCESS, pattern? Messages.MESSAGE_CREATE_SUCCESS: Messages.MESSAGE_UPDATE_SUCCESS)
                     setVisible(false)
                     setSubmited(false)
                     setPattern(undefined)

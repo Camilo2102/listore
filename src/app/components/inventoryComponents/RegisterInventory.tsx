@@ -2,24 +2,29 @@
 import PopUp from "@/app/components/popUp";
 import FormControl from "@/app/models/formModels/formControl";
 import { FormTypes } from "@/app/constants/formTypeConstant";
-import Validators from "@/app/models/formModels/validators";
+import useValidators from "@/app/models/formModels/validators";
 import { handleForm } from "@/app/hooks/handleForm";
 import FormGenerator from "@/app/components/CRUDComponents/formGenerator";
 import InventoryModel from "@/app/models/inventory";
-import { ToastUtil } from "@/app/utils/toastUtil";
 import { Messages } from "@/app/constants/messageConstant";
-import { AuthUtil } from "@/app/utils/authUtil";
-import { FormEvent, useContext, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { useMainContext } from "@/app/context/mainContext";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
+import AuthUtil from "@/app/hooks/utils/authUtils";
+import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
+import toastUtil from "@/app/hooks/utils/toastUtils";
 
 
 export default function RegisterInventory({ inventorySelected, visible, setVisible }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
    const {create } = useCRUDService(Endpoints.INVENTORY);
    const router = useRouter();
+   const {getCredentials} = AuthUtil();
+   const {isValidRes} = ResErrorHandler();
+   const {showSuccess} = toastUtil();
+
+   const {requiered, maxLenght, minLenght} = useValidators();
 
    const [controls, setControls] = useState<FormControl[]>(
       [
@@ -29,7 +34,7 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
             description: "Nombre",
             colSize: 12,
             type: FormTypes.INPUT,
-            validators: [Validators.requiered, Validators.maxLenght(60), Validators.minLenght(3)],
+            validators: [requiered, maxLenght(60), minLenght(3)],
             invalid: false,
             message: true,
             icon: "pi-user"
@@ -40,7 +45,7 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
             description: "Descripción",
             colSize: 12,
             type: FormTypes.INPUT,
-            validators: [Validators.requiered, Validators.maxLenght(200), Validators.minLenght(3)],
+            validators: [requiered, maxLenght(200), minLenght(3)],
             invalid: false,
             message: true,
             icon: "pi-user"
@@ -51,7 +56,7 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
             description: "Categoria",
             colSize: 12,
             type: FormTypes.INPUT,
-            validators: [Validators.requiered, Validators.maxLenght(60), Validators.minLenght(3)],
+            validators: [requiered, maxLenght(60), minLenght(3)],
             invalid: false,
             message: true,
             icon: "pi-user"
@@ -78,12 +83,12 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
             name,
             description,
             category,
-            company: { id: AuthUtil.getCredentials().company }
+            company: { id: getCredentials().company }
          }).then(res => {
-            if(!ResErrorHandler.isValidRes(res)){
+            if(!isValidRes(res)){
                return;
             }
-            ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, mainInventory ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
+            showSuccess(Messages.MESSAGE_SUCCESS, mainInventory ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
             setVisible(false);
             setMainInventory(undefined);
          });

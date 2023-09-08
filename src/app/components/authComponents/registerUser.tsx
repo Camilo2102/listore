@@ -2,22 +2,21 @@
 
 import { FormTypes } from "@/app/constants/formTypeConstant";
 import FormControl from "@/app/models/formModels/formControl";
-import Validators from "@/app/models/formModels/validators";
+import useValidators from "@/app/models/formModels/validators";
 import { FormEvent, useState } from "react";
 import { Button } from "primereact/button"
 import Container from "../container";
 import FormGenerator from "../CRUDComponents/formGenerator";
 import { handleForm } from "@/app/hooks/handleForm";
-import { ToastUtil } from "@/app/utils/toastUtil";
-import { Messages } from "@/app/constants/messageConstant";
-import { useRouter } from "next/navigation";
 import { useNavigationContext } from "@/app/context/navigationContext";
+
 
 export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: number, value: any) => void}) {
     /**
      * Instancia inicial de los formcontrols
      */
     const {goToRoute}= useNavigationContext();
+    const {requiered, maxLenght, minLenght} = useValidators();
     const [controls, setControls] = useState<FormControl[]>(
         [
             {
@@ -26,7 +25,7 @@ export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: num
                 description: "Nombre",
                 colSize: 12,
                 type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(36), minLenght(3)],
                 invalid: false,
                 message: true,
                 icon: "pi-user"
@@ -37,7 +36,7 @@ export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: num
                 description: "Usuario",
                 colSize: 12,
                 type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(36), minLenght(3)],
                 invalid: false,
                 message: true,
                 icon: "pi-user"
@@ -49,7 +48,7 @@ export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: num
                 icon: "pi-envelope",
                 type: FormTypes.INPUT,
                 colSize: 12,
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(36), minLenght(3)],
                 invalid: false,
                 message: true,
             },

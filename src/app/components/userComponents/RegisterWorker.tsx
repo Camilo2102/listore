@@ -4,25 +4,29 @@ import FormGenerator from "../CRUDComponents/formGenerator";
 import { FormEvent, useEffect, useState } from "react";
 import { handleForm } from "@/app/hooks/handleForm";
 import { FormTypes } from "@/app/constants/formTypeConstant";
-import Validators from "@/app/models/formModels/validators";
+import useValidators from "@/app/models/formModels/validators";
 import FormControl from "@/app/models/formModels/formControl";
 import { RolesOptions } from "@/app/constants/roleValues";
 import { Messages } from "@/app/constants/messageConstant";
-import { AuthUtil } from "@/app/utils/authUtil";
-import { useRouter } from "next/navigation";
-import RegisterWorkerDTO from "@/app/dto/registerWorkerDTO";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+
 import useAuthService from "@/app/hooks/services/useAuthService";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
-import { ToastUtil } from "@/app/utils/toastUtil";
+
 import { useNavigationContext } from "@/app/context/navigationContext";
+import AuthUtil from "@/app/hooks/utils/authUtils";
+import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
+import toastUtil from "@/app/hooks/utils/toastUtils";
+
 
 export default function RegisterWorker({ userSelected }: { userSelected?: User }) {
     const {registerUser} = useAuthService();
     const {update} = useCRUDService(Endpoints.USER);
     const {goToRoute}= useNavigationContext();
-
+    const {getCredentials} = AuthUtil();
+    const {isValidRes} = ResErrorHandler();
+    const {showSuccess, showError} = toastUtil();
+    const {requiered, maxLenght, minLenght} = useValidators();
     const [submited, setSubmited] = useState<boolean>(false);
     const [workerToRegister, setWorkerToRegister] = useState<User>({
         name: "",
@@ -49,7 +53,7 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
                 description: "Nombre",
                 colSize: 12,
                 type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(36), minLenght(3)],
                 invalid: false,
                 message: true,
                 icon: "pi-user",
@@ -61,7 +65,7 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
                 description: "Usuario",
                 colSize: 12,
                 type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(12), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(12), minLenght(3)],
                 invalid: false,
                 message: true,
                 icon: "pi-user",
@@ -74,7 +78,7 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
                 icon: "pi-envelope",
                 type: FormTypes.INPUT,
                 colSize: 12,
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(36), minLenght(3)],
                 invalid: false,
                 message: true,
                 disabled: userSelected !== undefined
@@ -85,7 +89,7 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
                 type: FormTypes.DROPDOWN,
                 colSize: 12,
                 description: "Rol",
-                validators: [Validators.requiered],
+                validators: [requiered],
                 invalid: false,
                 message: true,
                 options: RolesOptions
@@ -125,24 +129,24 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
                             password: null
                         },
                         company: {
-                            id: AuthUtil.getCredentials().company
+                            id: getCredentials().company
                         }
                     }
                 )
                 setSubmited(true);
                 return;
             }
-            ToastUtil.showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_PASSWORD_MISMATCH)
+            showError(Messages.MESSAGE_ERROR, Messages.MESSAGE_PASSWORD_MISMATCH)
         }
     }
 
     const registerNewWorker = () => {
         registerUser(workerToRegister).then(
             res => {
-                if(!ResErrorHandler.isValidRes(res)){
+                if(!isValidRes(res)){
                     return;
                  }
-                ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS);
+                showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS);
                 goToRoute("/pages/main/user")
             }
         );
@@ -151,10 +155,10 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
     const updateWorker = () => {
         update(true, workerToRegister).then(
             res => {
-                if(!ResErrorHandler.isValidRes(res)){
+                if(!isValidRes(res)){
                     return;
                  }
-                ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_UPDATE_SUCCESS);
+                showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_UPDATE_SUCCESS);
                 goToRoute("/pages/main/user")
             }
         )

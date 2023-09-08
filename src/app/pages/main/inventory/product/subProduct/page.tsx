@@ -1,5 +1,4 @@
 "use client"
-import RegisterProduct from "@/app/components/productComponents/RegisterProduct";
 import TableGeneral from "@/app/components/tableComponents/tableGeneral";
 import TitleTables from "@/app/components/titleTables";
 import { Endpoints } from "@/app/constants/endpointsConstants";
@@ -7,23 +6,18 @@ import { Messages } from "@/app/constants/messageConstant";
 import { useMainContext } from "@/app/context/mainContext"
 import { useHandleInput } from "@/app/hooks/handleInput";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
-import useCRUDFactory from "@/app/hooks/useCRUDFactory";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import Paginator from "@/app/interfaces/paginator";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
-import { ToastUtil } from "@/app/utils/toastUtil";
 import { Button } from "primereact/button";
-import { useContext, useEffect, useState } from "react";
-import { ProductContext, useProductContext } from "../../../../../context/productContext";
+import { useEffect, useState } from "react";
+import { useProductContext } from "../../../../../context/productContext";
 import FilterMeta from "@/app/interfaces/filterMeta";
 import useConfirmationService from "@/app/hooks/services/useConfirmationService";
 import { useTableContext } from "@/app/context/tableContext";
-import { useNavigationContext } from "@/app/context/navigationContext";
-import { useSupplier } from "@/app/context/supplierContext";
 import RegisterSubProduct from "@/app/components/subProductComponents/registerSubProduct";
 import { FormTypes } from "@/app/constants/formTypeConstant";
-import Validators from "@/app/models/formModels/validators";
+import useValidators from "@/app/models/formModels/validators";
 import FormControl from "@/app/models/formModels/formControl";
 import { useSubProductContext } from "@/app/context/subProductContext";
 
@@ -39,14 +33,13 @@ export default function subProductPage() {
     const kindOfProduct = useCRUDService(Endpoints.KINDOFPRODUCT);
     const characteristic = useCRUDService(Endpoints.CHARACTERISTIC);
 
+    const {requiered, maxLenght, minLenght} = useValidators();
+
     const { reloadData, setReloadData } = useTableContext();
 
     const [controls, setControls] = useState<FormControl[]>([]);
 
-
     const {showConfirmDelete} = useConfirmationService();
-
-
 
     const [columns, setColumns] = useState<ColumnMeta[]>();
 
@@ -91,7 +84,7 @@ export default function subProductPage() {
             description: "Cantidad",
             colSize: 12,
             type: FormTypes.NUMBER,
-            validators: [Validators.requiered, Validators.maxLenght(60)],
+            validators: [requiered, maxLenght(60)],
             invalid: false,
             message: true,
             icon: "pi-user"
@@ -143,7 +136,7 @@ export default function subProductPage() {
             description: name,
             colSize: 12,
             type: FormTypes.INPUT,
-            validators: [Validators.requiered, Validators.maxLenght(60),],
+            validators: [requiered, maxLenght(60),],
             invalid: false,
             message: true,
             icon: "pi-user"

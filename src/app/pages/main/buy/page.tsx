@@ -1,26 +1,20 @@
 'use client';
-import { useContext, useEffect, useState } from "react";
-import { ProductContext, useProductContext } from "../../../context/productContext";
+import { useContext, useState } from "react";
+import { useProductContext } from "../../../context/productContext";
 import ColumnMeta from "@/app/interfaces/columnMeta";
-import { useHandleInput } from "@/app/hooks/handleInput";
-import Paginator from "@/app/interfaces/paginator";
 import NavBar from "@/app/components/navBar";
 import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableComponents/tableGeneral";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { userContext } from "../user/userContext";
-import BuyModel from "@/app/models/buy";
 import { buyContext } from "./buyContext";
-import BuyAtribute from "@/app/components/buyComponents/registerBuy";
 import RegisterBuy from "@/app/components/buyComponents/registerBuy";
 import { Endpoints } from "@/app/constants/endpointsConstants";
-import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { useTableContext } from "@/app/context/tableContext";
 import TitleTables from "@/app/components/titleTables";
 import FilterMeta from "@/app/interfaces/filterMeta";
-import { AuthUtil } from "@/app/utils/authUtil";
 import { Formats } from "@/app/constants/formatConstants";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
+import AuthUtil from "@/app/hooks/utils/authUtils";
 
 export default function BuyPage() {
     const { product, setProduct } = useProductContext();
@@ -29,7 +23,7 @@ export default function BuyPage() {
     const { reloadData, setReloadData } = useTableContext();
 
     const [visible, setVisible] = useState<boolean>(false);
-
+    const {getCredentials} = AuthUtil();
 
     const buyFilter: FilterMeta ={
         values:[
@@ -43,7 +37,7 @@ export default function BuyPage() {
                 id: product?.id,
             },
             user: {
-                id: AuthUtil.getCredentials().user,
+                id: getCredentials().user,
             }
         }
 

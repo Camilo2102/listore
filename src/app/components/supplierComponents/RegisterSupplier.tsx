@@ -1,28 +1,25 @@
-import SupplierModel from "@/app/models/supplier";
-import Link from "next/link";
-import { Button } from "primereact/button";
 import PopUp from "../popUp";
-import { FormEvent, useContext, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import FormControl from "@/app/models/formModels/formControl";
 import { FormTypes } from "@/app/constants/formTypeConstant";
-import Validators from "@/app/models/formModels/validators";
+import useValidators from "@/app/models/formModels/validators";
 import { handleForm } from "@/app/hooks/handleForm";
-import { log } from "console";
 import FormGenerator from "../CRUDComponents/formGenerator";
 import InventoryModel from "@/app/models/inventory";
-import { inventoryContext } from '../../pages/main/inventory/inventoryContext';
-import { ToastUtil } from "@/app/utils/toastUtil";
 import { Messages } from "@/app/constants/messageConstant";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { useMainContext } from "@/app/context/mainContext";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useSupplier } from "@/app/context/supplierContext";
+import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
+import toastUtil from "@/app/hooks/utils/toastUtils";
 
 export default function RegisterSupplier({visible, setVisible}:{visible:boolean, setVisible:(partialT: Partial<boolean>) => void}) {
 
     const {create} = useCRUDService(Endpoints.SUPPLIER);
-
+    const {isValidRes} = ResErrorHandler();
+    const {showSuccess} = toastUtil();
+    const {requiered, maxLenght, minLenght} = useValidators();
     const [controls, setControls] = useState<FormControl[]>(
         [
             {
@@ -31,7 +28,7 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
                 description: "Nombre",
                 colSize: 6,
                 type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(36), minLenght(3)],
                 invalid: false,
                 message: true,
                 icon: "pi-user"
@@ -42,7 +39,7 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
                 description: "Número telefonico",
                 colSize: 6,
                 type: FormTypes.NUMBER,
-                validators: [Validators.requiered, Validators.maxLenght(17), Validators.minLenght(6)],
+                validators: [requiered, maxLenght(17), minLenght(6)],
                 invalid: false,
                 message: true,
                 icon: "pi-phone"
@@ -53,7 +50,7 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
                 description: "Email",
                 colSize: 6,
                 type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(30), Validators.minLenght(6)],
+                validators: [requiered, maxLenght(30), minLenght(6)],
                 invalid: false,
                 message: true,
                 icon: "pi-envelope"
@@ -64,7 +61,7 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
                 description: "Dirección",
                 colSize: 6,
                 type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(17), Validators.minLenght(6)],
+                validators: [requiered, maxLenght(17), minLenght(6)],
                 invalid: false,
                 message: true,
                 icon: "pi-directions"
@@ -75,7 +72,7 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
                 description: "Descripción",
                 colSize: 12,
                 type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(40), Validators.minLenght(6)],
+                validators: [requiered, maxLenght(40), minLenght(6)],
                 invalid: false,
                 message: true,
                 icon: "pi-pencil"
@@ -99,10 +96,10 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
             supplierToRegister.inventory.id = mainInventory.id
             create(true, supplierToRegister).then(
                 res => {
-                    if(!ResErrorHandler.isValidRes(res)){
+                    if(!isValidRes(res)){
                         return;
                      }
-                    ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, supplier? Messages.MESSAGE_CREATE_SUCCESS: Messages.MESSAGE_UPDATE_SUCCESS)
+                    showSuccess(Messages.MESSAGE_SUCCESS, supplier? Messages.MESSAGE_CREATE_SUCCESS: Messages.MESSAGE_UPDATE_SUCCESS)
                     setVisible(false)
                     setSubmited(false)
                     setSupplier(undefined)
