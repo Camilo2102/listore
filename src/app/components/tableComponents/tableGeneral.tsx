@@ -18,9 +18,10 @@ import TableFilter from "./tableFilter";
 import FilterMeta from "@/app/interfaces/filterMeta";
 import { useCleanFilterInput } from "@/app/hooks/useFilterSelect";
 import useDeepCopy from "@/app/hooks/useDeepCopy";
-import { parseToFilter } from "@/app/utils/selectionUtil";
+
 import { useLoading } from "@/app/context/loadingContext";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
+import { parseToFilter } from "@/app/hooks/utils/selectionUtil";
 
 
 export default function TableGeneral({ useFilter = true, columns, gridLines, stripedRows, onRowSelect, showRepotGenerator = true, endpoint, baseFilter, customMap, staticValues, name = "exportacion" }: { useFilter?: boolean, columns: ColumnMeta[], gridLines?: boolean, stripedRows?: boolean, onRowSelect?: (e: DataTableSelectEvent) => void, showRepotGenerator?: boolean, endpoint?: string, baseFilter?: FilterMeta, customMap?: (value: any) => any, staticValues?: any[], name?: string }) {
