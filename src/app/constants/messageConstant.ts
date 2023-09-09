@@ -27,4 +27,7 @@ export class Messages {
     public static readonly MESSAGE_HEAER_DELETE: string = "Deseas eliminar?"
 
     public static readonly MESSAGE_BODY_DELETE: string = "Deseas eliminar el registro: "
+
+    public static readonly NO_MODEL_MESSAGE: string = "No se ha creado un modelo"
+    public static readonly NO_MODEL_MESSAGE_BODY: string = "Seras redirigido a la pagina para crear uno"
   }

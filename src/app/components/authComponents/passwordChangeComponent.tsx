@@ -12,7 +12,8 @@ import { Messages } from "@/app/constants/messageConstant";
 import useAuthService from "@/app/hooks/services/useAuthService";
 import { useNavigationContext } from "@/app/context/navigationContext";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-import toastUtil from "@/app/hooks/utils/toastUtils";
+
+import { useToastContext } from "@/app/context/newToastContext";
 
 
 export default function PasswordChangeComponent() {
@@ -21,7 +22,7 @@ export default function PasswordChangeComponent() {
 
     const {enableUser} = useAuthService();
     const {isValidRes} = ResErrorHandler();
-    const { showError} = toastUtil();
+    const { showError} = useToastContext();
 
     const {requiered, maxLenght, minLenght} = useValidators();
     /**

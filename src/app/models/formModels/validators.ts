@@ -1,11 +1,12 @@
 import {Messages} from "@/app/constants/messageConstant";
 import FormControl from "./formControl";
-import toastUtil from "@/app/hooks/utils/toastUtils";
+
+import { useToastContext } from "@/app/context/newToastContext";
 
 export type validateFunction = (formControl: FormControl) => boolean;
 
 export default function useValidators () {
-    const {showError} = toastUtil();
+    const {showError} = useToastContext();
 
     /**
      * Validacion de multiples objetos para validar si tienen contenido

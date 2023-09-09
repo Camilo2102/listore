@@ -14,7 +14,8 @@ import { Button } from "primereact/button";
 import TableGeneral from "../tableComponents/tableGeneral";
 import AuthUtil  from "@/app/hooks/utils/authUtils";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-import toastUtil from "@/app/hooks/utils/toastUtils";
+
+import { useToastContext } from "@/app/context/newToastContext";
 
 export default function RegisterBuy({ visible, setVisible }: { visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
     const { createAll } = useCRUDService(Endpoints.BUY);
@@ -23,7 +24,7 @@ export default function RegisterBuy({ visible, setVisible }: { visible: boolean,
 
     const [buys, setBuys] = useState<any[]>([]);
 
-    const {showSuccess} = toastUtil();
+    const {showSuccess} = useToastContext();
 
     const [newBuyVisible, setNewBuyVisible] = useState(false);
     const {isValidRes} = ResErrorHandler();

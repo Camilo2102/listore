@@ -12,12 +12,12 @@ import { patternContext } from "@/app/pages/main/inventory/pattern/patternContex
 import { attributeContext } from "@/app/pages/main/inventory/pattern/attribute/attributeContext";
 import PatternModel from "@/app/models/pattern";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-import toastUtil from "@/app/hooks/utils/toastUtils";
+import { useToastContext } from "@/app/context/newToastContext";
 
 export default function RegisterAttribute({visible, setVisible}: {visible: boolean, setVisible: (partialT: Partial<boolean>) => void}){
     const {create} = useCRUDService(Endpoints.ATTRIBUTES);
     const {isValidRes} = ResErrorHandler();
-    const {showSuccess} = toastUtil();
+    const {showSuccess} = useToastContext();
 
     const {requiered, maxLenght, minLenght} = useValidators();
 

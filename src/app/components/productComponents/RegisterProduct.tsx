@@ -13,14 +13,15 @@ import { useMainContext } from "@/app/context/mainContext";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-import toastUtil from "@/app/hooks/utils/toastUtils";
+
+import { useToastContext } from "@/app/context/newToastContext";
 
 
 export default function RegisterProduct({ inventorySelected, visible, setVisible }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
    const { mainInventory, setMainInventory } = useMainContext();
    const { create } = useCRUDService(Endpoints.PRODUCT);
    const {isValidRes} = ResErrorHandler();
-   const {showSuccess} = toastUtil();
+   const {showSuccess} = useToastContext();
    const {requiered, maxLenght, minLenght} = useValidators();
    const [controls, setControls] = useState<FormControl[]>(
       [
@@ -72,7 +73,7 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
             description: "Valor unitario",
             colSize: 12,
             type: FormTypes.NUMBER,
-            validators: [requiered, maxLenght(200), minLenght(3)],
+            validators: [requiered, maxLenght(200), minLenght(1)],
             invalid: false,
             message: true,
             icon: "pi-user"
@@ -83,7 +84,7 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
             description: "Precio por mayor",
             colSize: 12,
             type: FormTypes.NUMBER,
-            validators: [requiered, maxLenght(60), minLenght(3)],
+            validators: [requiered, maxLenght(60), minLenght(1)],
             invalid: false,
             message: true,
             icon: "pi-user"
@@ -99,17 +100,6 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
             message: true,
             icon: "pi-user"
          },
-         {
-            field: "amount",
-            value: "",
-            description: "Cantidad",
-            colSize: 12,
-            type: FormTypes.NUMBER,
-            validators: [requiered, maxLenght(60), minLenght(3)],
-            invalid: false,
-            message: true,
-            icon: "pi-user"
-         }
       ]
    );
 
@@ -133,8 +123,9 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
          delete productToRegister.namesupplier;
 
          productToRegister.supplier = {
-            id: productToRegister.supplier.id
+            id: productToRegister.supplier.id,
          }
+         productToRegister.amount =0
 
          create(true, productToRegister).then(res => {
             if (!isValidRes(res)) {

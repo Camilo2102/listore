@@ -11,7 +11,8 @@ import { Messages } from "@/app/constants/messageConstant";
 import useAuthService from "@/app/hooks/services/useAuthService";
 import { useNavigationContext } from "@/app/context/navigationContext";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-import toastUtil from "@/app/hooks/utils/toastUtils";
+import { useToastContext } from "@/app/context/newToastContext";
+
 
 export default function Register() {
     const {goToRoute}= useNavigationContext();
@@ -22,7 +23,7 @@ export default function Register() {
     const [credential, setCredential] = useHandleInput<CredentialModel>({mail: "", password: "", userName: ""});
     const [company, setCompany] = useHandleInput<Company>({name: "", description: "", phone: ""});
     const [submited, setSubmited] = useState<boolean>();
-    const {showSuccess} = toastUtil();
+    const {showSuccess} = useToastContext();
 
 
     const handlePartialSumbit = (part: number, value: any) => {

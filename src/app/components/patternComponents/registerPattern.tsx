@@ -12,13 +12,14 @@ import InventoryModel from "@/app/models/inventory";
 import { useMainContext } from "@/app/context/mainContext";
 import { patternContext } from "@/app/pages/main/inventory/pattern/patternContext";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-import toastUtil from "@/app/hooks/utils/toastUtils";
+
+import { useToastContext } from "@/app/context/newToastContext";
 
 export default function RegisterPattern({visible, setVisible}: {visible: boolean, setVisible: (partialT: Partial<boolean>) => void}){
     const {create} = useCRUDService(Endpoints.PATTERN);
     const {isValidRes} = ResErrorHandler();
     const {requiered, maxLenght, minLenght} = useValidators();
-    const {showSuccess} = toastUtil();
+    const {showSuccess} = useToastContext();
     const [controls, setControls] = useState<FormControl[]>(
         [
             {

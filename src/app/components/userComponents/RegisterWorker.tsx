@@ -16,7 +16,8 @@ import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useNavigationContext } from "@/app/context/navigationContext";
 import AuthUtil from "@/app/hooks/utils/authUtils";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-import toastUtil from "@/app/hooks/utils/toastUtils";
+
+import { useToastContext } from "@/app/context/newToastContext";
 
 
 export default function RegisterWorker({ userSelected }: { userSelected?: User }) {
@@ -25,7 +26,7 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
     const {goToRoute}= useNavigationContext();
     const {getCredentials} = AuthUtil();
     const {isValidRes} = ResErrorHandler();
-    const {showSuccess, showError} = toastUtil();
+    const {showSuccess, showError} = useToastContext();
     const {requiered, maxLenght, minLenght} = useValidators();
     const [submited, setSubmited] = useState<boolean>(false);
     const [workerToRegister, setWorkerToRegister] = useState<User>({

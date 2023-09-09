@@ -14,7 +14,8 @@ import { Endpoints } from "@/app/constants/endpointsConstants";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import AuthUtil from "@/app/hooks/utils/authUtils";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-import toastUtil from "@/app/hooks/utils/toastUtils";
+
+import { useToastContext } from "@/app/context/newToastContext";
 
 export default function RegisterSale({ visible, setVisible }: { visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
     const { createAll } = useCRUDService(Endpoints.SALE);
@@ -25,7 +26,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
 
     const {getCredentials} = AuthUtil();
     const {isValidRes} = ResErrorHandler();
-    const {showSuccess} = toastUtil();
+    const {showSuccess} = useToastContext();
 
     const {requiered, maxLenght, minLenght} = useValidators();
     const [controls, setControls] = useState<FormControl[]>(

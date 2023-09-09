@@ -17,9 +17,7 @@ import { useSupplier } from "../../../context/supplierContext";
 import useConfirmationService from "@/app/hooks/services/useConfirmationService";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-import toastUtil from "@/app/hooks/utils/toastUtils";
-
-
+import { useToastContext } from "@/app/context/newToastContext";
 
 export default function Inventory({ props }: { props: any }) {
     const {goToRoute}= useNavigationContext();
@@ -33,7 +31,7 @@ export default function Inventory({ props }: { props: any }) {
 
     const {showConfirmDelete} = useConfirmationService();
     const {isValidRes} = ResErrorHandler();
-    const {showSuccess} = toastUtil();
+    const {showSuccess} = useToastContext();
 
     const columns: ColumnMeta[] = [
         { field: 'name', header: 'Nombre' },

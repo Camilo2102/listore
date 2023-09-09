@@ -14,7 +14,8 @@ import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import AuthUtil from "@/app/hooks/utils/authUtils";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-import toastUtil from "@/app/hooks/utils/toastUtils";
+
+import { useToastContext } from "@/app/context/newToastContext";
 
 
 export default function RegisterInventory({ inventorySelected, visible, setVisible }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
@@ -22,7 +23,7 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
    const router = useRouter();
    const {getCredentials} = AuthUtil();
    const {isValidRes} = ResErrorHandler();
-   const {showSuccess} = toastUtil();
+   const {showSuccess} = useToastContext();
 
    const {requiered, maxLenght, minLenght} = useValidators();
 

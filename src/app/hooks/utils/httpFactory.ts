@@ -2,13 +2,13 @@
 
 import { Messages } from "@/app/constants/messageConstant";
 import AuthUtil from "./authUtils";
-import toastUtil from "./toastUtils";
+import { useToastContext } from "@/app/context/newToastContext";
 
 export default function HttpFactory() {
     const APIURL = "http://localhost:7879/";
     const {getCredentials} = AuthUtil();
 
-    const {showError} = toastUtil();
+    const {showError} = useToastContext();
   
 
     /**

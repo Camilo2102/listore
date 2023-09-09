@@ -14,7 +14,8 @@ import { Button } from "primereact/button";
 import TableGeneral from "../tableComponents/tableGeneral";
 import AuthUtil from "@/app/hooks/utils/authUtils";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-import toastUtil from "@/app/hooks/utils/toastUtils";
+
+import { useToastContext } from "@/app/context/newToastContext";
 
 export default function RegisterSpent({visible, setVisible}: {visible: boolean, setVisible: (partialT: Partial<boolean>) => void}){
     const {createAll} = useCRUDService(Endpoints.SPENT);
@@ -22,7 +23,7 @@ export default function RegisterSpent({visible, setVisible}: {visible: boolean, 
     const [newSpentVisible, setNewSpentVisible] = useState(false);
     const {getCredentials} = AuthUtil();
     const {isValidRes} = ResErrorHandler();
-    const {showSuccess} = toastUtil();
+    const {showSuccess} = useToastContext();
     const {requiered, maxLenght, minLenght} = useValidators();
     const [controls, setControls] = useState<FormControl[]>(
         [

@@ -19,7 +19,8 @@ import { DataTableSelectEvent } from "primereact/datatable";
 import useConfirmationService from "@/app/hooks/services/useConfirmationService";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-import toastUtil from "@/app/hooks/utils/toastUtils";
+import { useToastContext } from "@/app/context/newToastContext";
+
 
 export default function SupplierPage(){
     const { mainInventory, setMainInventory } = useMainContext();
@@ -33,7 +34,7 @@ export default function SupplierPage(){
     const {showConfirmDelete} = useConfirmationService();
 
     const {isValidRes} = ResErrorHandler();
-    const {showSuccess} = toastUtil();
+    const {showSuccess} = useToastContext();
 
 
     const supplierFilter: FilterMeta = {

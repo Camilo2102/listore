@@ -20,6 +20,9 @@ import { FormTypes } from "@/app/constants/formTypeConstant";
 import useValidators from "@/app/models/formModels/validators";
 import FormControl from "@/app/models/formModels/formControl";
 import { useSubProductContext } from "@/app/context/subProductContext";
+import Swal from "sweetalert2";
+import { useNavigationContext } from "@/app/context/navigationContext";
+import { useToastContext } from "@/app/context/newToastContext";
 
 
 
@@ -30,20 +33,21 @@ export default function subProductPage() {
 
     const { mainInventory, setMainInventory } = useMainContext();
 
-    const kindOfProduct = useCRUDService(Endpoints.KINDOFPRODUCT);
-    const characteristic = useCRUDService(Endpoints.CHARACTERISTIC);
-
     const {requiered, maxLenght, minLenght} = useValidators();
 
     const { reloadData, setReloadData } = useTableContext();
 
     const [controls, setControls] = useState<FormControl[]>([]);
 
+    const {showErrorWithButton} = useToastContext();
+
     const {showConfirmDelete} = useConfirmationService();
 
     const [columns, setColumns] = useState<ColumnMeta[]>();
 
     const [values, setValues] = useState<any>();
+
+    const {goToRoute} = useNavigationContext(); 
 
     const handleDelete = (t: any) => {
 
@@ -145,43 +149,53 @@ export default function subProductPage() {
 
     const {subProduct, setSubProduct} = useSubProductContext()
 
-    useEffect(() => {
-        pattern.getAllByFilter(true, paginator, {
-            inventory: {
-                id: mainInventory.id
-            },
-        }).then(res => {
-            attributes.getAllByFilter(true, paginator, {
-                pattern: {
-                    id: res[0].id
-                }
-            }).then(res => {
-                const generatedColumns: ColumnMeta[] = res.map(value => ({
-                    field: value.name,
-                    header: value.name,
-                }));
-
-                generatedColumns.push(
-                    { field: "amount", header: "Cantidad" },
-                    {
-                        field: 'CRUDupdate', header: 'Actualizar', action: (t: any) => {
-                            setSubProduct(t)
-                            setVisible(true);
-                        }
-
-                    },
-                    {
-                        field: 'CRUDdelete', header: "Eliminar", action: (t: any) => {
-                            showConfirmDelete(Messages.MESSAGE_BODY_DELETE, handleDelete(t));
-                        }
-                    });
-
-                generateNewControls(res);
-                setValues(res);
-                setColumns(generatedColumns);
-
+    const findData = async () => {
+        try{
+            const patterFind = await pattern.getAllByFilter(true, paginator, {
+                inventory: {
+                    id: mainInventory.id
+                },
             })
-        })
+    
+            const attributesFind = await attributes.getAllByFilter(true, paginator, {
+                pattern: {
+                    id: patterFind[0].id
+                }
+            })
+    
+            const generatedColumns: ColumnMeta[] = attributesFind.map(value => ({
+                field: value.name,
+                header: value.name,
+            }));
+            
+            generatedColumns.push(
+                { field: "amount", header: "Cantidad" },
+                {
+                    field: 'CRUDupdate', header: 'Actualizar', action: (t: any) => {
+                        setSubProduct(t)
+                        setVisible(true);
+                    }
+    
+                },
+                {
+                    field: 'CRUDdelete', header: "Eliminar", action: (t: any) => {
+                        showConfirmDelete(Messages.MESSAGE_BODY_DELETE, handleDelete(t));
+                    }
+                });
+    
+            generateNewControls(attributesFind);
+            setValues(attributesFind);
+            setColumns(generatedColumns);
+            
+        }catch(Error){
+            showErrorWithButton(Messages.NO_MODEL_MESSAGE, Messages.NO_MODEL_MESSAGE_BODY)
+
+              goToRoute("/pages/main/inventory/pattern")
+        }
+    }
+
+    useEffect(() => {
+        findData();
     }, [])
 
     return (

@@ -2,8 +2,8 @@
 
 import { Messages } from "../constants/messageConstant";
 import { useAuthContext } from "../context/authContext";
+import { useToastContext } from "../context/newToastContext";
 import AuthUtil from "./utils/authUtils";
-import toastUtil from "./utils/toastUtils";
 
 export default function useHttpFactory() {
     const APIURL = "http://localhost:7879/";
@@ -11,7 +11,7 @@ export default function useHttpFactory() {
     const { authorized, setAuthorized } = useAuthContext();
     const {getCredentials} = AuthUtil(); 
 
-    const {showError} = toastUtil();
+    const {showError} = useToastContext();
 
     /**
          * Valida si se requiere un token de autorización y lo agrega a los encabezados de la petición.

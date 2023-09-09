@@ -12,13 +12,14 @@ import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useSupplier } from "@/app/context/supplierContext";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-import toastUtil from "@/app/hooks/utils/toastUtils";
+
+import { useToastContext } from "@/app/context/newToastContext";
 
 export default function RegisterSupplier({visible, setVisible}:{visible:boolean, setVisible:(partialT: Partial<boolean>) => void}) {
 
     const {create} = useCRUDService(Endpoints.SUPPLIER);
     const {isValidRes} = ResErrorHandler();
-    const {showSuccess} = toastUtil();
+    const {showSuccess} = useToastContext();
     const {requiered, maxLenght, minLenght} = useValidators();
     const [controls, setControls] = useState<FormControl[]>(
         [
@@ -61,7 +62,7 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
                 description: "Dirección",
                 colSize: 6,
                 type: FormTypes.INPUT,
-                validators: [requiered, maxLenght(17), minLenght(6)],
+                validators: [requiered, maxLenght(60), minLenght(6)],
                 invalid: false,
                 message: true,
                 icon: "pi-directions"

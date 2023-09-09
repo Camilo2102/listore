@@ -1,7 +1,8 @@
 import { Messages } from "@/app/constants/messageConstant";
+import { useToastContext } from "@/app/context/newToastContext";
 import useAuthService from "@/app/hooks/services/useAuthService";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-import toastUtil from "@/app/hooks/utils/toastUtils";
+
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -9,7 +10,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 export default function DeleteWorker({ user, visible, setVisible }: { user: any, visible: boolean, setVisible: Dispatch<SetStateAction<any>>}) {
     const {disableUser} = useAuthService();
     const {isValidRes} = ResErrorHandler();
-    const {showSuccess} = toastUtil();
+    const {showSuccess} = useToastContext();
     const footerContent = (
         <div>
             <Button label="No" icon="pi pi-times" onClick={() => setVisible(undefined)} className="p-button-text" />
