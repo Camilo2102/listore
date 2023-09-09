@@ -23,6 +23,7 @@ import { useSubProductContext } from "@/app/context/subProductContext";
 import Swal from "sweetalert2";
 import { useNavigationContext } from "@/app/context/navigationContext";
 import { useToastContext } from "@/app/context/newToastContext";
+import { defaultPaginator } from "@/app/constants/defaultPaginator";
 
 
 
@@ -124,15 +125,6 @@ export default function subProductPage() {
     const pattern = useCRUDService(Endpoints.PATTERN);
     const attributes = useCRUDService(Endpoints.ATTRIBUTES);
 
-    const [paginator, setPaginator] = useHandleInput<Paginator>({
-        rows: 10,
-        first: 0,
-        page: 0,
-        totalRecords: 0,
-        pagesVisited: 0,
-        loaded: false,
-    });
-
     const generateControls = (name: string): FormControl => {
         return {
             field: name,
@@ -151,13 +143,13 @@ export default function subProductPage() {
 
     const findData = async () => {
         try{
-            const patterFind = await pattern.getAllByFilter(true, paginator, {
+            const patterFind = await pattern.getAllByFilter(true, defaultPaginator, {
                 inventory: {
                     id: mainInventory.id
                 },
             })
     
-            const attributesFind = await attributes.getAllByFilter(true, paginator, {
+            const attributesFind = await attributes.getAllByFilter(true, defaultPaginator, {
                 pattern: {
                     id: patterFind[0].id
                 }
@@ -190,7 +182,7 @@ export default function subProductPage() {
         }catch(Error){
             showErrorWithButton(Messages.NO_MODEL_MESSAGE, Messages.NO_MODEL_MESSAGE_BODY)
 
-              goToRoute("/pages/main/inventory/pattern")
+            goToRoute("/pages/main/inventory/pattern")
         }
     }
 

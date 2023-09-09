@@ -18,19 +18,20 @@ export const handleForm = (formControls: FormControl[]) : [any, Form, (partialT:
             dependency.forEach(dependence => {
                 dependence.enable && form.enableField(dependence.field);
                 const value = partialT[Object.keys(partialT)[0]][dependence.value];
-                if(dependence.toInput){
-                    const field = Object.keys(partialT)[0];
-                    const obj = {
-                        [field]: {
-                            id: value
-                        }
-                    }            
+                const field = Object.keys(partialT)[0];
+                const obj = {
+                    [field]: {
+                        id: value
+                    }
+                }
+                if(dependence.toInput){            
                     form.updateFilter(dependence.field, obj);
                 } else {
                     partialT = {
                         ...partialT,
                         [dependence.field]: value
                     }
+                    form.updateColumns(dependence.field, obj);
                 }
             })
 

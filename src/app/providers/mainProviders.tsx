@@ -9,9 +9,7 @@ export default function MainProviders({ children }: { children: React.ReactNode 
 
     return (
         <TableProvider>
-            <ToastProvider>
-                {children}
-            </ToastProvider>
+            {children}
         </TableProvider>
     )
 }

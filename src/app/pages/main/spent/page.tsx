@@ -11,7 +11,7 @@ import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useTableContext } from "@/app/context/tableContext";
 import TitleTables from "@/app/components/titleTables";
 import FilterMeta from "@/app/interfaces/filterMeta";
-import { Formats } from "@/app/constants/formatConstants";
+import { useFormats } from "@/app/constants/formatConstants";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 import AuthUtil from "@/app/hooks/utils/authUtils";
 
@@ -55,7 +55,7 @@ export default function SpentPage(){
     [visible])
 
     const customMap = (spents: any) =>{
-        return {...spents, spentDate: Formats.formatDate(spents.spentDate)}
+        return {...spents, spentDate: useFormats.formatDate(spents.spentDate)}
     }
 
     return(

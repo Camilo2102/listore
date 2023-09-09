@@ -10,7 +10,7 @@ import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useTableContext } from "@/app/context/tableContext";
 import TitleTables from "@/app/components/titleTables";
 import FilterMeta from "@/app/interfaces/filterMeta";
-import { Formats } from "@/app/constants/formatConstants";
+import { useFormats } from "@/app/constants/formatConstants";
 
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 import AuthUtil from "@/app/hooks/utils/authUtils";
@@ -25,6 +25,8 @@ export default function SalePage() {
     const {getCredentials} = AuthUtil();
     const {getValue} = StorageService();
 
+    const {formatDate, formatCurrency} = useFormats();
+
     const role = getValue("role");
 
     const saleFilter: FilterMeta = {
@@ -35,9 +37,6 @@ export default function SalePage() {
             {field: "finalDate", label: "Fecha Final", value: null},
         ],
         required: {
-            product: {
-                id: product?.id,
-            },
             user: {
                 id: role === 'M' || role === 'C' ? undefined : getCredentials().user,
             }
@@ -47,11 +46,11 @@ export default function SalePage() {
     const { setSale } = useContext(saleContext);
 
     const columns: ColumnMeta[] = [
-        { field: 'saleDate', header: 'Fecha de venta', format: Formats.formatDate },
+        { field: 'saleDate', header: 'Fecha de venta', format: formatDate },
         { field: 'product', header: 'Producto' },
-        { field: 'unitaryValue', header: 'Valor unitario', format: Formats.formatCurrency },
+        { field: 'unitaryValue', header: 'Valor unitario', format: formatCurrency },
         { field: 'amount', header: 'Cantidad' },
-        { field: 'totalValue', header: 'Valor total', format: Formats.formatCurrency },
+        { field: 'totalValue', header: 'Valor total', format: formatCurrency },
         ...(role === 'M' || role === 'C'
         ? [{ field: 'nameUser', header: 'Usuario'}]:[] 
     ),

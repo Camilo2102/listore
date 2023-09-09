@@ -16,7 +16,7 @@ export default function InputHelper({ formControl, value, onValueChange, icon }:
     const {isValidRes} = ResErrorHandler();
     const { getById } = useCRUDService(formControl.service as string);
 
-    const loadData = () => {
+    const loadData = () => {        
         setVisible(true);
     };
 
@@ -54,7 +54,7 @@ export default function InputHelper({ formControl, value, onValueChange, icon }:
                 <Button type="button" disabled={formControl.disabled} onClick={loadData}></Button>
             </div>
             {visible && formControl.columns && <PopUp title={formControl.description} visible={visible} setVisible={setVisible}>
-                <TableGeneral showRepotGenerator={false} columns={formControl.columns} baseFilter={formControl.filter} endpoint={formControl.service as string} onRowSelect={selectValue} ></TableGeneral>
+                <TableGeneral showRepotGenerator={false} customMap={formControl.customMap} columns={formControl.columns} baseFilter={formControl.filter} endpoint={formControl.service as string} onRowSelect={selectValue} ></TableGeneral>
             </PopUp>}
         </>
     )

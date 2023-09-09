@@ -1,12 +1,12 @@
 
-export class Formats {
+export function useFormats() {
 
     /**
    * Formatea una fecha en una cadena de texto según el formato especificado.
    * @param date La fecha a formatear.
    * @returns La fecha formateada como una cadena de texto.
    */
-    public static formatDate(date: number[]): string {
+    const formatDate = (date: number[]): string => {
         const [year, month, day, hour = 0, minute = 0, second = 0] = date;
 
         const formattedDay = day.toString().padStart(2, '0');
@@ -21,8 +21,27 @@ export class Formats {
         }
     }
 
-    public static formatCurrency(value: number) {
+    const formatCurrency = (value: number) => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
     }
-    
+
+    const formatDetail = (values: any) => {
+        return (
+            <ul style={{padding: '0', listStyle: 'inside'}}>
+                {Object.keys(values).map((key: any) => (
+                    <li>
+                        {key}: {values[key]}
+                    </li>
+                )
+                )}
+            </ul>
+        )
+    }
+
+    return {
+        formatDate,
+        formatCurrency,
+        formatDetail
+    }
+
 }

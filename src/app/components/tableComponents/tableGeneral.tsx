@@ -97,6 +97,7 @@ export default function TableGeneral({ useFilter = true, columns, gridLines, str
 
     let value = e[field]
 
+
     if (format) {
       value = format(value);
     }
@@ -194,7 +195,7 @@ export default function TableGeneral({ useFilter = true, columns, gridLines, str
       if (!isValidRes(res)) {
         return;
       }
-
+      
       countData(filter);
 
       let values: any[] = res;
