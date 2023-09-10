@@ -100,7 +100,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 validators: [requiered, maxLenght(200), minLenght(3)],
                 invalid: false,
                 message: true,
-                icon: "pi-user",
+                icon: "pi-dollar",
                 disabled: true
             },
             {
@@ -112,7 +112,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 validators: [requiered, maxLenght(7), minLenght(1)],
                 invalid: false,
                 message: true,
-                icon: "pi-user"
+                icon: "pi-tags"
             },
         ]
     );

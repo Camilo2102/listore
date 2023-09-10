@@ -64,7 +64,6 @@ export default function BuyPage() {
     }, [visible])
 
     const customMap = (buys: any) =>{
-        debugger
         const nameProduct = buys?.kindOfProduct?.product?.name;
 
         const details: any = {}; 

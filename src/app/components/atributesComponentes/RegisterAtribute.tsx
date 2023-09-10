@@ -32,7 +32,7 @@ export default function RegisterAttribute({visible, setVisible}: {visible: boole
                 validators: [requiered, maxLenght(60), minLenght(3)],
                 invalid: false,
                 message: true,
-                icon: "pi-user"
+                icon: "pi-box"
              },
         ]
     );

@@ -70,7 +70,7 @@ export default function PatternPage(){
             <div className="grid" style={{ width: '90%' }}>
                 <TitleTables title="Modelos"></TitleTables>
                 <div className="col-12 flex justify-content-start">
-                    <Button onClick={handleNewPattern} label="Nuevo" icon="pi pi-user-plus"></Button>
+                    <Button onClick={handleNewPattern} label="Nuevo" icon="pi pi-box"></Button>
                 </div>
             <div className="col-12 flex justify-content-center">
                     <TableGeneral columns={columns} baseFilter={patternFilter} endpoint={Endpoints.PATTERN} onRowSelect={handleSelection} showRepotGenerator={false} ></TableGeneral>
