@@ -49,7 +49,7 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
             validators: [requiered, maxLenght(200), minLenght(3)],
             invalid: false,
             message: true,
-            icon: "pi-user"
+            icon: "pi-pencil"
          },
          {
             field: "category",
@@ -60,7 +60,7 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
             validators: [requiered, maxLenght(60), minLenght(3)],
             invalid: false,
             message: true,
-            icon: "pi-user"
+            icon: "pi-bars"
          }
       ]
    );

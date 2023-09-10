@@ -178,7 +178,7 @@ export default function RegisterBuy({ visible, setVisible }: { visible: boolean,
                 validators: [requiered, maxLenght(200), minLenght(1)],
                 invalid: false,
                 message: true,
-                icon: "pi-user",
+                icon: "pi-dollar",
                 disabled: true
             },
             {
@@ -190,7 +190,7 @@ export default function RegisterBuy({ visible, setVisible }: { visible: boolean,
                 validators: [requiered, maxLenght(200), minLenght(1)],
                 invalid: false,
                 message: true,
-                icon: "pi-user"
+                icon: "pi-tags"
             },
 
 

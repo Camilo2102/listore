@@ -76,7 +76,7 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
             validators: [requiered, maxLenght(200), minLenght(1)],
             invalid: false,
             message: true,
-            icon: "pi-user"
+            icon: "pi-dollar"
          },
          {
             field: "wholeSalePrice",
@@ -87,18 +87,18 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
             validators: [requiered, maxLenght(60), minLenght(1)],
             invalid: false,
             message: true,
-            icon: "pi-user"
+            icon: "pi-dollar"
          },
          {
             field: "category",
             value: "",
-            description: "Categoria",
+            description: "Categoría",
             colSize: 12,
             type: FormTypes.INPUT,
             validators: [requiered, maxLenght(60), minLenght(3)],
             invalid: false,
             message: true,
-            icon: "pi-user"
+            icon: "pi-bars"
          },
       ]
    );
