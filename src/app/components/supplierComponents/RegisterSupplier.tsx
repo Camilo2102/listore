@@ -13,7 +13,7 @@ import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useSupplier } from "@/app/context/supplierContext";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
 
-import { useToastContext } from "@/app/context/newToastContext";
+import { useToastContext } from "@/app/context/toastContext";
 
 export default function RegisterSupplier({visible, setVisible}:{visible:boolean, setVisible:(partialT: Partial<boolean>) => void}) {
 

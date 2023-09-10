@@ -15,7 +15,7 @@ import TableGeneral from "../tableComponents/tableGeneral";
 import AuthUtil from "@/app/hooks/utils/authUtils";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
 
-import { useToastContext } from "@/app/context/newToastContext";
+import { useToastContext } from "@/app/context/toastContext";
 
 export default function RegisterSpent({visible, setVisible}: {visible: boolean, setVisible: (partialT: Partial<boolean>) => void}){
     const {createAll} = useCRUDService(Endpoints.SPENT);
@@ -118,7 +118,7 @@ export default function RegisterSpent({visible, setVisible}: {visible: boolean, 
                 <div className="col-12 flex justify-content-start">
                     <Button label="Agregar" icon="pi pi-plus" onClick={() => setNewSpentVisible(true)}></Button>
                 </div>
-               <TableGeneral  showRepotGenerator={false} columns={columns} staticValues={spents}></TableGeneral>
+               <TableGeneral useFilter={false} showRepotGenerator={false} columns={columns} staticValues={spents}></TableGeneral>
                <div className="col-12 flex justify-content-start">
                     <Button label="Cargar gastos" icon="pi pi-check" onClick={loadSpents}></Button>
                </div>

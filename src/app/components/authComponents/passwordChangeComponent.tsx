@@ -13,7 +13,7 @@ import useAuthService from "@/app/hooks/services/useAuthService";
 import { useNavigationContext } from "@/app/context/navigationContext";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
 
-import { useToastContext } from "@/app/context/newToastContext";
+import { useToastContext } from "@/app/context/toastContext";
 
 
 export default function PasswordChangeComponent() {

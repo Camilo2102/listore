@@ -17,7 +17,7 @@ import { useNavigationContext } from "@/app/context/navigationContext";
 import AuthUtil from "@/app/hooks/utils/authUtils";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
 
-import { useToastContext } from "@/app/context/newToastContext";
+import { useToastContext } from "@/app/context/toastContext";
 
 
 export default function RegisterWorker({ userSelected }: { userSelected?: User }) {

@@ -1,6 +1,6 @@
 import { AuthProvider } from "../context/authContext";
 import { LoadingProvider } from "../context/loadingContext";
-import ToastProvider from "../context/newToastContext";
+import ToastProvider from "../context/toastContext";
 import { TableProvider } from "../context/tableContext";
 import useTokenValidator from "../hooks/useTokenValidation";
 

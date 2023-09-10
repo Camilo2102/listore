@@ -2,7 +2,7 @@
 
 import { Messages } from "@/app/constants/messageConstant";
 import AuthUtil from "./authUtils";
-import { useToastContext } from "@/app/context/newToastContext";
+import { useToastContext } from "@/app/context/toastContext";
 
 export default function HttpFactory() {
     const APIURL = "http://localhost:7879/";

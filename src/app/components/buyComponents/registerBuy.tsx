@@ -15,7 +15,7 @@ import TableGeneral from "../tableComponents/tableGeneral";
 import AuthUtil from "@/app/hooks/utils/authUtils";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
 
-import { useToastContext } from "@/app/context/newToastContext";
+import { useToastContext } from "@/app/context/toastContext";
 import { useHandleInput } from "@/app/hooks/handleInput";
 import Paginator from "@/app/interfaces/paginator";
 import { defaultPaginator } from "@/app/constants/defaultPaginator";
