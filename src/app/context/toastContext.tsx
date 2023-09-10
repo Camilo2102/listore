@@ -18,21 +18,31 @@ export function useToastContext(){
 }
 
 export default function ToastProvider({ children }: { children: React.ReactNode }){
-   
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
     /**
      * Mostrar mensaje realizado correctamente (verde)
      * @param title titulo del mensaje
      * @param message mensaje del mensaje xD
      */
     const showSuccess = (title: string, message: string) => {
-        Swal.fire(
+        Toast.fire(
             {
-                position: 'top-end',
                 icon: 'success',
                 title: title,
                 text: message,
                 showConfirmButton: false,
-                timer: 1000
             }
         )
     }
@@ -43,14 +53,12 @@ export default function ToastProvider({ children }: { children: React.ReactNode 
      * @param message mensaje del mensaje xD
      */
     const showError = (title: string, message: string) => {
-        Swal.fire(
+        Toast.fire(
             {
-                position: 'top-end',
                 icon: 'error',
                 title: title,
                 text: message,
                 showConfirmButton: false,
-                timer: 1000
             }
         )
     }
@@ -61,14 +69,12 @@ export default function ToastProvider({ children }: { children: React.ReactNode 
      * @param message mensaje del mensaje xD
      */
     const showWarn = (title: string, message: string) => {
-        Swal.fire(
+        Toast.fire(
             {
-                position: 'top-end',
                 icon: 'warning',
                 title: title,
                 text: message,
                 showConfirmButton: false,
-                timer: 1000
             }
         )
     }
@@ -79,14 +85,12 @@ export default function ToastProvider({ children }: { children: React.ReactNode 
      * @param message mensaje del mensaje xD
      */
     const showInfo = (title: string, message: string) => {
-        Swal.fire(
+        Toast.fire(
             {
-                position: 'top-end',
                 icon: 'info',
                 title: title,
                 text: message,
                 showConfirmButton: false,
-                timer: 1000
             }
         )
     }

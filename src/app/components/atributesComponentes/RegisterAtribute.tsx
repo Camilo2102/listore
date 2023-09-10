@@ -12,7 +12,7 @@ import { patternContext } from "@/app/pages/main/inventory/pattern/patternContex
 import { attributeContext } from "@/app/pages/main/inventory/pattern/attribute/attributeContext";
 import PatternModel from "@/app/models/pattern";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-import { useToastContext } from "@/app/context/newToastContext";
+import { useToastContext } from "@/app/context/toastContext";
 
 export default function RegisterAttribute({visible, setVisible}: {visible: boolean, setVisible: (partialT: Partial<boolean>) => void}){
     const {create} = useCRUDService(Endpoints.ATTRIBUTES);

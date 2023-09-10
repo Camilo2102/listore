@@ -2,7 +2,7 @@
 
 import { Messages } from "../constants/messageConstant";
 import { useAuthContext } from "../context/authContext";
-import { useToastContext } from "../context/newToastContext";
+import { useToastContext } from "../context/toastContext";
 import AuthUtil from "./utils/authUtils";
 
 export default function useHttpFactory() {

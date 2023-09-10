@@ -1,5 +1,5 @@
 import { Messages } from "@/app/constants/messageConstant";
-import { useToastContext } from "@/app/context/newToastContext";
+import { useToastContext } from "@/app/context/toastContext";
 import useAuthService from "@/app/hooks/services/useAuthService";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
 
