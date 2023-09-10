@@ -1,19 +1,11 @@
 'use client';
 
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import { Button } from "primereact/button";
-import TableGeneral from "@/app/components/tableComponents/tableGeneral";
-import { useHandleInput } from "@/app/hooks/handleInput";
-import Paginator from "@/app/interfaces/paginator";
-import { useRouter } from "next/navigation";
-import InventoryModel from "@/app/models/inventory";
-import { AuthUtil } from "@/app/utils/authUtil";
 import { Messages } from "@/app/constants/messageConstant";
-import { ToastUtil } from "@/app/utils/toastUtil";
 import { DataTableSelectEvent } from "primereact/datatable";
 import RegisterInventory from "@/app/components/inventoryComponents/RegisterInventory";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { useMainContext } from "@/app/context/mainContext";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
@@ -24,8 +16,8 @@ import { useNavigationContext } from "@/app/context/navigationContext";
 import { useSupplier } from "../../../context/supplierContext";
 import useConfirmationService from "@/app/hooks/services/useConfirmationService";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
-
-
+import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
+import { useToastContext } from "@/app/context/newToastContext";
 
 export default function Inventory({ props }: { props: any }) {
     const {goToRoute}= useNavigationContext();
@@ -38,7 +30,8 @@ export default function Inventory({ props }: { props: any }) {
     const {setSupplier} = useSupplier();
 
     const {showConfirmDelete} = useConfirmationService();
-
+    const {isValidRes} = ResErrorHandler();
+    const {showSuccess} = useToastContext();
 
     const columns: ColumnMeta[] = [
         { field: 'name', header: 'Nombre' },
@@ -79,10 +72,10 @@ export default function Inventory({ props }: { props: any }) {
     const handleDelete = (t: any) => {
         const deleteFn = () => {
             deleteData(true, t.id).then((res) => {
-                if (!ResErrorHandler.isValidRes(res)) {
+                if (!isValidRes(res)) {
                     return;
                 }
-                ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
+                showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
                 setMainInventory(undefined);
                 setReloadData(true);
             });

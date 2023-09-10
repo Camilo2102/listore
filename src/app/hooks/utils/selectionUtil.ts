@@ -1,4 +1,5 @@
-import FilterMeta from "../interfaces/filterMeta";
+import FilterMeta from "@/app/interfaces/filterMeta";
+
 
 export function validateInput(input: any) {
   if (typeof input === 'string') {
@@ -15,7 +16,7 @@ export function validateInput(input: any) {
 export function parseToFilter(filter: FilterMeta) {
   let object: any = {}
 
-  filter.values.forEach(value => {
+  filter.values.forEach((value: { field: string | number; value: any; }) => {
     object[value.field] = value.value;
   })
 

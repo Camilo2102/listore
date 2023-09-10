@@ -1,20 +1,13 @@
 'use client';
 
-import ProductModel from "@/app/models/product";
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import { Messages } from "@/app/constants/messageConstant";
-import { ToastUtil } from "@/app/utils/toastUtil";
-import { useHandleInput } from "@/app/hooks/handleInput";
-import Paginator from "@/app/interfaces/paginator";
 import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableComponents/tableGeneral";
-import { inventoryContext } from "../inventoryContext";
 import RegisterProduct from "@/app/components/productComponents/RegisterProduct";
-import { ProductContext, useProductContext } from "../../../../context/productContext";
+import { useProductContext } from "../../../../context/productContext";
 import { DataTableSelectEvent } from "primereact/datatable";
-import { useRouter } from "next/navigation";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { useMainContext } from "../../../../context/mainContext";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
@@ -25,19 +18,20 @@ import { useNavigationContext } from "@/app/context/navigationContext";
 import { useSupplier } from "../../../../context/supplierContext";
 import useConfirmationService from "@/app/hooks/services/useConfirmationService";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
+import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
+import { useToastContext } from "@/app/context/newToastContext";
+
 
 
 export default function ProductPage() {
     const {goToRoute}= useNavigationContext();
     const { mainInventory, setMainInventory } = useMainContext();
-
     const { deleteData } = useCRUDService(Endpoints.PRODUCT);
-
     const { reloadData, setReloadData } = useTableContext();
-
     const { supplier, setSupplier } = useSupplier();
-
     const {showConfirmDelete} = useConfirmationService();
+    const {isValidRes} = ResErrorHandler();
+    const {showSuccess} = useToastContext();
 
 
 
@@ -87,10 +81,10 @@ export default function ProductPage() {
 
         const deleteFn = () => {
             deleteData(true, t.id).then((res) => {
-                if (!ResErrorHandler.isValidRes(res)) {
+                if (!isValidRes(res)) {
                     return;
                 }
-                ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
+                showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
                 setProduct(undefined);
                 setReloadData(true);
             });

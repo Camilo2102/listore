@@ -2,25 +2,29 @@ import { FormTypes } from "@/app/constants/formTypeConstant";
 import { Messages } from "@/app/constants/messageConstant";
 import { handleForm } from "@/app/hooks/handleForm";
 import FormControl from "@/app/models/formModels/formControl";
-import Validators from "@/app/models/formModels/validators";
-import { ToastUtil } from "@/app/utils/toastUtil";
+import useValidators from "@/app/models/formModels/validators";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import PopUp from "../popUp";
 import FormGenerator from "../CRUDComponents/formGenerator";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
-import User from "@/app/models/user";
-import { AuthUtil } from "@/app/utils/authUtil";
 import { spentContext } from "@/app/pages/main/spent/spentContext";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import { Button } from "primereact/button";
 import TableGeneral from "../tableComponents/tableGeneral";
+import AuthUtil from "@/app/hooks/utils/authUtils";
+import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
+
+import { useToastContext } from "@/app/context/newToastContext";
 
 export default function RegisterSpent({visible, setVisible}: {visible: boolean, setVisible: (partialT: Partial<boolean>) => void}){
     const {createAll} = useCRUDService(Endpoints.SPENT);
     const [spents, setspents] = useState<any[]>([]);
     const [newSpentVisible, setNewSpentVisible] = useState(false);
+    const {getCredentials} = AuthUtil();
+    const {isValidRes} = ResErrorHandler();
+    const {showSuccess} = useToastContext();
+    const {requiered, maxLenght, minLenght} = useValidators();
     const [controls, setControls] = useState<FormControl[]>(
         [
             {
@@ -29,7 +33,7 @@ export default function RegisterSpent({visible, setVisible}: {visible: boolean, 
                 description: "Precio",
                 colSize: 12,
                 type: FormTypes.NUMBER,
-                validators: [Validators.requiered, Validators.maxLenght(200), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(200), minLenght(3)],
                 invalid: false,
                 message: true,
                 icon: "pi-dollar"
@@ -40,7 +44,7 @@ export default function RegisterSpent({visible, setVisible}: {visible: boolean, 
                 description: "Descripción",
                 colSize: 12,
                 type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(120), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(120), minLenght(3)],
                 invalid: false,
                 message: true,
                 icon: "pi-pencil"
@@ -90,16 +94,16 @@ export default function RegisterSpent({visible, setVisible}: {visible: boolean, 
     const loadSpents = () =>{
         const modifiedSpents = spents.map((spent) =>{
             spent.user ={
-                id: AuthUtil.getCredentials().user
+                id: getCredentials().user
             }
             return spent;
         })
 
         createAll(true, modifiedSpents).then(res =>{
-            if(!ResErrorHandler.isValidRes(res)){
+            if(!isValidRes(res)){
                 return;
             }
-            ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS);
+            showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS);
             setVisible(false)
             setSubmited(false)
             setSpent(undefined)

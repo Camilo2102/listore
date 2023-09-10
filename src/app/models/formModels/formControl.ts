@@ -28,4 +28,6 @@ export default interface FormControl{
     fieldDependency?: dependence[];
     filter?: FilterMeta;
     numberOption?: number;
+    generateCustomColumns?: (data: any) => Promise<ColumnMeta[]>; 
+    customMap?: (data: any) => any;
 }

@@ -1,45 +1,48 @@
 import { useEffect } from "react";
 import { FormTypes } from "../constants/formTypeConstant";
-import Validators from "../models/formModels/validators";
+import useValidators from "../models/formModels/validators";
 import FormControl from "../models/formModels/formControl";
 import FilterMeta from "../interfaces/filterMeta";
 import { useHandleInput } from "./handleInput";
-import { DateUtil } from "../utils/dateUtil";
+import DateUtil from "./utils/dateUtils";
 
 const useInputText = (field: string, description: string) => {
+  const {requiered, maxLenght, minLenght} = useValidators();  
   return {
     field: field,
     value: "",
     description: description,
     colSize: 12,
     type: FormTypes.INPUT,
-    validators: [Validators.requiered, Validators.maxLenght(60), Validators.minLenght(3)],
+    validators: [requiered, maxLenght(60), minLenght(3)],
     invalid: false,
     message: true,
   }
 }
 
 const useInputNumber = (field: string, description: string) => {
+  const {requiered, maxLenght, minLenght} = useValidators();
   return {
     field: field,
     value: 0,
     description: description,
     colSize: 12,
     type: FormTypes.NUMBER,
-    validators: [Validators.requiered, Validators.maxLenght(60), Validators.minLenght(3)],
+    validators: [requiered, maxLenght(60), minLenght(3)],
     invalid: false,
     message: true,
   }
 }
 
 const useInputDate = (field: string, description: string) => {
+  const {requiered, maxLenght, minLenght} = useValidators();
   return {
     field: field,
     value: null,
     description: description,
     colSize: 12,
     type: FormTypes.DATE,
-    validators: [Validators.requiered],
+    validators: [requiered],
     invalid: false,
     message: true,
   }
@@ -47,11 +50,11 @@ const useInputDate = (field: string, description: string) => {
 
 
 export default function useGeneratedForm(filter: FilterMeta) {
-
+  const {validateDate} = DateUtil();
   const selectValues = () => {
     const controls: FormControl[] = [];
     filter.values.forEach(value => {
-      const valueType = DateUtil.validateDate(value.value)  ? 'date' : typeof value.value;
+      const valueType = validateDate(value.value)  ? 'date' : typeof value.value;
 
       const description = value.label;
       const key = value.field;
@@ -66,6 +69,7 @@ export default function useGeneratedForm(filter: FilterMeta) {
   }
 
   const selectInputFromType = (valueType: string, field: string, description: string) => {
+
     switch (valueType) {
       case "string":
         return useInputText(field, description);

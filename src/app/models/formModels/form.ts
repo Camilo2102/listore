@@ -1,5 +1,6 @@
 import useDeepCopy from "@/app/hooks/useDeepCopy";
 import FormControl from "./formControl";
+import ColumnMeta from "@/app/interfaces/columnMeta";
 
 /**
  * Clase encargada del manejo de los forms
@@ -61,6 +62,16 @@ export default class Form {
         this.formControls.forEach(control => {
             if(control.field === field){
                 control.filter = {values: [], required: {...control.filter?.required, ...value}}                
+            }
+        })
+    }
+
+    public updateColumns(field: string, value: any){
+        this.formControls.forEach(control => {
+            if(control.field === field && control.generateCustomColumns){
+                control.generateCustomColumns(value).then(res => {
+                    control.columns = res
+                });
             }
         })
     }

@@ -1,5 +1,5 @@
 import Form from "@/app/models/formModels/form";
-import inputTypeSelector from "../../utils/inputTypeSelector";
+import inputTypeSelector from "../../hooks/utils/inputTypeSelector";
 import { Button } from "primereact/button";
 import React, { FormEvent } from "react";
 import { Dropdown } from "primereact/dropdown";

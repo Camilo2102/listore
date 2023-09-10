@@ -1,5 +1,4 @@
 "use client"
-import RegisterProduct from "@/app/components/productComponents/RegisterProduct";
 import TableGeneral from "@/app/components/tableComponents/tableGeneral";
 import TitleTables from "@/app/components/titleTables";
 import { Endpoints } from "@/app/constants/endpointsConstants";
@@ -7,25 +6,24 @@ import { Messages } from "@/app/constants/messageConstant";
 import { useMainContext } from "@/app/context/mainContext"
 import { useHandleInput } from "@/app/hooks/handleInput";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
-import useCRUDFactory from "@/app/hooks/useCRUDFactory";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import Paginator from "@/app/interfaces/paginator";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
-import { ToastUtil } from "@/app/utils/toastUtil";
 import { Button } from "primereact/button";
-import { useContext, useEffect, useState } from "react";
-import { ProductContext, useProductContext } from "../../../../../context/productContext";
+import { useEffect, useState } from "react";
+import { useProductContext } from "../../../../../context/productContext";
 import FilterMeta from "@/app/interfaces/filterMeta";
 import useConfirmationService from "@/app/hooks/services/useConfirmationService";
 import { useTableContext } from "@/app/context/tableContext";
-import { useNavigationContext } from "@/app/context/navigationContext";
-import { useSupplier } from "@/app/context/supplierContext";
 import RegisterSubProduct from "@/app/components/subProductComponents/registerSubProduct";
 import { FormTypes } from "@/app/constants/formTypeConstant";
-import Validators from "@/app/models/formModels/validators";
+import useValidators from "@/app/models/formModels/validators";
 import FormControl from "@/app/models/formModels/formControl";
 import { useSubProductContext } from "@/app/context/subProductContext";
+import Swal from "sweetalert2";
+import { useNavigationContext } from "@/app/context/navigationContext";
+import { useToastContext } from "@/app/context/newToastContext";
+import { defaultPaginator } from "@/app/constants/defaultPaginator";
 
 
 
@@ -36,21 +34,21 @@ export default function subProductPage() {
 
     const { mainInventory, setMainInventory } = useMainContext();
 
-    const kindOfProduct = useCRUDService(Endpoints.KINDOFPRODUCT);
-    const characteristic = useCRUDService(Endpoints.CHARACTERISTIC);
+    const {requiered, maxLenght, minLenght} = useValidators();
 
     const { reloadData, setReloadData } = useTableContext();
 
     const [controls, setControls] = useState<FormControl[]>([]);
 
+    const {showErrorWithButton} = useToastContext();
 
     const {showConfirmDelete} = useConfirmationService();
-
-
 
     const [columns, setColumns] = useState<ColumnMeta[]>();
 
     const [values, setValues] = useState<any>();
+
+    const {goToRoute} = useNavigationContext(); 
 
     const handleDelete = (t: any) => {
 
@@ -91,7 +89,7 @@ export default function subProductPage() {
             description: "Cantidad",
             colSize: 12,
             type: FormTypes.NUMBER,
-            validators: [Validators.requiered, Validators.maxLenght(60)],
+            validators: [requiered, maxLenght(60)],
             invalid: false,
             message: true,
             icon: "pi-user"
@@ -127,15 +125,6 @@ export default function subProductPage() {
     const pattern = useCRUDService(Endpoints.PATTERN);
     const attributes = useCRUDService(Endpoints.ATTRIBUTES);
 
-    const [paginator, setPaginator] = useHandleInput<Paginator>({
-        rows: 10,
-        first: 0,
-        page: 0,
-        totalRecords: 0,
-        pagesVisited: 0,
-        loaded: false,
-    });
-
     const generateControls = (name: string): FormControl => {
         return {
             field: name,
@@ -143,7 +132,7 @@ export default function subProductPage() {
             description: name,
             colSize: 12,
             type: FormTypes.INPUT,
-            validators: [Validators.requiered, Validators.maxLenght(60),],
+            validators: [requiered, maxLenght(60),],
             invalid: false,
             message: true,
             icon: "pi-user"
@@ -152,43 +141,53 @@ export default function subProductPage() {
 
     const {subProduct, setSubProduct} = useSubProductContext()
 
-    useEffect(() => {
-        pattern.getAllByFilter(true, paginator, {
-            inventory: {
-                id: mainInventory.id
-            },
-        }).then(res => {
-            attributes.getAllByFilter(true, paginator, {
-                pattern: {
-                    id: res[0].id
-                }
-            }).then(res => {
-                const generatedColumns: ColumnMeta[] = res.map(value => ({
-                    field: value.name,
-                    header: value.name,
-                }));
-
-                generatedColumns.push(
-                    { field: "amount", header: "Cantidad" },
-                    {
-                        field: 'CRUDupdate', header: 'Actualizar', action: (t: any) => {
-                            setSubProduct(t)
-                            setVisible(true);
-                        }
-
-                    },
-                    {
-                        field: 'CRUDdelete', header: "Eliminar", action: (t: any) => {
-                            showConfirmDelete(Messages.MESSAGE_BODY_DELETE, handleDelete(t));
-                        }
-                    });
-
-                generateNewControls(res);
-                setValues(res);
-                setColumns(generatedColumns);
-
+    const findData = async () => {
+        try{
+            const patterFind = await pattern.getAllByFilter(true, defaultPaginator, {
+                inventory: {
+                    id: mainInventory.id
+                },
             })
-        })
+    
+            const attributesFind = await attributes.getAllByFilter(true, defaultPaginator, {
+                pattern: {
+                    id: patterFind[0].id
+                }
+            })
+    
+            const generatedColumns: ColumnMeta[] = attributesFind.map(value => ({
+                field: value.name,
+                header: value.name,
+            }));
+            
+            generatedColumns.push(
+                { field: "amount", header: "Cantidad" },
+                {
+                    field: 'CRUDupdate', header: 'Actualizar', action: (t: any) => {
+                        setSubProduct(t)
+                        setVisible(true);
+                    }
+    
+                },
+                {
+                    field: 'CRUDdelete', header: "Eliminar", action: (t: any) => {
+                        showConfirmDelete(Messages.MESSAGE_BODY_DELETE, handleDelete(t));
+                    }
+                });
+    
+            generateNewControls(attributesFind);
+            setValues(attributesFind);
+            setColumns(generatedColumns);
+            
+        }catch(Error){
+            showErrorWithButton(Messages.NO_MODEL_MESSAGE, Messages.NO_MODEL_MESSAGE_BODY)
+
+            goToRoute("/pages/main/inventory/pattern")
+        }
+    }
+
+    useEffect(() => {
+        findData();
     }, [])
 
     return (

@@ -34,6 +34,10 @@ export const NavigationProvider = ({ children }: { children: React.ReactNode }) 
     const goToRoute = (path: string) => {
       startLoading();
       const modifiedPath = pathWithVersion(path);
+      if(pathname === modifiedPath){
+        return stopLoading();
+      }
+      
       router.push(modifiedPath);
     }
 

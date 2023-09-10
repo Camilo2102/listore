@@ -1,22 +1,13 @@
 'use client';
-import SupplierModel from "@/app/models/supplier";
-import { AuthUtil } from "@/app/utils/authUtil";
-import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { useSupplier } from "../../../../context/supplierContext";
 import ColumnMeta from "@/app/interfaces/columnMeta";
-import { ToastUtil } from "@/app/utils/toastUtil";
 import { Messages } from "@/app/constants/messageConstant";
-import Paginator from "@/app/interfaces/paginator";
-import { useHandleInput } from "@/app/hooks/handleInput";
-import { inventoryContext } from "../inventoryContext";
-import Link from "next/link";
+
 import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableComponents/tableGeneral";
-import popUp from '../../../../components/popUp';
-import PopUp from "../../../../components/popUp";
 import RegisterSupplier from "@/app/components/supplierComponents/RegisterSupplier";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+
 import { useMainContext } from "../../../../context/mainContext";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
@@ -27,6 +18,9 @@ import { useNavigationContext } from "@/app/context/navigationContext";
 import { DataTableSelectEvent } from "primereact/datatable";
 import useConfirmationService from "@/app/hooks/services/useConfirmationService";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
+import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
+import { useToastContext } from "@/app/context/newToastContext";
+
 
 export default function SupplierPage(){
     const { mainInventory, setMainInventory } = useMainContext();
@@ -38,6 +32,9 @@ export default function SupplierPage(){
     const { reloadData, setReloadData } = useTableContext();
 
     const {showConfirmDelete} = useConfirmationService();
+
+    const {isValidRes} = ResErrorHandler();
+    const {showSuccess} = useToastContext();
 
 
     const supplierFilter: FilterMeta = {
@@ -79,10 +76,10 @@ export default function SupplierPage(){
     const handleDelete = (t:any) =>{
         const deletFn = () =>{
             deleteData(true, t.id).then((res) => {
-                if(!ResErrorHandler.isValidRes(res)){
+                if(!isValidRes(res)){
                     return;
                  }
-                ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
+                showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_DELETE_SUCCESS);
                 setSupplier(undefined);
                 setReloadData(true);
             });

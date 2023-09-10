@@ -1,34 +1,30 @@
-import { Card } from "primereact/card"
-import InputForm from "../formComponents/inputForm"
-import PasswordForm from "../formComponents/passwordForm"
 import { Button } from "primereact/button"
-import { useRouter } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import FormControl from "@/app/models/formModels/formControl";
-import Validators from "@/app/models/formModels/validators";
+import useValidators from "@/app/models/formModels/validators";
 import { handleForm } from "../../hooks/handleForm";
-import { AuthUtil } from "../../utils/authUtil";
 import Container from "../container";
 import FormGenerator from "../CRUDComponents/formGenerator";
 import { FormTypes } from "../../constants/formTypeConstant";
-import Link from "next/link";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
 import { useAuthContext } from "@/app/context/authContext";
 import useAuthService from "@/app/hooks/services/useAuthService";
 import { useNavigationContext } from "@/app/context/navigationContext";
+import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
+import AuthUtil from "@/app/hooks/utils/authUtils";
 
 export default function LoginComponent() {
 
     const {goToRoute}= useNavigationContext();
-
     const {login, sendRecoveryEmail} = useAuthService();
-
+    const {isValidRes} = ResErrorHandler();
     const [showRecoveryDialog, setShowRecoveryDialog] = useState<boolean>(false);
     const [recoveryMail, setRecoveryMail] = useState<string>("");
-
     const {authorized, setAuthorized} = useAuthContext();
+    const {setCredentials} = AuthUtil();
+
+    const {requiered, maxLenght, minLenght} = useValidators();
     /**
      * Instancia inicial de los formcontrols
      */
@@ -40,7 +36,7 @@ export default function LoginComponent() {
                 description: "Correo",
                 colSize: 12,
                 type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(36), minLenght(3)],
                 invalid: false,
                 message: true,
                 icon: "pi-envelope"
@@ -51,7 +47,7 @@ export default function LoginComponent() {
                 type: FormTypes.PASSWORD,
                 colSize: 12,
                 description: "Contraseña",
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(36), minLenght(3)],
                 invalid: false,
                 message: true,
             }
@@ -72,10 +68,10 @@ export default function LoginComponent() {
 
         if (valid) {
             login(credential).then(res => {
-                if(!ResErrorHandler.isValidRes(res)){
+                if(!isValidRes(res)){
                     return;
                  }
-                AuthUtil.setCredentials(res.token, res.company, res.user, res.role);
+                setCredentials(res.token, res.company, res.user, res.role);
                 setAuthorized("true");
                 goToRoute("/pages/main/sale")
             })
@@ -98,7 +94,7 @@ export default function LoginComponent() {
     const handleEmailRecovery = () => {
         sendRecoveryEmail(recoveryMail).then(
             res => {
-                if(!ResErrorHandler.isValidRes(res)){
+                if(!isValidRes(res)){
                     return;
                  }
             }

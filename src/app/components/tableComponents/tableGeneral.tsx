@@ -13,20 +13,21 @@ import * as XLSX from 'xlsx';
 import saveAs from "file-saver";
 import { useHandleInput } from "../../hooks/handleInput";
 import useCRUDService from "../../hooks/services/useCRUDService";
-import { ResErrorHandler } from "../../utils/resErrorHandler";
 import { useTableContext } from "../../context/tableContext";
 import TableFilter from "./tableFilter";
 import FilterMeta from "@/app/interfaces/filterMeta";
 import { useCleanFilterInput } from "@/app/hooks/useFilterSelect";
 import useDeepCopy from "@/app/hooks/useDeepCopy";
-import { parseToFilter } from "@/app/utils/selectionUtil";
+
 import { useLoading } from "@/app/context/loadingContext";
+import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
+import { parseToFilter } from "@/app/hooks/utils/selectionUtil";
 
 
 export default function TableGeneral({ useFilter = true, columns, gridLines, stripedRows, onRowSelect, showRepotGenerator = true, endpoint, baseFilter, customMap, staticValues, name = "exportacion" }: { useFilter?: boolean, columns: ColumnMeta[], gridLines?: boolean, stripedRows?: boolean, onRowSelect?: (e: DataTableSelectEvent) => void, showRepotGenerator?: boolean, endpoint?: string, baseFilter?: FilterMeta, customMap?: (value: any) => any, staticValues?: any[], name?: string }) {
   const [values, setValues] = useState<any[]>([]);
   const { reloadData, setReloadData, loadingData, setLoadingData } = useTableContext();
-
+  const {isValidRes} = ResErrorHandler();
   const { getAllByFilter, countAllByFilter } = useCRUDService(endpoint as string);
 
   const [paginator, setPaginator] = useHandleInput<Paginator>({
@@ -95,6 +96,7 @@ export default function TableGeneral({ useFilter = true, columns, gridLines, str
     }
 
     let value = e[field]
+
 
     if (format) {
       value = format(value);
@@ -190,10 +192,10 @@ export default function TableGeneral({ useFilter = true, columns, gridLines, str
 
   const getData = (filter: any) => {
     getAllByFilter(true, paginator, filter).then(res => {
-      if (!ResErrorHandler.isValidRes(res)) {
+      if (!isValidRes(res)) {
         return;
       }
-
+      
       countData(filter);
 
       let values: any[] = res;
@@ -208,7 +210,7 @@ export default function TableGeneral({ useFilter = true, columns, gridLines, str
 
   const countData = (filter: any) => {
     countAllByFilter(true, filter).then(res => {
-      if (!ResErrorHandler.isValidRes(res)) {
+      if (!isValidRes(res)) {
         return;
       }
       setPaginator({ totalRecords: res, loaded: true })

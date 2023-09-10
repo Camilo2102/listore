@@ -1,15 +1,18 @@
 import { AuthProvider } from "../context/authContext";
 import { LoadingProvider } from "../context/loadingContext";
 import { NavigationProvider } from "../context/navigationContext";
+import ToastProvider from "../context/newToastContext";
 
-export default function GlobalProviders ({children}: {children: React.ReactNode}) {
-    return(
-        <LoadingProvider>
-          <NavigationProvider>
-            <AuthProvider>
-              {children}
-            </AuthProvider>
-          </NavigationProvider>
-        </LoadingProvider>
-    ) 
+export default function GlobalProviders({ children }: { children: React.ReactNode }) {
+  return (
+    <LoadingProvider>
+      <NavigationProvider>
+        <ToastProvider>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </ToastProvider>
+      </NavigationProvider>
+    </LoadingProvider>
+  )
 }

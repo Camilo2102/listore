@@ -2,7 +2,7 @@
 
 import { FormTypes } from "@/app/constants/formTypeConstant";
 import FormControl from "@/app/models/formModels/formControl";
-import Validators from "@/app/models/formModels/validators";
+import useValidators from "@/app/models/formModels/validators";
 import { FormEvent, useState } from "react";
 import Container from "../container";
 import FormGenerator from "../CRUDComponents/formGenerator";
@@ -11,7 +11,10 @@ import { handleForm } from "@/app/hooks/handleForm";
 export default function RegisterCompany({onValidSubmit}: {onValidSubmit: (value: any) => void}) {
     /**
      * Instancia inicial de los formcontrols
-     */
+    */
+
+    const {requiered, maxLenght, minLenght} = useValidators();
+
     const [controls, setControls] = useState<FormControl[]>(
         [
             {
@@ -20,7 +23,7 @@ export default function RegisterCompany({onValidSubmit}: {onValidSubmit: (value:
                 description: "Nombre",
                 colSize: 12,
                 type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(36), minLenght(3)],
                 invalid: false,
                 message: true,
                 icon: "pi-home"
@@ -31,7 +34,7 @@ export default function RegisterCompany({onValidSubmit}: {onValidSubmit: (value:
                 description: "Teléfono",
                 colSize: 12,
                 type: FormTypes.INPUT,
-                validators: [Validators.requiered, Validators.maxLenght(13), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(13), minLenght(3)],
                 invalid: false,
                 message: true,
                 icon: "pi-phone"
@@ -42,7 +45,7 @@ export default function RegisterCompany({onValidSubmit}: {onValidSubmit: (value:
                 description: "Descripción",
                 type: FormTypes.INPUT,
                 colSize: 12,
-                validators: [Validators.requiered, Validators.maxLenght(36), Validators.minLenght(3)],
+                validators: [requiered, maxLenght(36), minLenght(3)],
                 invalid: false,
                 message: true,
                 icon: "pi-pencil",

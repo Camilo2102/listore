@@ -2,27 +2,27 @@
 import PopUp from "@/app/components/popUp";
 import FormControl from "@/app/models/formModels/formControl";
 import { FormTypes } from "@/app/constants/formTypeConstant";
-import Validators from "@/app/models/formModels/validators";
+import useValidators from "@/app/models/formModels/validators";
 import { handleForm } from "@/app/hooks/handleForm";
 import FormGenerator from "@/app/components/CRUDComponents/formGenerator";
 import InventoryModel from "@/app/models/inventory";
-
-import { ToastUtil } from "@/app/utils/toastUtil";
 import { Messages } from "@/app/constants/messageConstant";
-import { FormEvent, useContext, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { ProductContext, useProductContext } from "@/app/context/productContext";
-import { ResErrorHandler } from "@/app/utils/resErrorHandler";
+import { FormEvent, useEffect, useState } from "react";
+import { useProductContext } from "@/app/context/productContext";
 import { useMainContext } from "@/app/context/mainContext";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
+import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
+
+import { useToastContext } from "@/app/context/newToastContext";
 
 
 export default function RegisterProduct({ inventorySelected, visible, setVisible }: { inventorySelected?: InventoryModel, visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
    const { mainInventory, setMainInventory } = useMainContext();
    const { create } = useCRUDService(Endpoints.PRODUCT);
-
-
+   const {isValidRes} = ResErrorHandler();
+   const {showSuccess} = useToastContext();
+   const {requiered, maxLenght, minLenght} = useValidators();
    const [controls, setControls] = useState<FormControl[]>(
       [
          {
@@ -31,7 +31,7 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
             description: "Proveedores",
             colSize: 12,
             type: FormTypes.INPUTHELPER,
-            validators: [Validators.requiered],
+            validators: [requiered],
             invalid: false,
             message: true,
             columns: [
@@ -62,7 +62,7 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
             description: "Nombre",
             colSize: 12,
             type: FormTypes.INPUT,
-            validators: [Validators.requiered, Validators.maxLenght(60), Validators.minLenght(3)],
+            validators: [requiered, maxLenght(60), minLenght(3)],
             invalid: false,
             message: true,
             icon: "pi-user"
@@ -73,7 +73,7 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
             description: "Valor unitario",
             colSize: 12,
             type: FormTypes.NUMBER,
-            validators: [Validators.requiered, Validators.maxLenght(200), Validators.minLenght(3)],
+            validators: [requiered, maxLenght(200), minLenght(1)],
             invalid: false,
             message: true,
             icon: "pi-user"
@@ -84,7 +84,7 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
             description: "Precio por mayor",
             colSize: 12,
             type: FormTypes.NUMBER,
-            validators: [Validators.requiered, Validators.maxLenght(60), Validators.minLenght(3)],
+            validators: [requiered, maxLenght(60), minLenght(1)],
             invalid: false,
             message: true,
             icon: "pi-user"
@@ -95,22 +95,11 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
             description: "Categoria",
             colSize: 12,
             type: FormTypes.INPUT,
-            validators: [Validators.requiered, Validators.maxLenght(60), Validators.minLenght(3)],
+            validators: [requiered, maxLenght(60), minLenght(3)],
             invalid: false,
             message: true,
             icon: "pi-user"
          },
-         {
-            field: "amount",
-            value: "",
-            description: "Cantidad",
-            colSize: 12,
-            type: FormTypes.NUMBER,
-            validators: [Validators.requiered, Validators.maxLenght(60), Validators.minLenght(3)],
-            invalid: false,
-            message: true,
-            icon: "pi-user"
-         }
       ]
    );
 
@@ -134,14 +123,15 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
          delete productToRegister.namesupplier;
 
          productToRegister.supplier = {
-            id: productToRegister.supplier.id
+            id: productToRegister.supplier.id,
          }
+         productToRegister.amount =0
 
          create(true, productToRegister).then(res => {
-            if (!ResErrorHandler.isValidRes(res)) {
+            if (!isValidRes(res)) {
                return;
             }
-            ToastUtil.showSuccess(Messages.MESSAGE_SUCCESS, inventorySelected ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
+            showSuccess(Messages.MESSAGE_SUCCESS, inventorySelected ? Messages.MESSAGE_UPDATE_SUCCESS : Messages.MESSAGE_CREATE_SUCCESS);
             setVisible(false);
             setProduct(undefined);
          });
