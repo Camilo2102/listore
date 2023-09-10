@@ -75,6 +75,7 @@ export default function Register() {
                     goToRoute("/pages/auth/passwordChange?token="+res.temporalToken);
                 }
             )
+            setSubmited(false)
         } 
     }, [part, submited])
 

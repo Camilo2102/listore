@@ -78,7 +78,6 @@ export default function BuyPage() {
 
     return (
         <>
-            <NavBar />
             <div className="flex justify-content-center align-items-center" style={{  minHeight: '100vh', overflowY: 'auto'  }}>
                 <div className="grid" style={{ width: '90%' }}>
                     <TitleTables title="Compras"></TitleTables>
