@@ -92,7 +92,7 @@ export default function subProductPage() {
             validators: [requiered, maxLenght(60)],
             invalid: false,
             message: true,
-            icon: "pi-user"
+            icon: "pi-tags"
         })        
         setControls(generatedControls);
     }

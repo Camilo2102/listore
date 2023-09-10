@@ -65,7 +65,7 @@ export default function SpentPage(){
             <div className="grid" style={{ width: '90%' }}>
                 <TitleTables title="Gastos"></TitleTables>
                 <div className="col-12 flex justify-content-start">
-                    <Button onClick={handleNewSpent} label="Nuevo" icon="pi pi-user-plus"></Button>
+                    <Button onClick={handleNewSpent} label="Nuevo" icon="pi pi-plus"></Button>
                 </div>
                 <div className="col-12 flex justify-content-center">
                     <TableGeneral columns={columns} baseFilter={spentFilter} endpoint={Endpoints.SPENT}  customMap={customMap}></TableGeneral>
