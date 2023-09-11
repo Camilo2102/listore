@@ -20,8 +20,6 @@ export default function SpentPage(){
     const {getCredentials} = AuthUtil();
     const {formatDate} = useFormats();
 
-    const {formatDate} = useFormats();
-
     const { setReloadData } = useTableContext();
     const spentFilter: FilterMeta = {
         required: {
