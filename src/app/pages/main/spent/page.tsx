@@ -18,6 +18,7 @@ import AuthUtil from "@/app/hooks/utils/authUtils";
 export default function SpentPage(){
     const [visible, setVisible] = useState<boolean>(false);
     const {getCredentials} = AuthUtil();
+    const {formatDate} = useFormats();
 
     const {formatDate} = useFormats();
 
