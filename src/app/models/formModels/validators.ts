@@ -1,7 +1,7 @@
 import {Messages} from "@/app/constants/messageConstant";
 import FormControl from "./formControl";
 
-import { useToastContext } from "@/app/context/newToastContext";
+import { useToastContext } from "@/app/context/toastContext";
 
 export type validateFunction = (formControl: FormControl) => boolean;
 

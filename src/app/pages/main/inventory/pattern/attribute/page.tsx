@@ -62,7 +62,7 @@ export default function AttributePage(){
             <div className="grid" style={{ width: '90%' }}>
                 <TitleTables title="Atributos"></TitleTables>
                 <div className="col-12 flex justify-content-start">
-                    <Button onClick={handleNewAttribute} label="Nuevo" icon="pi pi-user-plus"></Button>
+                    <Button onClick={handleNewAttribute} label="Nuevo" icon="pi pi-inbox"></Button>
                 </div>
             <div className="col-12 flex justify-content-center">
                     <TableGeneral columns={columns} baseFilter={attributeFilter} endpoint={Endpoints.ATTRIBUTES} showRepotGenerator={false} ></TableGeneral>

@@ -7,7 +7,7 @@ import { FormEvent, useState } from "react";
 import { Button } from "primereact/button"
 import Container from "../container";
 import FormGenerator from "../CRUDComponents/formGenerator";
-import { handleForm } from "@/app/hooks/handleForm";
+import { useHandleForm } from "@/app/hooks/useHandleForm";
 import { useNavigationContext } from "@/app/context/navigationContext";
 
 
@@ -59,7 +59,7 @@ export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: num
     /**
      * hook para la creacion y validacion de form, los parametros indican lo siguiente 1. valor accesible, 2. funcion para asignar valor, 3. un objeto a desestructurar, que tiene los fromcontrolls actualizados y el estado, ver ejemplo
      */
-    const [user, form, setUser, validateFormControls] = handleForm(controls);
+    const [user, form, setUser, validateFormControls] = useHandleForm(controls);
 
 
     const handleRegisterUser = (e: FormEvent<HTMLFormElement>) => {
@@ -79,7 +79,7 @@ export default function RegisterUser({onValidSubmit}: {onValidSubmit: (page: num
 
     const getMessagesRegister = () => {
         return [
-            <Button type="button" label="Ya tengo cuenta" onClick={() =>  goToRoute("/pages/auth/login")} text />,
+            <Button key={'account-button'} type="button" label="Ya tengo cuenta" onClick={() =>  goToRoute("/pages/auth/login")} text />,
         ]
     }
 

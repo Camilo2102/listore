@@ -4,7 +4,7 @@ import TitleTables from "@/app/components/titleTables";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import { Messages } from "@/app/constants/messageConstant";
 import { useMainContext } from "@/app/context/mainContext"
-import { useHandleInput } from "@/app/hooks/handleInput";
+import { useHandleInput } from "@/app/hooks/useHandleInput";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 import ColumnMeta from "@/app/interfaces/columnMeta";
@@ -22,13 +22,13 @@ import FormControl from "@/app/models/formModels/formControl";
 import { useSubProductContext } from "@/app/context/subProductContext";
 import Swal from "sweetalert2";
 import { useNavigationContext } from "@/app/context/navigationContext";
-import { useToastContext } from "@/app/context/newToastContext";
+import { useToastContext } from "@/app/context/toastContext";
 import { defaultPaginator } from "@/app/constants/defaultPaginator";
 
 
 
 
-export default function subProductPage() {
+export default function SubProductPage() {
 
     const { product, setProduct } = useProductContext();
 
@@ -92,7 +92,7 @@ export default function subProductPage() {
             validators: [requiered, maxLenght(60)],
             invalid: false,
             message: true,
-            icon: "pi-user"
+            icon: "pi-tags"
         })        
         setControls(generatedControls);
     }
@@ -188,6 +188,7 @@ export default function subProductPage() {
 
     useEffect(() => {
         findData();
+        //eslint-disable-next-line
     }, [])
 
     return (

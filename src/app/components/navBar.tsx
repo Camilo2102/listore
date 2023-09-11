@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'primereact/button';
 import { useRouter } from 'next/navigation';
-import SelectInventory from './inventoryComponents/SelectInventory';
+import SelectInventory from './inventoryComponents/selectInventory';
 
 import './styleNavBar.css';
 

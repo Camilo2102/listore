@@ -2,7 +2,7 @@
 
 import TableGeneral from "@/app/components/tableComponents/tableGeneral";
 import { StatusMap } from "@/app/constants/statusMap";
-import { useHandleInput } from "@/app/hooks/handleInput";
+import { useHandleInput } from "@/app/hooks/useHandleInput";
 import ColumnMeta from "@/app/interfaces/columnMeta";
 import User from "@/app/models/user";
 import { useContext, useEffect, useState } from "react"
@@ -21,7 +21,7 @@ import { useNavigationContext } from "@/app/context/navigationContext";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 import AuthUtil from "@/app/hooks/utils/authUtils";
 
-export default function UserList({ props }: { props: any }) {
+export default function UserList() {
     const {goToRoute}= useNavigationContext();
 
     const [users, setUsers] = useState<any[]>([]);

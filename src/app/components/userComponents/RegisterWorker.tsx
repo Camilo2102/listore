@@ -2,7 +2,7 @@ import User from "@/app/models/user";
 import Container from "../container";
 import FormGenerator from "../CRUDComponents/formGenerator";
 import { FormEvent, useEffect, useState } from "react";
-import { handleForm } from "@/app/hooks/handleForm";
+import { useHandleForm } from "@/app/hooks/useHandleForm";
 import { FormTypes } from "@/app/constants/formTypeConstant";
 import useValidators from "@/app/models/formModels/validators";
 import FormControl from "@/app/models/formModels/formControl";
@@ -17,7 +17,7 @@ import { useNavigationContext } from "@/app/context/navigationContext";
 import AuthUtil from "@/app/hooks/utils/authUtils";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
 
-import { useToastContext } from "@/app/context/newToastContext";
+import { useToastContext } from "@/app/context/toastContext";
 
 
 export default function RegisterWorker({ userSelected }: { userSelected?: User }) {
@@ -102,7 +102,7 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
     /**
      * hook para la creacion y validacion de form, los parametros indican lo siguiente 1. valor accesible, 2. funcion para asignar valor, 3. un objeto a desestructurar, que tiene los fromcontrolls actualizados y el estado, ver ejemplo
      */
-    const [user, form, setUser, validateFormControls] = handleForm(controls);
+    const [user, form, setUser, validateFormControls] = useHandleForm(controls);
 
 
     const handleRegisterWorker = (e: FormEvent<HTMLFormElement>) => {
@@ -178,6 +178,7 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
                 updateWorker();
             }
         }
+        //eslint-disable-next-line
     }, [submited])
 
 

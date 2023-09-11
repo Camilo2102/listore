@@ -5,7 +5,7 @@ import ColumnMeta from "@/app/interfaces/columnMeta";
 import { Button } from "primereact/button";
 import { Messages } from "@/app/constants/messageConstant";
 import { DataTableSelectEvent } from "primereact/datatable";
-import RegisterInventory from "@/app/components/inventoryComponents/RegisterInventory";
+import RegisterInventory from "@/app/components/inventoryComponents/registerInventory";
 import { useMainContext } from "@/app/context/mainContext";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import { Endpoints } from "@/app/constants/endpointsConstants";
@@ -17,9 +17,9 @@ import { useSupplier } from "../../../context/supplierContext";
 import useConfirmationService from "@/app/hooks/services/useConfirmationService";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-import { useToastContext } from "@/app/context/newToastContext";
+import { useToastContext } from "@/app/context/toastContext";
 
-export default function Inventory({ props }: { props: any }) {
+export default function Inventory() {
     const {goToRoute}= useNavigationContext();
     
     const {deleteData } = useCRUDService(Endpoints.INVENTORY);

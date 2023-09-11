@@ -1,6 +1,6 @@
 import { FormTypes } from "@/app/constants/formTypeConstant";
 import { Messages } from "@/app/constants/messageConstant";
-import { handleForm } from "@/app/hooks/handleForm";
+import { useHandleForm } from "@/app/hooks/useHandleForm";
 import FormControl from "@/app/models/formModels/formControl";
 import useValidators from "@/app/models/formModels/validators";
 import { FormEvent, useContext, useEffect, useState } from "react";
@@ -12,7 +12,7 @@ import { patternContext } from "@/app/pages/main/inventory/pattern/patternContex
 import { attributeContext } from "@/app/pages/main/inventory/pattern/attribute/attributeContext";
 import PatternModel from "@/app/models/pattern";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-import { useToastContext } from "@/app/context/newToastContext";
+import { useToastContext } from "@/app/context/toastContext";
 
 export default function RegisterAttribute({visible, setVisible}: {visible: boolean, setVisible: (partialT: Partial<boolean>) => void}){
     const {create} = useCRUDService(Endpoints.ATTRIBUTES);
@@ -32,11 +32,11 @@ export default function RegisterAttribute({visible, setVisible}: {visible: boole
                 validators: [requiered, maxLenght(60), minLenght(3)],
                 invalid: false,
                 message: true,
-                icon: "pi-user"
+                icon: "pi-box"
              },
         ]
     );
-    const [attributeToRegister, form, setAttributeToRegister, validateFormControls] = handleForm(controls);
+    const [attributeToRegister, form, setAttributeToRegister, validateFormControls] = useHandleForm(controls);
     const { pattern, setPattern } = useContext(patternContext);
     const {attribute, setAttribute} = useContext(attributeContext);
 
@@ -66,6 +66,7 @@ export default function RegisterAttribute({visible, setVisible}: {visible: boole
         if(attribute !== undefined && !submited){
             setAttributeToRegister(attribute);
         }
+        //eslint-disable-next-line
     }, [submited])
 
     return (

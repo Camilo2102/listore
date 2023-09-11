@@ -1,6 +1,6 @@
 import { FormTypes } from "@/app/constants/formTypeConstant";
 import { Messages } from "@/app/constants/messageConstant";
-import { handleForm } from "@/app/hooks/handleForm";
+import { useHandleForm } from "@/app/hooks/useHandleForm";
 import FormControl from "@/app/models/formModels/formControl";
 import useValidators from "@/app/models/formModels/validators";
 import { FormEvent, useContext, useEffect, useState } from "react";
@@ -14,9 +14,8 @@ import { Endpoints } from "@/app/constants/endpointsConstants";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import AuthUtil from "@/app/hooks/utils/authUtils";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-import { defaultPaginator } from "@/app/constants/defaultPaginator";
-import { useToastContext } from "@/app/context/newToastContext";
-import { useFormats } from "@/app/constants/formatConstants";
+
+import { useToastContext } from "@/app/context/toastContext";
 
 export default function RegisterSale({ visible, setVisible }: { visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
     const { createAll } = useCRUDService(Endpoints.SALE);
@@ -174,7 +173,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 validators: [requiered, maxLenght(200), minLenght(3)],
                 invalid: false,
                 message: true,
-                icon: "pi-user",
+                icon: "pi-dollar",
                 disabled: true
             },
             {
@@ -186,13 +185,13 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 validators: [requiered, maxLenght(7), minLenght(1)],
                 invalid: false,
                 message: true,
-                icon: "pi-user"
+                icon: "pi-tags"
             },
         ]
     );
 
 
-    const [saleToRegister, form, setSaleToRegister, validateFormControls] = handleForm(controls);
+    const [saleToRegister, form, setSaleToRegister, validateFormControls] = useHandleForm(controls);
 
     const { sale, setSale } = useContext(saleContext);
 
@@ -202,6 +201,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
         if (sale !== undefined && !submited) {
             setSaleToRegister(sale)
         }
+        //eslint-disable-next-line
     }, [submited])
 
     const {formatDetail} = useFormats();

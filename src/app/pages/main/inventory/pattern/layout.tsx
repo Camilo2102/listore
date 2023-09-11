@@ -1,9 +1,9 @@
 "use client"
-import { handleContext } from "@/app/hooks/handleContextHook";
+import { useHandleContext } from "@/app/hooks/useHandleContextHook";
 import { patternContext } from "./patternContext";
 
 export default function PatternLayout({children}: {children: React.ReactNode}){
-    const [pattern, setPattern] = handleContext('pattern');
+    const [pattern, setPattern] = useHandleContext('pattern');
     return(
         <patternContext.Provider value={{pattern, setPattern}}>
             { children }

@@ -7,8 +7,10 @@ import Supplier from "./inventory/supplier/page";
 import { SupplierProvider } from "../../context/supplierContext";
 import { ProductProvider } from "@/app/context/productContext";
 import { SubProductProvider } from "@/app/context/subProductContext";
+import useTokenValidator from "@/app/hooks/useTokenValidation";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
+    useTokenValidator();
     return (
         <MainProvider>
             <SupplierProvider>

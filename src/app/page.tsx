@@ -7,6 +7,7 @@ export default function MainPage () {
     const {goToRoute} = useNavigationContext();
     useEffect(() => {
         goToRoute("/pages/auth/login")
+        //eslint-disable-next-line
     }, [])
 
     return(

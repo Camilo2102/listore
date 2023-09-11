@@ -1,5 +1,5 @@
 "use client"
-import { handleContext } from "@/app/hooks/handleContextHook";
+import { useHandleContext } from "@/app/hooks/useHandleContextHook";
 import { createContext, useContext } from "react";
 
 type subProductContext = {
@@ -15,7 +15,7 @@ export function useSubProductContext() {
 }
 
 export function SubProductProvider({ children }: {children: React.ReactNode}){
-    const [subProduct, setSubProduct] = handleContext('subProduct');
+    const [subProduct, setSubProduct] = useHandleContext('subProduct');
     return(
         <SubProductContext.Provider value={{subProduct: subProduct, setSubProduct: setSubProduct}}>
             {children}

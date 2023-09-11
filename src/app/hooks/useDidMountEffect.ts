@@ -9,6 +9,7 @@ export default function useDidMountEffect (func: (t?: any) => any, deps: any[]) 
       } else {
         didMount.current = true;
       }
+      //eslint-disable-next-line
     }, deps);
   };
   

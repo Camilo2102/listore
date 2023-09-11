@@ -1,6 +1,6 @@
 "use client";
 
-import { handleContext } from "@/app/hooks/handleContextHook";
+import { useHandleContext } from "@/app/hooks/useHandleContextHook";
 import { createContext, useContext } from "react";
 
 type mainContext = {
@@ -16,7 +16,7 @@ export function useMainContext() {
 }
 
 export function MainProvider({ children }: {children: React.ReactNode}) {
-    const [mainInventory, setMainInventory] = handleContext("inventory");
+    const [mainInventory, setMainInventory] = useHandleContext("inventory");
     
     return(
         <mainContext.Provider value={{mainInventory, setMainInventory}}>

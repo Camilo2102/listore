@@ -52,6 +52,7 @@ export const NavigationProvider = ({ children }: { children: React.ReactNode }) 
     useEffect(() => {
       getVersion();
       stopLoading();
+        //eslint-disable-next-line
     }, [pathname, params])
   
     return (<NavigationContext.Provider value={{goToRoute, version}}>

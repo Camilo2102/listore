@@ -42,6 +42,7 @@ export default function InputHelper({ formControl, value, onValueChange, icon }:
             setShowText(res.name)
             onValueChange({ [formControl.field]: id, ["name" + formControl.field]: name }, formControl.fieldDependency);
         })
+    //eslint-disable-next-line
     }, [])
 
     return (

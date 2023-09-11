@@ -18,6 +18,7 @@ import AuthUtil from "@/app/hooks/utils/authUtils";
 export default function SpentPage(){
     const [visible, setVisible] = useState<boolean>(false);
     const {getCredentials} = AuthUtil();
+    const {formatDate} = useFormats();
 
     const { setReloadData } = useTableContext();
     const spentFilter: FilterMeta = {
@@ -55,7 +56,7 @@ export default function SpentPage(){
     [visible])
 
     const customMap = (spents: any) =>{
-        return {...spents, spentDate: useFormats.formatDate(spents.spentDate)}
+        return {...spents, spentDate: formatDate(spents.spentDate)}
     }
 
     return(
@@ -65,7 +66,7 @@ export default function SpentPage(){
             <div className="grid" style={{ width: '90%' }}>
                 <TitleTables title="Gastos"></TitleTables>
                 <div className="col-12 flex justify-content-start">
-                    <Button onClick={handleNewSpent} label="Nuevo" icon="pi pi-user-plus"></Button>
+                    <Button onClick={handleNewSpent} label="Nuevo" icon="pi pi-plus"></Button>
                 </div>
                 <div className="col-12 flex justify-content-center">
                     <TableGeneral columns={columns} baseFilter={spentFilter} endpoint={Endpoints.SPENT}  customMap={customMap}></TableGeneral>

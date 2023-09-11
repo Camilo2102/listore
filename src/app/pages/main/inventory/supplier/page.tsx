@@ -6,7 +6,7 @@ import { Messages } from "@/app/constants/messageConstant";
 
 import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableComponents/tableGeneral";
-import RegisterSupplier from "@/app/components/supplierComponents/RegisterSupplier";
+import RegisterSupplier from "@/app/components/supplierComponents/registerSupplier";
 
 import { useMainContext } from "../../../../context/mainContext";
 import { Endpoints } from "@/app/constants/endpointsConstants";
@@ -19,7 +19,7 @@ import { DataTableSelectEvent } from "primereact/datatable";
 import useConfirmationService from "@/app/hooks/services/useConfirmationService";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-import { useToastContext } from "@/app/context/newToastContext";
+import { useToastContext } from "@/app/context/toastContext";
 
 
 export default function SupplierPage(){

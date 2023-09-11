@@ -1,6 +1,6 @@
 import { FormTypes } from "@/app/constants/formTypeConstant";
 import { Messages } from "@/app/constants/messageConstant";
-import { handleForm } from "@/app/hooks/handleForm";
+import { useHandleForm } from "@/app/hooks/useHandleForm";
 import FormControl from "@/app/models/formModels/formControl";
 import useValidators from "@/app/models/formModels/validators";
 import { FormEvent, useContext, useEffect, useState } from "react";
@@ -13,7 +13,7 @@ import { useMainContext } from "@/app/context/mainContext";
 import { patternContext } from "@/app/pages/main/inventory/pattern/patternContext";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
 
-import { useToastContext } from "@/app/context/newToastContext";
+import { useToastContext } from "@/app/context/toastContext";
 
 export default function RegisterPattern({visible, setVisible}: {visible: boolean, setVisible: (partialT: Partial<boolean>) => void}){
     const {create} = useCRUDService(Endpoints.PATTERN);
@@ -31,11 +31,11 @@ export default function RegisterPattern({visible, setVisible}: {visible: boolean
                 validators: [requiered, maxLenght(60), minLenght(3)],
                 invalid: false,
                 message: true,
-                icon: "pi-user"
+                icon: "pi-box"
              },
         ]
     );
-    const [patternToRegister, form, setPatternToRegister, validateFormControls] = handleForm(controls);
+    const [patternToRegister, form, setPatternToRegister, validateFormControls] = useHandleForm(controls);
     const { mainInventory, setMainInventory } = useMainContext();
     const {pattern, setPattern} = useContext(patternContext);
 
@@ -65,6 +65,7 @@ export default function RegisterPattern({visible, setVisible}: {visible: boolean
         if(pattern !== undefined && !submited){
             setPatternToRegister(pattern)
         }
+        //eslint-disable-next-line
     }, [submited])
 
     return (
