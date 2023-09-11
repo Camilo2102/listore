@@ -16,6 +16,8 @@ import AuthUtil from "@/app/hooks/utils/authUtils";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
 
 import { useToastContext } from "@/app/context/toastContext";
+import { defaultPaginator } from "@/app/constants/defaultPaginator";
+import { useFormats } from "@/app/constants/formatConstants";
 
 export default function RegisterSale({ visible, setVisible }: { visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
     const { createAll } = useCRUDService(Endpoints.SALE);
@@ -155,7 +157,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                              
                             generatedColumns.push(
                             { field: "amount", header: "Cantidad" });
-                            console.log(generatedColumns);
+                      
                             resolve(generatedColumns);
                         } catch (error) {
                             reject(new Error())
@@ -261,6 +263,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
             delete sale.inventory;
             delete sale.nameInventory;
             delete sale.nameProduct;
+            delete sale.details;
 
 
             sale.product = {
