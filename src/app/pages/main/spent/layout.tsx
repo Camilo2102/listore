@@ -1,9 +1,9 @@
 "use client"
-import { handleContext } from "@/app/hooks/handleContextHook";
+import { useHandleContext } from "@/app/hooks/useHandleContextHook";
 import { spentContext } from "./spentContext";
 
 export default function SpentLayout({children}: {children: React.ReactNode}){
-    const [spent, setSpent] = handleContext('spent');
+    const [spent, setSpent] = useHandleContext('spent');
     return(
         <spentContext.Provider value={{spent, setSpent}}>
             { children }

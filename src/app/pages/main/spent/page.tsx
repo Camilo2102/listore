@@ -19,6 +19,8 @@ export default function SpentPage(){
     const [visible, setVisible] = useState<boolean>(false);
     const {getCredentials} = AuthUtil();
 
+    const {formatDate} = useFormats();
+
     const { setReloadData } = useTableContext();
     const spentFilter: FilterMeta = {
         required: {
@@ -55,7 +57,7 @@ export default function SpentPage(){
     [visible])
 
     const customMap = (spents: any) =>{
-        return {...spents, spentDate: useFormats.formatDate(spents.spentDate)}
+        return {...spents, spentDate: formatDate(spents.spentDate)}
     }
 
     return(

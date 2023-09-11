@@ -2,7 +2,7 @@ import { Button } from "primereact/button"
 import { FormEvent, useState } from "react";
 import FormControl from "@/app/models/formModels/formControl";
 import useValidators from "@/app/models/formModels/validators";
-import { handleForm } from "../../hooks/handleForm";
+import { useHandleForm } from "../../hooks/useHandleForm";
 import Container from "../container";
 import FormGenerator from "../CRUDComponents/formGenerator";
 import { FormTypes } from "../../constants/formTypeConstant";
@@ -57,7 +57,7 @@ export default function LoginComponent() {
     /**
      * hook para la creacion y validacion de form, los parametros indican lo siguiente 1. valor accesible, 2. funcion para asignar valor, 3. un objeto a desestructurar, que tiene los fromcontrolls actualizados y el estado, ver ejemplo
      */
-    const [credential, form, setCredential, validateFormControls] = handleForm(controls);
+    const [credential, form, setCredential, validateFormControls] = useHandleForm(controls);
 
     const handleLogin = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -81,13 +81,13 @@ export default function LoginComponent() {
 
     const getMessages = () => {
         return [
-            <Button type="button" label="Olvidaste tu contraseña?" onClick={() => setShowRecoveryDialog(true)} text />,
+            <Button key={'forgotten-password-button'} type="button" label="Olvidaste tu contraseña?" onClick={() => setShowRecoveryDialog(true)} text />,
         ]
     }
 
     const getMessagesRegister = () => {
         return [
-            <Button type="button" label="Crear nueva cuenta" onClick={() =>  goToRoute("/pages/auth/register")} text />,
+            <Button key={'new-account-button'} type="button" label="Crear nueva cuenta" onClick={() =>  goToRoute("/pages/auth/register")} text />,
         ]
     }
 

@@ -3,7 +3,7 @@ import PopUp from "@/app/components/popUp";
 import FormControl from "@/app/models/formModels/formControl";
 import { FormTypes } from "@/app/constants/formTypeConstant";
 import useValidators from "@/app/models/formModels/validators";
-import { handleForm } from "@/app/hooks/handleForm";
+import { useHandleForm } from "@/app/hooks/useHandleForm";
 import FormGenerator from "@/app/components/CRUDComponents/formGenerator";
 import InventoryModel from "@/app/models/inventory";
 import { Messages } from "@/app/constants/messageConstant";
@@ -65,7 +65,7 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
       ]
    );
 
-   const [inventoryToRegister, form, setInventoryToRegister, validateFormControls] = handleForm(controls);
+   const [inventoryToRegister, form, setInventoryToRegister, validateFormControls] = useHandleForm(controls);
 
    const [submited, setSubmited] = useState<boolean>(false);
    const { mainInventory, setMainInventory } = useMainContext();
@@ -104,6 +104,7 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
          setMainInventory(mainInventory);
       }
 
+      //eslint-disable-next-line
    }, [submited]);
 
    return (

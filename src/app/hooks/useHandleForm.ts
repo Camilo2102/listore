@@ -1,10 +1,10 @@
 import Form from "@/app/models/formModels/form";
-import { useHandleInput } from "./handleInput";
+import { useHandleInput } from "./useHandleInput";
 import FormControl from "@/app/models/formModels/formControl";
 import dependence from "../interfaces/dependence";
 
 
-export const handleForm = (formControls: FormControl[]) : [any, Form, (partialT: Partial<any>, dependency?: dependence[]) => void,() => [FormControl[], boolean]
+export const useHandleForm = (formControls: FormControl[]) : [any, Form, (partialT: Partial<any>, dependency?: dependence[]) => void,() => [FormControl[], boolean]
 ] => {
     const form = new Form(formControls);
     const [value, setValue] = useHandleInput<any>(form.getFormControlValues());

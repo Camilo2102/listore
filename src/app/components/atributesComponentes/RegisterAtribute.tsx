@@ -1,6 +1,6 @@
 import { FormTypes } from "@/app/constants/formTypeConstant";
 import { Messages } from "@/app/constants/messageConstant";
-import { handleForm } from "@/app/hooks/handleForm";
+import { useHandleForm } from "@/app/hooks/useHandleForm";
 import FormControl from "@/app/models/formModels/formControl";
 import useValidators from "@/app/models/formModels/validators";
 import { FormEvent, useContext, useEffect, useState } from "react";
@@ -36,7 +36,7 @@ export default function RegisterAttribute({visible, setVisible}: {visible: boole
              },
         ]
     );
-    const [attributeToRegister, form, setAttributeToRegister, validateFormControls] = handleForm(controls);
+    const [attributeToRegister, form, setAttributeToRegister, validateFormControls] = useHandleForm(controls);
     const { pattern, setPattern } = useContext(patternContext);
     const {attribute, setAttribute} = useContext(attributeContext);
 
@@ -66,6 +66,7 @@ export default function RegisterAttribute({visible, setVisible}: {visible: boole
         if(attribute !== undefined && !submited){
             setAttributeToRegister(attribute);
         }
+        //eslint-disable-next-line
     }, [submited])
 
     return (

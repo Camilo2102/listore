@@ -1,6 +1,6 @@
 "use client";
 
-import { handleContext } from "@/app/hooks/handleContextHook";
+import { useHandleContext } from "@/app/hooks/useHandleContextHook";
 import { createContext, useContext} from "react";
 
 type context = {
@@ -16,7 +16,7 @@ export function useAuthContext() {
 }
 
 export function AuthProvider({ children }: {children: React.ReactNode}) {
-    const [authorized, setAuthorized] = handleContext("authorized");
+    const [authorized, setAuthorized] = useHandleContext("authorized");
     
     return(
         <AuthContext.Provider value={{authorized, setAuthorized}}>

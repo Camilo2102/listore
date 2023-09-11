@@ -4,7 +4,7 @@ import TitleTables from "@/app/components/titleTables";
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import { Messages } from "@/app/constants/messageConstant";
 import { useMainContext } from "@/app/context/mainContext"
-import { useHandleInput } from "@/app/hooks/handleInput";
+import { useHandleInput } from "@/app/hooks/useHandleInput";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 import ColumnMeta from "@/app/interfaces/columnMeta";
@@ -28,7 +28,7 @@ import { defaultPaginator } from "@/app/constants/defaultPaginator";
 
 
 
-export default function subProductPage() {
+export default function SubProductPage() {
 
     const { product, setProduct } = useProductContext();
 
@@ -188,6 +188,7 @@ export default function subProductPage() {
 
     useEffect(() => {
         findData();
+        //eslint-disable-next-line
     }, [])
 
     return (

@@ -1,6 +1,6 @@
 import { FormTypes } from "@/app/constants/formTypeConstant";
 import { Messages } from "@/app/constants/messageConstant";
-import { handleForm } from "@/app/hooks/handleForm";
+import { useHandleForm } from "@/app/hooks/useHandleForm";
 import FormControl from "@/app/models/formModels/formControl";
 import useValidators from "@/app/models/formModels/validators";
 import { FormEvent, useContext, useEffect, useState } from "react";
@@ -118,7 +118,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
     );
 
 
-    const [saleToRegister, form, setSaleToRegister, validateFormControls] = handleForm(controls);
+    const [saleToRegister, form, setSaleToRegister, validateFormControls] = useHandleForm(controls);
 
     const { sale, setSale } = useContext(saleContext);
 
@@ -128,6 +128,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
         if (sale !== undefined && !submited) {
             setSaleToRegister(sale)
         }
+        //eslint-disable-next-line
     }, [submited])
 
 

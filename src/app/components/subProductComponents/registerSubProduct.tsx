@@ -1,12 +1,12 @@
 import { Endpoints } from "@/app/constants/endpointsConstants";
 import { useMainContext } from "@/app/context/mainContext";
-import { useHandleInput } from "@/app/hooks/handleInput";
+import { useHandleInput } from "@/app/hooks/useHandleInput";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import Paginator from "@/app/interfaces/paginator";
 import { Dispatch, FormEvent, SetStateAction, useEffect } from "react";
 import PopUp from "../popUp";
 import FormGenerator from "../CRUDComponents/formGenerator";
-import { handleForm } from "@/app/hooks/handleForm";
+import { useHandleForm } from "@/app/hooks/useHandleForm";
 import FormControl from "@/app/models/formModels/formControl";
 import { useProductContext } from "@/app/context/productContext";
 import { useSubProductContext } from "@/app/context/subProductContext";
@@ -24,7 +24,7 @@ export default function RegisterSubProduct(props: registerSubProductProps) {
 
     const { product } = useProductContext()
 
-    const [subProductToRegister, form, setSubProductToRegister, validateFormControls] = handleForm(props.controls);
+    const [subProductToRegister, form, setSubProductToRegister, validateFormControls] = useHandleForm(props.controls);
 
     const handleProduct = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -75,6 +75,7 @@ export default function RegisterSubProduct(props: registerSubProductProps) {
             delete subProduct.product
             setSubProductToRegister(subProduct)
         }
+        //eslint-disable-next-line
     }, [subProduct])
 
 

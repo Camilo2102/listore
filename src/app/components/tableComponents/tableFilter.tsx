@@ -4,8 +4,8 @@ import { Button } from "primereact/button";
 import useGeneratedForm from "@/app/hooks/useFilterSelect";
 import FilterMeta from "@/app/interfaces/filterMeta";
 import FormGenerator from "../CRUDComponents/formGenerator";
-import { useHandleInput } from "@/app/hooks/handleInput";
-import { handleForm } from "@/app/hooks/handleForm";
+import { useHandleInput } from "@/app/hooks/useHandleInput";
+import { useHandleForm } from "@/app/hooks/useHandleForm";
 import useDeepCopy from "@/app/hooks/useDeepCopy";
 import { Chip } from 'primereact/chip';
 import DateUtil from "@/app/hooks/utils/dateUtils";
@@ -51,7 +51,7 @@ export default function TableFilter({filter, setFilter}: {filter: FilterMeta, se
         setApplyFilters(true);
     }
 
-    const [tempFilter, form, setTempFilter, validateFormControls] = handleForm(generatedControls);
+    const [tempFilter, form, setTempFilter, validateFormControls] = useHandleForm(generatedControls);
 
     useEffect(() => {
         if(applyFilters){
@@ -68,6 +68,7 @@ export default function TableFilter({filter, setFilter}: {filter: FilterMeta, se
             (overlayRef.current as any).toggle("");
             setApplyFilters(false);
         }
+        //eslint-disable-next-line
     },[applyFilters])
 
     return (

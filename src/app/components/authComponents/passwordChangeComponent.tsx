@@ -1,5 +1,5 @@
 "use client";
-import { handleForm } from "@/app/hooks/handleForm";
+import { useHandleForm } from "@/app/hooks/useHandleForm";
 import { FormEvent, useEffect, useState } from "react";
 import Container from "../container";
 import { FormTypes } from "@/app/constants/formTypeConstant";
@@ -78,7 +78,7 @@ export default function PasswordChangeComponent() {
     /**
      * hook para la creacion y validacion de form, los parametros indican lo siguiente 1. valor accesible, 2. funcion para asignar valor, 3. un objeto a desestructurar, que tiene los fromcontrolls actualizados y el estado, ver ejemplo
      */
-    const [passwordForm, form, setPasswordForm, validateFormControls] = handleForm(controls);
+    const [passwordForm, form, setPasswordForm, validateFormControls] = useHandleForm(controls);
 
     const handleLogin = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -121,6 +121,7 @@ export default function PasswordChangeComponent() {
             setSubmited(false);
 
         }
+        //eslint-disable-next-line
     }, [submited]);
 
     return (

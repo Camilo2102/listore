@@ -1,6 +1,6 @@
 import { FormTypes } from "@/app/constants/formTypeConstant";
 import { Messages } from "@/app/constants/messageConstant";
-import { handleForm } from "@/app/hooks/handleForm";
+import { useHandleForm } from "@/app/hooks/useHandleForm";
 import FormControl from "@/app/models/formModels/formControl";
 import useValidators from "@/app/models/formModels/validators";
 import { FormEvent, useContext, useEffect, useState } from "react";
@@ -16,7 +16,7 @@ import AuthUtil from "@/app/hooks/utils/authUtils";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
 
 import { useToastContext } from "@/app/context/toastContext";
-import { useHandleInput } from "@/app/hooks/handleInput";
+import { useHandleInput } from "@/app/hooks/useHandleInput";
 import Paginator from "@/app/interfaces/paginator";
 import { defaultPaginator } from "@/app/constants/defaultPaginator";
 import { useFormats } from "@/app/constants/formatConstants";
@@ -196,7 +196,7 @@ export default function RegisterBuy({ visible, setVisible }: { visible: boolean,
 
         ]
     );
-    const [buyToRegister, form, setBuyToRegister, validateFormControls] = handleForm(controls);
+    const [buyToRegister, form, setBuyToRegister, validateFormControls] = useHandleForm(controls);
     const { buy, setBuy } = useContext(buyContext);
 
     const [submited, setSubmited] = useState<boolean>(false);
@@ -205,6 +205,7 @@ export default function RegisterBuy({ visible, setVisible }: { visible: boolean,
         if (buy !== undefined && !submited) {
             setBuyToRegister(buy)
         }
+        //eslint-disable-next-line
     }, [submited])
 
 

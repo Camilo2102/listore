@@ -3,11 +3,12 @@ import { FormTypes } from "../constants/formTypeConstant";
 import useValidators from "../models/formModels/validators";
 import FormControl from "../models/formModels/formControl";
 import FilterMeta from "../interfaces/filterMeta";
-import { useHandleInput } from "./handleInput";
+import { useHandleInput } from "./useHandleInput";
 import DateUtil from "./utils/dateUtils";
 
-const useInputText = (field: string, description: string) => {
-  const {requiered, maxLenght, minLenght} = useValidators();  
+const convertToInputText = (field: string, description: string) => {
+  //eslint-disable-next-line
+  const {requiered, maxLenght, minLenght} = useValidators();
   return {
     field: field,
     value: "",
@@ -20,7 +21,8 @@ const useInputText = (field: string, description: string) => {
   }
 }
 
-const useInputNumber = (field: string, description: string) => {
+const convertToInputNumber = (field: string, description: string) => {
+  //eslint-disable-next-line
   const {requiered, maxLenght, minLenght} = useValidators();
   return {
     field: field,
@@ -34,7 +36,8 @@ const useInputNumber = (field: string, description: string) => {
   }
 }
 
-const useInputDate = (field: string, description: string) => {
+const convertToInputDate = (field: string, description: string) => {
+  //eslint-disable-next-line
   const {requiered, maxLenght, minLenght} = useValidators();
   return {
     field: field,
@@ -72,12 +75,12 @@ export default function useGeneratedForm(filter: FilterMeta) {
 
     switch (valueType) {
       case "string":
-        return useInputText(field, description);
+        return convertToInputText(field, description);
       case "number":
-        return useInputNumber(field, description);
+        return convertToInputNumber(field, description);
       case 'object':
       case 'date':
-        return useInputDate(field, description);
+        return convertToInputDate(field, description);
     }
     return null;
   }

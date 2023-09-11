@@ -1,6 +1,6 @@
 import { FormTypes } from "@/app/constants/formTypeConstant";
 import { Messages } from "@/app/constants/messageConstant";
-import { handleForm } from "@/app/hooks/handleForm";
+import { useHandleForm } from "@/app/hooks/useHandleForm";
 import FormControl from "@/app/models/formModels/formControl";
 import useValidators from "@/app/models/formModels/validators";
 import { FormEvent, useContext, useEffect, useState } from "react";
@@ -51,7 +51,7 @@ export default function RegisterSpent({visible, setVisible}: {visible: boolean, 
              },
         ]
     );
-    const [spentToRegister, form, setSpentToRegister, validateFormControls] = handleForm(controls);
+    const [spentToRegister, form, setSpentToRegister, validateFormControls] = useHandleForm(controls);
     const {spent, setSpent} = useContext(spentContext);
 
     const [submited, setSubmited] = useState<boolean>(false);
@@ -62,6 +62,7 @@ export default function RegisterSpent({visible, setVisible}: {visible: boolean, 
         if(spent !== undefined && !submited){
             setSpentToRegister(spent)
         }
+        //eslint-disable-next-line
     }, [submited]);
 
     const columns: ColumnMeta[] = [

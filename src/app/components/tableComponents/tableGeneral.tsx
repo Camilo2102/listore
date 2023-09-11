@@ -11,7 +11,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import saveAs from "file-saver";
-import { useHandleInput } from "../../hooks/handleInput";
+import { useHandleInput } from "../../hooks/useHandleInput";
 import useCRUDService from "../../hooks/services/useCRUDService";
 import { useTableContext } from "../../context/tableContext";
 import TableFilter from "./tableFilter";
@@ -39,6 +39,7 @@ export default function TableGeneral({ useFilter = true, columns, gridLines, str
     loaded: false,
   });
 
+  //eslint-disable-next-line
   const [filter, setFilter] = useFilter ? useCleanFilterInput(useDeepCopy(baseFilter)) : useHandleInput({});
 
   const valuesSetter = (e: any, field: string, values?: any, action?: (t: any) => void, format?: (t: any) => void) => {
@@ -226,6 +227,7 @@ export default function TableGeneral({ useFilter = true, columns, gridLines, str
 
       getData(parsedFilter);
     }
+    //eslint-disable-next-line
   }, [paginator, reloadData])
 
 

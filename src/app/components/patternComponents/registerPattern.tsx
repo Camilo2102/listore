@@ -1,6 +1,6 @@
 import { FormTypes } from "@/app/constants/formTypeConstant";
 import { Messages } from "@/app/constants/messageConstant";
-import { handleForm } from "@/app/hooks/handleForm";
+import { useHandleForm } from "@/app/hooks/useHandleForm";
 import FormControl from "@/app/models/formModels/formControl";
 import useValidators from "@/app/models/formModels/validators";
 import { FormEvent, useContext, useEffect, useState } from "react";
@@ -35,7 +35,7 @@ export default function RegisterPattern({visible, setVisible}: {visible: boolean
              },
         ]
     );
-    const [patternToRegister, form, setPatternToRegister, validateFormControls] = handleForm(controls);
+    const [patternToRegister, form, setPatternToRegister, validateFormControls] = useHandleForm(controls);
     const { mainInventory, setMainInventory } = useMainContext();
     const {pattern, setPattern} = useContext(patternContext);
 
@@ -65,6 +65,7 @@ export default function RegisterPattern({visible, setVisible}: {visible: boolean
         if(pattern !== undefined && !submited){
             setPatternToRegister(pattern)
         }
+        //eslint-disable-next-line
     }, [submited])
 
     return (

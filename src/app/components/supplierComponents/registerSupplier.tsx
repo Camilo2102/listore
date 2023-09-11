@@ -3,7 +3,7 @@ import { FormEvent, useEffect, useState } from "react";
 import FormControl from "@/app/models/formModels/formControl";
 import { FormTypes } from "@/app/constants/formTypeConstant";
 import useValidators from "@/app/models/formModels/validators";
-import { handleForm } from "@/app/hooks/handleForm";
+import { useHandleForm } from "@/app/hooks/useHandleForm";
 import FormGenerator from "../CRUDComponents/formGenerator";
 import InventoryModel from "@/app/models/inventory";
 import { Messages } from "@/app/constants/messageConstant";
@@ -81,7 +81,7 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
         ]
     );
 
-    const [supplierToRegister, form, setSupplierToRegister, validateFormControls] = handleForm(controls);
+    const [supplierToRegister, form, setSupplierToRegister, validateFormControls] = useHandleForm(controls);
     const { mainInventory, setMainInventory } = useMainContext();
     const {supplier, setSupplier} = useSupplier();
     
@@ -114,6 +114,7 @@ export default function RegisterSupplier({visible, setVisible}:{visible:boolean,
         if(supplier !== undefined && !submited){
             setSupplierToRegister(supplier)
         }
+        //eslint-disable-next-line
     }, [submited])
 
 

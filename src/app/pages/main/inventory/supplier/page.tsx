@@ -6,7 +6,7 @@ import { Messages } from "@/app/constants/messageConstant";
 
 import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableComponents/tableGeneral";
-import RegisterSupplier from "@/app/components/supplierComponents/RegisterSupplier";
+import RegisterSupplier from "@/app/components/supplierComponents/registerSupplier";
 
 import { useMainContext } from "../../../../context/mainContext";
 import { Endpoints } from "@/app/constants/endpointsConstants";

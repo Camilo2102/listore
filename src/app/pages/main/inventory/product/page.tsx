@@ -5,7 +5,7 @@ import ColumnMeta from "@/app/interfaces/columnMeta";
 import { Messages } from "@/app/constants/messageConstant";
 import { Button } from "primereact/button";
 import TableGeneral from "@/app/components/tableComponents/tableGeneral";
-import RegisterProduct from "@/app/components/productComponents/RegisterProduct";
+import RegisterProduct from "@/app/components/productComponents/registerProduct";
 import { useProductContext } from "../../../../context/productContext";
 import { DataTableSelectEvent } from "primereact/datatable";
 import { useMainContext } from "../../../../context/mainContext";

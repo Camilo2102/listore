@@ -1,4 +1,4 @@
-import { handleContext } from "@/app/hooks/handleContextHook";
+import { useHandleContext } from "@/app/hooks/useHandleContextHook";
 import { createContext, useContext } from "react";
 
 type supplierContext = {
@@ -15,7 +15,7 @@ export function useSupplier() {
 
 
 export function SupplierProvider({ children }: {children: React.ReactNode}) {
-    const [supplier, setSupplier] = handleContext('supplier');
+    const [supplier, setSupplier] = useHandleContext('supplier');
 
     return(
         <SupplierContext.Provider value={{supplier, setSupplier}}>

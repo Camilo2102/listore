@@ -2,7 +2,7 @@
 
 import RegisterCompany from "@/app/components/authComponents/registerCompany";
 import RegisterUser from "@/app/components/authComponents/registerUser";
-import { useHandleInput } from "@/app/hooks/handleInput";
+import { useHandleInput } from "@/app/hooks/useHandleInput";
 import Company from "@/app/models/company";
 import CredentialModel from "@/app/models/credential";
 import User from "@/app/models/user";
@@ -12,6 +12,7 @@ import useAuthService from "@/app/hooks/services/useAuthService";
 import { useNavigationContext } from "@/app/context/navigationContext";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
 import { useToastContext } from "@/app/context/toastContext";
+import Image from "next/image";
 
 
 export default function Register() {
@@ -45,8 +46,8 @@ export default function Register() {
                     <div className='lg:col-6 md:col-6 col-12 lg:p-8'>
                         <RegisterUser onValidSubmit={(part, value) => handlePartialSumbit(part, value)}></RegisterUser>
                     </div>
+                    <Image src='/registerUser.svg' alt='register' style={{ maxWidth: '750px', width: '80%' }}></Image>
                     <div className="lg:col-6 md:col-6 hidden md:flex justify-content-center align-items-center ">
-                        <img src='/registerUser.svg' alt='register' width={'80%'} style={{ maxWidth: '750px' }}></img>
                     </div>
                 </div>
             )
@@ -54,7 +55,7 @@ export default function Register() {
             return (
                 <div className="flex justify-content-center align-items-center" style={{ height: '100vh', width: '100vw' }}>
                     <div className="lg:col-6 md:col-6 hidden md:flex justify-content-center align-items-center">
-                        <img src='/registerCompany.svg' alt='register' width={'80%'} style={{ maxWidth: '750px' }}></img>
+                        <Image src='/registerCompany.svg' alt='register' style={{ maxWidth: '750px', width: '80%' }}></Image>
                     </div>
                     <div className='lg:col-6 md:col-6 col-12 lg:p-8'>
                         <RegisterCompany onValidSubmit={(value: any) => handleRegister(value)}></RegisterCompany>
@@ -76,7 +77,9 @@ export default function Register() {
                 }
             )
             setSubmited(false)
-        } 
+        }
+
+        //eslint-disable-next-line
     }, [part, submited])
 
 

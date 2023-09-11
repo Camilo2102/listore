@@ -29,7 +29,7 @@ export function useFormats() {
         return (
             <ul style={{padding: '0', listStyle: 'inside'}}>
                 {Object.keys(values).map((key: any) => (
-                    <li>
+                    <li key={'prop-name-' + key}>
                         {key}: {values[key]}
                     </li>
                 )
