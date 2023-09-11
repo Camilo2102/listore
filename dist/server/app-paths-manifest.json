@@ -1,0 +1,18 @@
+{
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js",
+  "/pages/auth/login/page": "app/pages/auth/login/page.js",
+  "/pages/auth/register/page": "app/pages/auth/register/page.js",
+  "/pages/auth/passwordChange/page": "app/pages/auth/passwordChange/page.js",
+  "/pages/main/inventory/page": "app/pages/main/inventory/page.js",
+  "/pages/main/buy/page": "app/pages/main/buy/page.js",
+  "/pages/main/spent/page": "app/pages/main/spent/page.js",
+  "/pages/main/sale/page": "app/pages/main/sale/page.js",
+  "/pages/main/user/page": "app/pages/main/user/page.js",
+  "/pages/main/inventory/product/page": "app/pages/main/inventory/product/page.js",
+  "/pages/main/inventory/supplier/page": "app/pages/main/inventory/supplier/page.js",
+  "/pages/main/user/mainteance/page": "app/pages/main/user/mainteance/page.js",
+  "/pages/main/inventory/pattern/page": "app/pages/main/inventory/pattern/page.js",
+  "/pages/main/inventory/product/subProduct/page": "app/pages/main/inventory/product/subProduct/page.js",
+  "/pages/main/inventory/pattern/attribute/page": "app/pages/main/inventory/pattern/attribute/page.js"
+}
