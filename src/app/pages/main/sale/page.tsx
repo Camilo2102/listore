@@ -25,7 +25,8 @@ export default function SalePage() {
     const {getCredentials} = AuthUtil();
     const {getValue} = StorageService();
 
-    const {formatDate, formatCurrency} = useFormats();
+    const {formatDate, formatCurrency, formatDetail} = useFormats();
+    
 
     const role = getValue("role");
 
@@ -48,6 +49,7 @@ export default function SalePage() {
     const columns: ColumnMeta[] = [
         { field: 'saleDate', header: 'Fecha de venta', format: formatDate },
         { field: 'product', header: 'Producto' },
+        { field: "details", header: 'Detalle', format: formatDetail },
         { field: 'unitaryValue', header: 'Valor unitario', format: formatCurrency },
         { field: 'amount', header: 'Cantidad' },
         { field: 'totalValue', header: 'Valor total', format: formatCurrency },

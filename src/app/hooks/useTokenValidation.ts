@@ -5,6 +5,7 @@ import { useNavigationContext } from "../context/navigationContext";
 import useAuthService from "./services/useAuthService";
 import ResErrorHandler from "./utils/resErrorHandler";
 import StorageService from "./services/storageService";
+import useDidMountEffect from "./useDidMountEffect";
 
 export default function useTokenValidator() {
     const {goToRoute} = useNavigationContext();
@@ -36,7 +37,7 @@ export default function useTokenValidator() {
         return true;
     }
 
-    useEffect(() => {
+    useDidMountEffect(() => {
         if(!validateStatus())return;
         validateTokenStatus();
         const intervalId = setInterval(validateToken, 30000);

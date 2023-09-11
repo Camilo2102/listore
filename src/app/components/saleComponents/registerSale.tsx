@@ -14,13 +14,18 @@ import { Endpoints } from "@/app/constants/endpointsConstants";
 import useCRUDService from "@/app/hooks/services/useCRUDService";
 import AuthUtil from "@/app/hooks/utils/authUtils";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
-
+import { defaultPaginator } from "@/app/constants/defaultPaginator";
 import { useToastContext } from "@/app/context/newToastContext";
+import { useFormats } from "@/app/constants/formatConstants";
 
 export default function RegisterSale({ visible, setVisible }: { visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
     const { createAll } = useCRUDService(Endpoints.SALE);
 
     const [sales, setSales] = useState<any[]>([]);
+
+    const pattern = useCRUDService(Endpoints.PATTERN);
+    const attributes = useCRUDService(Endpoints.ATTRIBUTES);
+
 
     const [newSaleVisible, setNewSaleVisible] = useState(false);
 
@@ -60,7 +65,8 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                     }
                 },
                 fieldDependency: [
-                    {field: "product", value: "id", toInput: true, enable: true}
+                    {field: "product", value: "id", toInput: true, enable: true},
+                    { field: "kindOfProduct", value: "id", toInput: false, enable: false },
                 ]
             },
             {
@@ -80,6 +86,7 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 service: Endpoints.PRODUCT,
                 disabled: true,
                 fieldDependency: [
+                    { field: "kindOfProduct", value: "id", toInput: true, enable: true },
                     {field: "unitaryValue", value: "unitaryValue", toInput: false, enable: false}
                 ],
                 filter: {
@@ -89,6 +96,73 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                     },
                     values: [
                     ]                    
+                },
+            },
+            {
+                field: "kindOfProduct",
+                value: "",
+                description: "Sub-Producto",
+                colSize: 6,
+                type: FormTypes.INPUTHELPER,
+                validators: [requiered, maxLenght(200), minLenght(3)],
+                invalid: false,
+                message: true,
+                columns: [
+                    { field: 'amount', header: 'Cantidad' },
+                ],
+                icon: "pi-user",
+                service: Endpoints.KINDOFPRODUCT,
+                disabled: true,
+                filter: {
+                    required: {
+                    },
+                    values: [
+                    ]
+                },
+                customMap: (subProduct: any) => {
+                    
+                    subProduct.characteristics.map((res: any) => {
+                        subProduct[res.name] = res.value;
+                    })
+
+                    subProduct.name = subProduct.product.name; 
+                    return subProduct;
+                },
+                generateCustomColumns: (data: any) => {
+                    return new Promise(async (resolve, reject) => {
+                        try {
+
+                            const patterFind = await pattern.getAllByFilter(true, defaultPaginator, {
+                                inventory: {
+                                    id: data.inventory.id
+                                },
+                            })
+
+                            const attributesFind = await attributes.getAllByFilter(true, defaultPaginator, {
+                                pattern: {
+                                    id: patterFind[0].id
+                                }
+                            })
+
+                            let generatedColumns: ColumnMeta[] = [];
+                            generatedColumns.push({ field: "name", header: "Producto" });
+                            const mappedAtr = attributesFind.map(value => ({
+                                field: value.name,
+                                header: value.name,
+                            }));
+
+                            generatedColumns = [...generatedColumns, ...mappedAtr];
+
+                             
+                            generatedColumns.push(
+                            { field: "amount", header: "Cantidad" });
+                            console.log(generatedColumns);
+                            resolve(generatedColumns);
+                        } catch (error) {
+                            reject(new Error())
+                        }
+
+                    })
                 },
             },
             {
@@ -130,10 +204,12 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
         }
     }, [submited])
 
+    const {formatDetail} = useFormats();
 
     const columns: ColumnMeta[] = [
         { field: 'nameInventory', header: 'Inventario' },
         { field: 'nameProduct', header: 'Producto' },
+        { field: "details", header: 'Detalle', format: formatDetail},
         { field: 'amount', header: 'Cantidad' },
         { field: 'unitaryValue', header: 'Valor unitario' },
 
@@ -145,6 +221,14 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
 
         setControls([...formControls]);
         if (valid) {
+            const subProductId = saleToRegister.kindOfProduct.id;
+            delete saleToRegister.kindOfProduct.amount;
+            delete saleToRegister.kindOfProduct.characteristics;
+            delete saleToRegister.kindOfProduct.id;
+            delete saleToRegister.kindOfProduct.name;
+            delete saleToRegister.kindOfProduct.product;
+
+            
             const newSale = {
                 unitaryValue: saleToRegister.unitaryValue,
                 amount: saleToRegister.amount,
@@ -152,6 +236,8 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 product: saleToRegister.product,
                 nameInventory: saleToRegister.nameinventory,
                 nameProduct: saleToRegister.nameproduct,
+                details: saleToRegister.kindOfProduct,
+                kindOfProduct: subProductId
             };
 
 
@@ -184,6 +270,11 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
             sale.user = {
                 id: getCredentials().user
             }
+
+            sale.kindOfProduct = {
+                id: sale.kindOfProduct
+            }
+
             return sale;
         })
 
