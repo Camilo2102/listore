@@ -42,20 +42,20 @@ export default function Register() {
     const selectRegisterPart = () => {
         if (part === 0) {
             return (
-                <div className="flex justify-content-center align-items-center" style={{ height: '100vh', width: '100vw' }}>
+                <div className="flex justify-content-center align-items-center" style={{ height: '100vh', width: '100vw', overflow: 'hidden' }}>
                     <div className='lg:col-6 md:col-6 col-12 lg:p-8'>
                         <RegisterUser onValidSubmit={(part, value) => handlePartialSumbit(part, value)}></RegisterUser>
                     </div>
-                    <Image src='/registerUser.svg' alt='register' style={{ maxWidth: '750px', width: '80%' }}></Image>
+                    <Image src='/registerUser.svg' alt='register' width={1800} height={1800} style={{ maxWidth: '750px', width: '80%' }}></Image>
                     <div className="lg:col-6 md:col-6 hidden md:flex justify-content-center align-items-center ">
                     </div>
                 </div>
             )
         } else {
             return (
-                <div className="flex justify-content-center align-items-center" style={{ height: '100vh', width: '100vw' }}>
+                <div className="flex justify-content-center align-items-center" style={{ height: '100vh', width: '100vw', overflow: 'hidden' }}>
                     <div className="lg:col-6 md:col-6 hidden md:flex justify-content-center align-items-center">
-                        <Image src='/registerCompany.svg' alt='register' style={{ maxWidth: '750px', width: '80%' }}></Image>
+                        <Image src='/registerCompany.svg' alt='register' width={1800} height={1800} style={{ maxWidth: '750px', width: '80%' }}></Image>
                     </div>
                     <div className='lg:col-6 md:col-6 col-12 lg:p-8'>
                         <RegisterCompany onValidSubmit={(value: any) => handleRegister(value)}></RegisterCompany>
