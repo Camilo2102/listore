@@ -46,7 +46,7 @@ export default function Register() {
                     <div className='lg:col-6 md:col-6 col-12 lg:p-8'>
                         <RegisterUser onValidSubmit={(part, value) => handlePartialSumbit(part, value)}></RegisterUser>
                     </div>
-                    <Image src='/registerUser.svg' alt='register' width={1800} height={1800} style={{ maxWidth: '750px', width: '80%' }}></Image>
+                    <img src='/registerUser.svg' alt='register' style={{ maxWidth: '750px', width: '80%' }} />
                     <div className="lg:col-6 md:col-6 hidden md:flex justify-content-center align-items-center ">
                     </div>
                 </div>
@@ -55,7 +55,7 @@ export default function Register() {
             return (
                 <div className="flex justify-content-center align-items-center" style={{ height: '100vh', width: '100vw', overflow: 'hidden' }}>
                     <div className="lg:col-6 md:col-6 hidden md:flex justify-content-center align-items-center">
-                        <Image src='/registerCompany.svg' alt='register' width={1800} height={1800} style={{ maxWidth: '750px', width: '80%' }}></Image>
+                        <img src='/registerCompany.svg' alt='register' style={{ maxWidth: '750px', width: '80%' }} />
                     </div>
                     <div className='lg:col-6 md:col-6 col-12 lg:p-8'>
                         <RegisterCompany onValidSubmit={(value: any) => handleRegister(value)}></RegisterCompany>
