@@ -25,7 +25,8 @@ export default function SalePage() {
     const {getCredentials} = AuthUtil();
     const {getValue} = StorageService();
 
-    const {formatDate, formatCurrency} = useFormats();
+    const {formatDate, formatCurrency, formatDetail} = useFormats();
+    
 
     const role = getValue("role");
 
@@ -48,6 +49,7 @@ export default function SalePage() {
     const columns: ColumnMeta[] = [
         { field: 'saleDate', header: 'Fecha de venta', format: formatDate },
         { field: 'product', header: 'Producto' },
+        { field: "details", header: 'Detalle', format: formatDetail },
         { field: 'unitaryValue', header: 'Valor unitario', format: formatCurrency },
         { field: 'amount', header: 'Cantidad' },
         { field: 'totalValue', header: 'Valor total', format: formatCurrency },
@@ -68,11 +70,18 @@ export default function SalePage() {
         }
     }, [visible])
 
+    
+    
     const customMap = (sales: any) => {
+
         const nameUser = sales.user.name;
         const nameProduct = sales.product.name;
+        const details: any = {}; 
+        sales.kindOfProduct.characteristics.forEach((res: any) => {
+           details[res.name] = res.value;
+        })
         const totalValue = sales.unitaryValue * sales.amount;
-        return { ...sales, product: nameProduct, totalValue: totalValue, nameUser: nameUser  }
+        return { ...sales, product: nameProduct, totalValue: totalValue, nameUser: nameUser , details: details }
     }
 
    
