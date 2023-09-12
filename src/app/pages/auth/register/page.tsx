@@ -16,25 +16,25 @@ import Image from "next/image";
 
 
 export default function Register() {
-    const {goToRoute}= useNavigationContext();
-    const {register} = useAuthService();
+    const { goToRoute } = useNavigationContext();
+    const { register } = useAuthService();
     const [part, setPart] = useState<number>(0);
-    const {isValidRes} = ResErrorHandler();
-    const [user, setUser] = useHandleInput<User>({active: "N", name: "", role: "M"});
-    const [credential, setCredential] = useHandleInput<CredentialModel>({mail: "", password: "", userName: ""});
-    const [company, setCompany] = useHandleInput<Company>({name: "", description: "", phone: ""});
+    const { isValidRes } = ResErrorHandler();
+    const [user, setUser] = useHandleInput<User>({ active: "N", name: "", role: "M" });
+    const [credential, setCredential] = useHandleInput<CredentialModel>({ mail: "", password: "", userName: "" });
+    const [company, setCompany] = useHandleInput<Company>({ name: "", description: "", phone: "" });
     const [submited, setSubmited] = useState<boolean>();
-    const {showSuccess} = useToastContext();
+    const { showSuccess } = useToastContext();
 
 
     const handlePartialSumbit = (part: number, value: any) => {
         setPart(part);
-        const {name, userName, mail} = value;
-        setUser({name});
-        setCredential({userName, mail, password: null});
+        const { name, userName, mail } = value;
+        setUser({ name });
+        setCredential({ userName, mail, password: null });
     }
 
-    const handleRegister = (value:any) => {
+    const handleRegister = (value: any) => {
         setCompany(value);
         setSubmited(true);
     }
@@ -46,8 +46,8 @@ export default function Register() {
                     <div className='lg:col-6 md:col-6 col-12 lg:p-8'>
                         <RegisterUser onValidSubmit={(part, value) => handlePartialSumbit(part, value)}></RegisterUser>
                     </div>
-                    <img src='/registerUser.svg' alt='register' style={{ maxWidth: '750px', width: '80%' }} />
                     <div className="lg:col-6 md:col-6 hidden md:flex justify-content-center align-items-center ">
+                        <img src='/registerUser.svg' alt='register' style={{ maxWidth: '750px', width: '80%' }} />
                     </div>
                 </div>
             )
@@ -66,14 +66,14 @@ export default function Register() {
     }
 
     useEffect(() => {
-        if(submited){
-            register({user: user, credential: credential, company: company}).then(
+        if (submited) {
+            register({ user: user, credential: credential, company: company }).then(
                 res => {
-                    if(!isValidRes(res)){
+                    if (!isValidRes(res)) {
                         return;
-                     }
+                    }
                     showSuccess(Messages.MESSAGE_SUCCESS, "Creado con exito");
-                    goToRoute("/pages/auth/passwordChange?token="+res.temporalToken);
+                    goToRoute("/pages/auth/passwordChange?token=" + res.temporalToken);
                 }
             )
             setSubmited(false)
@@ -84,6 +84,6 @@ export default function Register() {
 
 
     return (
-       selectRegisterPart()
+        selectRegisterPart()
     )
 }
