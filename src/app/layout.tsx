@@ -1,32 +1,31 @@
 'use client';
 
-import "primereact/resources/themes/lara-light-indigo/theme.css";     
-    
-import "primereact/resources/primereact.min.css";         
+import "./theme.css";
+
+import "primereact/resources/primereact.min.css";
+
+import 'primeicons/primeicons.css';
 
 import 'primeflex/primeflex.css';
-
-import { useEffect, useRef} from 'react';
-import { Toast } from 'primereact/toast';
-import { ToastService } from './services/toastService';
+import { AuthProvider } from "./context/authContext";
+import { LoadingProvider } from "./context/loadingContext";
+import { useEffect } from "react";
+import { NavigationProvider } from "./context/navigationContext";
+import GlobalProviders from "./providers/globalProviders";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const toast = useRef<Toast>(null);
-
-  useEffect(() => {
-    ToastService.initializeToast(toast);
-  }, [])
 
 
   return (
     <html lang="en">
-      <body>
-        <Toast ref={toast} />
-        {children}
+      <body className="p-0 m-0">
+        <GlobalProviders>
+          {children}
+        </GlobalProviders>
       </body>
     </html>
   )
