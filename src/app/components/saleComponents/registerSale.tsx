@@ -176,7 +176,6 @@ export default function RegisterSale({ visible, setVisible }: { visible: boolean
                 invalid: false,
                 message: true,
                 icon: "pi-dollar",
-                disabled: true
             },
             {
                 field: "amount",

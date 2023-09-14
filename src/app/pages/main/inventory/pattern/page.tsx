@@ -73,7 +73,7 @@ export default function PatternPage(){
                     <Button onClick={handleNewPattern} label="Nuevo" icon="pi pi-box"></Button>
                 </div>
             <div className="col-12 flex justify-content-center">
-                    <TableGeneral columns={columns} baseFilter={patternFilter} endpoint={Endpoints.PATTERN} onRowSelect={handleSelection} showRepotGenerator={false} ></TableGeneral>
+                    <TableGeneral columns={columns} baseFilter={patternFilter} endpoint={Endpoints.PATTERN} onRowSelect={handleSelection} showRepotGenerator={false}  ></TableGeneral>
                 </div>
            </div>
            {visible && <RegisterPattern visible={visible} setVisible={setVisible}/>}
