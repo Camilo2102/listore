@@ -38,7 +38,7 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
             validators: [requiered, maxLenght(60), minLenght(3)],
             invalid: false,
             message: true,
-            icon: "pi-user"
+            icon: "pi-tag"
          },
          {
             field: "description",
@@ -46,7 +46,7 @@ export default function RegisterInventory({ inventorySelected, visible, setVisib
             description: "Descripción",
             colSize: 12,
             type: FormTypes.INPUT,
-            validators: [requiered, maxLenght(200), minLenght(3)],
+            validators: [requiered, maxLenght(300), minLenght(3)],
             invalid: false,
             message: true,
             icon: "pi-pencil"

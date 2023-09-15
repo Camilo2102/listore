@@ -65,7 +65,7 @@ export default function RegisterProduct({ inventorySelected, visible, setVisible
             validators: [requiered, maxLenght(60), minLenght(3)],
             invalid: false,
             message: true,
-            icon: "pi-user"
+            icon: "pi-tag"
          },
          {
             field: "unitaryValue",
