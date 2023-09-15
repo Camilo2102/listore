@@ -6,7 +6,8 @@ import { useToastContext } from "../context/toastContext";
 import AuthUtil from "./utils/authUtils";
 
 export default function useHttpFactory() {
-    const APIURL = "https://listore-backend.onrender.com/";
+    const APIURL = "http://localhost:7879/";
+    //const APIURL = "https://listore-backend.onrender.com/";
 
     const { authorized, setAuthorized } = useAuthContext();
     const {getCredentials} = AuthUtil(); 

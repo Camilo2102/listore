@@ -74,6 +74,8 @@ export default function TableFilter({filter, setFilter}: {filter: FilterMeta, se
     return (
         <>
         <OverlayPanel ref={overlayRef}>
+        <h2 style={{ textAlign: 'center' }}>Filtros</h2>
+
                 <FormGenerator buttonLabel="Filtrar" setValue={setTempFilter} value={tempFilter} form={form} submit={handleApplyFilters}></FormGenerator>
             </OverlayPanel>
             <div className="flex justify-content-center align-items-center gap-2">

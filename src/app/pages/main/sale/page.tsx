@@ -20,27 +20,31 @@ export default function SalePage() {
     const { product } = useProductContext();
 
     const [visible, setVisible] = useState<boolean>(false);
-    
-    const { setReloadData } = useTableContext();
-    const {getCredentials} = AuthUtil();
-    const {getValue} = StorageService();
 
-    const {formatDate, formatCurrency, formatDetail} = useFormats();
-    
+    const { setReloadData } = useTableContext();
+    const { getCredentials } = AuthUtil();
+    const { getValue } = StorageService();
+
+    const { formatDate, formatCurrency, formatDetail } = useFormats();
+
 
     const role = getValue("role");
 
     const saleFilter: FilterMeta = {
         values: [
-            {field: "unitaryValue", label: "Valor Unitario", value: 0},
-            {field: "amount", label: "Cantidad", value: 0},
-            {field: "initialDate", label: "Fecha Inicial", value: null},
-            {field: "finalDate", label: "Fecha Final", value: null},
+            { field: "unitaryValue", label: "Valor Unitario", value: 0 },
+            { field: "amount", label: "Cantidad", value: 0 },
+            { field: "initialDate", label: "Fecha Inicial", value: null },
+            { field: "finalDate", label: "Fecha Final", value: null },
         ],
         required: {
             user: {
                 id: role === 'M' || role === 'C' ? undefined : getCredentials().user,
-            }
+                company: {
+                    id: getCredentials().company
+                },
+            },
+
         },
     }
 
@@ -54,8 +58,8 @@ export default function SalePage() {
         { field: 'amount', header: 'Cantidad' },
         { field: 'totalValue', header: 'Valor total', format: formatCurrency },
         ...(role === 'M' || role === 'C'
-        ? [{ field: 'nameUser', header: 'Usuario'}]:[] 
-    ),
+            ? [{ field: 'nameUser', header: 'Usuario' }] : []
+        ),
     ];
 
 
@@ -65,27 +69,27 @@ export default function SalePage() {
     }
 
     useDidMountEffect(() => {
-        if(!visible){
+        if (!visible) {
             setReloadData(true);
         }
     }, [visible])
 
-    
-    
+
+
     const customMap = (sales: any) => {
 
         const nameUser = sales.user.name;
         const nameProduct = sales.product.name;
-        const details: any = {}; 
+        const details: any = {};
         sales.kindOfProduct.characteristics.forEach((res: any) => {
-           details[res.name] = res.value;
+            details[res.name] = res.value;
         })
         const totalValue = sales.unitaryValue * sales.amount;
-        return { ...sales, product: nameProduct, totalValue: totalValue, nameUser: nameUser , details: details }
+        return { ...sales, product: nameProduct, totalValue: totalValue, nameUser: nameUser, details: details }
     }
 
-   
-    
+
+
     return (
         <>
             <div className="flex justify-content-center align-items-center" style={{ minHeight: '100vh', overflowY: 'auto' }}>
