@@ -1,7 +1,7 @@
 export class Endpoints {
     public static readonly INVENTORY: string = "inventory";
     public static readonly PRODUCT: string = "product";
-    public static readonly USER: string = "user";
+    public static readonly USER: string = "listoreUser";
     public static readonly SUPPLIER: string = "supplier";
     public static readonly SPENT: string = "spent";
     public static readonly ATTRIBUTES: string = "atributes";
