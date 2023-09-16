@@ -15,6 +15,8 @@ import FilterMeta from "@/app/interfaces/filterMeta";
 import { useFormats } from "@/app/constants/formatConstants";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 import AuthUtil from "@/app/hooks/utils/authUtils";
+import StorageService from "@/app/hooks/services/storageService";
+import { FormTypes } from "@/app/constants/formTypeConstant";
 
 export default function BuyPage() {
     const { product, setProduct } = useProductContext();
@@ -22,34 +24,73 @@ export default function BuyPage() {
 
     const { reloadData, setReloadData } = useTableContext();
 
-    const {formatDate, formatCurrency, formatDetail} = useFormats();
+    const { formatDate, formatCurrency, formatDetail } = useFormats();
 
     const [visible, setVisible] = useState<boolean>(false);
-    const {getCredentials} = AuthUtil();
+    const { getCredentials } = AuthUtil();
 
-    const buyFilter: FilterMeta ={
-        values:[
-            {field: "price", label: "Precio", value: 0},
-            {field: "amount", label: "Cantidad", value: 0},
-            {field: "initialDate", label: "Fecha Inicial", value: null},
-            {field: "finalDate", label: "Fecha Final", value: null},
-        ],
-        required:{
+
+    const { getValue } = StorageService();
+    const role = getValue("role");
+
+    const buyFilter: FilterMeta = {
+        values: [
+            { field: "price", label: "Precio", value: 0 },
+            { field: "amount", label: "Cantidad", value: 0 },
+            { field: "initialDate", label: "Fecha Inicial", value: null },
+            { field: "finalDate", label: "Fecha Final", value: null },
+            ...(role === 'M' || role === 'C'
+            ? [{
+                field: "user", label: "Usuario", value: null, formControl: {
+                    field: "user",
+                    value: "",
+                    description: "Usuario",
+                    colSize: 12,
+                    type: FormTypes.INPUTHELPER,
+                    validators: [],
+                    invalid: false,
+                    message: true,
+                    columns: [
+                        { field: 'name', header: 'Nombre' },
+                    ],
+                    icon: "pi-user",
+                    service: Endpoints.USER,
+                    filter: {
+                        values: [],
+                        required: {
+                            company: {
+                                id: getCredentials().company
+                            },
+                        }
+                    },
+                },
+            }
+
+            ] : []
+        ),
+    ],
+        required: {
             user: {
-                id: getCredentials().user,
+                id: role === 'M' || role === 'C' ? undefined : getCredentials().user,
+                company: {
+                    id: getCredentials().company
+                },
             }
         }
 
     }
-    const {setBuy} = useContext(buyContext);
-    
-    const columns: ColumnMeta[]=[
-        {field: 'buyDate', header: 'Fecha de compra', format: formatDate},
-        {field: 'nameProduct', header: 'Producto' },
+    const { setBuy } = useContext(buyContext);
+
+    const columns: ColumnMeta[] = [
+        { field: 'buyDate', header: 'Fecha de compra', format: formatDate },
+        { field: 'nameProduct', header: 'Producto' },
         { field: "details", header: 'Detalle', format: formatDetail },
-        {field: 'price', header: 'Precio', format: formatCurrency},
-        {field: 'amount', header: 'Cantidad'},
-        {field: 'totalValue', header: 'Valor total', format: formatCurrency }
+        { field: 'price', header: 'Precio', format: formatCurrency },
+        { field: 'amount', header: 'Cantidad' },
+        { field: 'totalValue', header: 'Valor total', format: formatCurrency },
+        ...(role === 'M' || role === 'C'
+            ? [{ field: 'nameUser', header: 'Usuario' }] : []
+        ),
     ];
 
     const handleNewBuy = () => {
@@ -58,27 +99,28 @@ export default function BuyPage() {
     }
 
     useDidMountEffect(() => {
-        if(!visible){
+        if (!visible) {
             setReloadData(true);
         }
     }, [visible])
 
-    const customMap = (buys: any) =>{
+    const customMap = (buys: any) => {
+        const nameUser = buys.user.name;
         const nameProduct = buys?.kindOfProduct?.product?.name;
 
-        const details: any = {}; 
+        const details: any = {};
         buys.kindOfProduct.characteristics.forEach((res: any) => {
-           details[res.name] = res.value;
+            details[res.name] = res.value;
         })
 
         const totalValue = buys.price * buys.amount;
-        return {...buys, nameProduct: nameProduct, totalValue: totalValue, details: details,}
+        return { ...buys, nameProduct: nameProduct, totalValue: totalValue, details: details, nameUser: nameUser, }
     }
 
 
     return (
         <>
-            <div className="flex justify-content-center align-items-center" style={{  minHeight: '100vh', overflowY: 'auto'  }}>
+            <div className="flex justify-content-center align-items-center" style={{ minHeight: '100vh', overflowY: 'auto' }}>
                 <div className="grid" style={{ width: '90%' }}>
                     <TitleTables title="Compras"></TitleTables>
                     <div className="col-12 flex justify-content-start">

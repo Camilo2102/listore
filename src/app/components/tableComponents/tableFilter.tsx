@@ -17,13 +17,21 @@ const chipGenerator = (filter: FilterMeta, setFilter: (partialT: Partial<any>) =
     const {validateDate, formatFullDate} = DateUtil();
         const handleChipRemove = (key: string) => {
             filter.values.forEach(value => {
+
+                if(value.formControl){
+                    delete filter.required[value.field].id 
+                    value.formControl.value = undefined
+                    return
+
+                }
+
                 if(value.field === key){
                     const asignValue = validateDate(value.value) ? null : "";
                     value.value = asignValue;
                     setTempFilter({[key]:  asignValue});
                 }
             });
-            setFilter({values: filter.values});
+            setFilter({values: filter.values, required: filter.required});
             
         }
 
@@ -44,6 +52,9 @@ export default function TableFilter({filter, setFilter}: {filter: FilterMeta, se
 
     const generatedControls = useGeneratedForm(filter as FilterMeta);
 
+    const [control, setControl] = useState(generatedControls); 
+    
+
     const [applyFilters, setApplyFilters] = useState<boolean>(false);
 
     const handleApplyFilters = (e: FormEvent<HTMLFormElement>) => {
@@ -51,7 +62,7 @@ export default function TableFilter({filter, setFilter}: {filter: FilterMeta, se
         setApplyFilters(true);
     }
 
-    const [tempFilter, form, setTempFilter, validateFormControls] = useHandleForm(generatedControls);
+    const [tempFilter, form, setTempFilter, validateFormControls] = useHandleForm(control);
 
     useEffect(() => {
         if(applyFilters){
@@ -59,7 +70,7 @@ export default function TableFilter({filter, setFilter}: {filter: FilterMeta, se
             filter.values.forEach(value => {
                 Object.keys(tempFilter).forEach((key) => {
                     if(key === value.field){
-                        value.value = tempFilter[key]
+                        value.value = tempFilter[key]?.name ?? tempFilter[key]
                     }
                 });
             })
@@ -67,6 +78,8 @@ export default function TableFilter({filter, setFilter}: {filter: FilterMeta, se
             setFilter({values: [...filter.values]});
             (overlayRef.current as any).toggle("");
             setApplyFilters(false);
+            const [validateForms, isValid] = validateFormControls()
+            setControl([...validateForms])
         }
         //eslint-disable-next-line
     },[applyFilters])

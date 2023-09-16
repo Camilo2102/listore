@@ -192,7 +192,22 @@ export default function TableGeneral({ useFilter = true, columns, gridLines, str
   );
 
   const getData = (filter: any) => {
-    getAllByFilter(true, paginator, filter).then(res => {
+
+    const adjustedFilter = { ...filter };
+
+    // se itera sobre las claves del filtro
+    for (const key in adjustedFilter) {
+        if (adjustedFilter.hasOwnProperty(key) && adjustedFilter[key] === 0) {
+            // Si el valor es 0, lo reemplazamos con null
+            adjustedFilter[key] = null;
+        }
+    }
+
+    setFilter(adjustedFilter)
+    
+  
+
+    getAllByFilter(true, paginator, adjustedFilter).then(res => {
       if (!isValidRes(res)) {
         return;
       }
@@ -210,6 +225,7 @@ export default function TableGeneral({ useFilter = true, columns, gridLines, str
   }
 
   const countData = (filter: any) => {
+    
     countAllByFilter(true, filter).then(res => {
       if (!isValidRes(res)) {
         return;
@@ -226,6 +242,9 @@ export default function TableGeneral({ useFilter = true, columns, gridLines, str
       const parsedFilter = parseToFilter(filter);
 
       getData(parsedFilter);
+
+      
+
     }
     //eslint-disable-next-line
   }, [paginator, reloadData])

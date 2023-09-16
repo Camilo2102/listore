@@ -15,6 +15,9 @@ import { useFormats } from "@/app/constants/formatConstants";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 import AuthUtil from "@/app/hooks/utils/authUtils";
 import StorageService from "@/app/hooks/services/storageService";
+import { FormTypes } from "@/app/constants/formTypeConstant";
+import FormControl from "@/app/models/formModels/formControl";
+import useValidators from "@/app/models/formModels/validators";
 
 export default function SalePage() {
     const { product } = useProductContext();
@@ -30,13 +33,46 @@ export default function SalePage() {
 
     const role = getValue("role");
 
+
+
+
     const saleFilter: FilterMeta = {
         values: [
             { field: "unitaryValue", label: "Valor Unitario", value: 0 },
             { field: "amount", label: "Cantidad", value: 0 },
             { field: "initialDate", label: "Fecha Inicial", value: null },
             { field: "finalDate", label: "Fecha Final", value: null },
+            ...(role === 'M' || role === 'C'
+                ? [{
+                    field: "user", label: "Usuario", value: null, formControl: {
+                        field: "user",
+                        value: "",
+                        description: "Usuario",
+                        colSize: 12,
+                        type: FormTypes.INPUTHELPER,
+                        validators: [],
+                        invalid: false,
+                        message: true,
+                        columns: [
+                            { field: 'name', header: 'Nombre' },
+                        ],
+                        icon: "pi-user",
+                        service: Endpoints.USER,
+                        filter: {
+                            values: [],
+                            required: {
+                                company: {
+                                    id: getCredentials().company
+                                },
+                            }
+                        },
+                    },
+                }
+
+                ] : []
+            ),
         ],
+
         required: {
             user: {
                 id: role === 'M' || role === 'C' ? undefined : getCredentials().user,
