@@ -252,7 +252,7 @@ export default function TableGeneral({ useFilter = true, columns, gridLines, str
 
   return (
     <div style={{ width: '100%' }}>
-      <DataTable loading={loadingData} lazy header={header} rowsPerPageOptions={[5, 10, 25, 50]} paginatorTemplate={paginator.totalRecords > 10 ? "RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink" : ''} currentPageReportTemplate="{first} a {last} de {totalRecords}" first={paginator.first} selectionMode="single" onRowSelect={onRowSelect} metaKeySelection={false} onPage={setPage} paginator rows={paginator.rows} totalRecords={paginator.totalRecords} style={{ borderRadius: '5px' }} showGridlines={gridLines} stripedRows={true} value={staticValues ?? values} removableSort={columns.some(column => column.sortable)}>
+      <DataTable scrollable scrollHeight="55vh" loading={loadingData} lazy header={header} rowsPerPageOptions={[5, 10, 25, 50]} paginatorTemplate={paginator.totalRecords > 10 ? "RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink" : ''} currentPageReportTemplate="{first} a {last} de {totalRecords}" first={paginator.first} selectionMode="single" onRowSelect={onRowSelect} metaKeySelection={false} onPage={setPage} paginator rows={paginator.rows} totalRecords={paginator.totalRecords} style={{ borderRadius: '5px' }} showGridlines={gridLines} stripedRows={true} value={staticValues ?? values} removableSort={columns.some(column => column.sortable)}>
         {generateColumns()}
       </DataTable>
     </div>
