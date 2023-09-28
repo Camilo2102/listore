@@ -9,6 +9,7 @@ import { useAuthContext } from '../context/authContext';
 import { useNavigationContext } from '../context/navigationContext';
 import navBarItemMeta from '../interfaces/navBarItemMeta';
 import StorageService from '../hooks/services/storageService';
+import InformGeneratorPopUp from "@/app/components/informGeneratorComponents/informGeneratePopUp";
 
 export default function NavBar() {
     const {getValue} = StorageService();
@@ -138,7 +139,9 @@ export default function NavBar() {
 
             <div className={`navbar-container ${navBarVisible ? 'visible' : ''}`}>
                 <div className="navbar-icons-container" onClick={() => screenWidth <= 767 && toggleNavBarVisibility()}>
-
+                    <div className="flex justify-content-center align-items-center">
+                        <img src="/listoreIcon.png" alt="ListoreLogo" style={{maxWidth: "40%", padding: "0.75rem 0"}}/>
+                    </div>
                     {filteredItems.map((item, index) => (
                         <Button key={index} icon={item.icon}
                             title={item.label}
@@ -150,6 +153,8 @@ export default function NavBar() {
                     ))}
                 </div>
                 <div className="navbar-power-off-container">
+                    <InformGeneratorPopUp screenWidth={screenWidth} />
+
                     <Button
                         icon="pi pi-power-off"
                         className="navbar-icon2"
