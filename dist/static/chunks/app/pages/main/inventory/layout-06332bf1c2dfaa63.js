@@ -1,9 +1,0 @@
-(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[568],{16273:function(e,t,r){Promise.resolve().then(r.bind(r,24507))},45770:function(e,t,r){"use strict";function n(){return{saveValue:(e,t)=>{localStorage.setItem(e,t)},getValue:e=>localStorage.getItem(e),deleteValue:e=>{localStorage.removeItem(e)},deleteStorage:()=>{localStorage.clear()}}}r.d(t,{Z:function(){return n}})},73855:function(e,t,r){"use strict";r.d(t,{W:function(){return u}});var n=r(86006),o=r(45770);let u=e=>{let{getValue:t,deleteValue:r,saveValue:u}=(0,o.Z)(),[l,a]=(0,n.useState)(null!==t(e)?JSON.parse(t(e)):void 0);return[l,t=>{if(a(t),void 0===t)return r(e);u(e,JSON.stringify(t))}]}},24507:function(e,t,r){"use strict";r.r(t),r.d(t,{default:function(){return a}});var n=r(9268),o=r(86006);let u=(0,o.createContext)({});var l=r(73855);function a(e){let{children:t}=e,[r,o]=(0,l.W)("inventory");return(0,n.jsx)(u.Provider,{value:{inventory:r,setInventory:o},children:t})}},83177:function(e,t,r){"use strict";/**
- * @license React
- * react-jsx-runtime.production.min.js
- *
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */var n=r(86006),o=Symbol.for("react.element"),u=Symbol.for("react.fragment"),l=Object.prototype.hasOwnProperty,a=n.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,i={key:!0,ref:!0,__self:!0,__source:!0};function c(e,t,r){var n,u={},c=null,f=null;for(n in void 0!==r&&(c=""+r),void 0!==t.key&&(c=""+t.key),void 0!==t.ref&&(f=t.ref),t)l.call(t,n)&&!i.hasOwnProperty(n)&&(u[n]=t[n]);if(e&&e.defaultProps)for(n in t=e.defaultProps)void 0===u[n]&&(u[n]=t[n]);return{$$typeof:o,type:e,key:c,ref:f,props:u,_owner:a.current}}t.Fragment=u,t.jsx=c,t.jsxs=c},9268:function(e,t,r){"use strict";e.exports=r(83177)}},function(e){e.O(0,[253,769,744],function(){return e(e.s=16273)}),_N_E=e.O()}]);
