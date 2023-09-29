@@ -13,7 +13,7 @@ export default function useCRUDFactory<T>(baseUrl: string){
      */
     const getAll = (secure: boolean = true, filter: T): Promise<T[]> => {
         const petitioRoute: string = baseUrl + Routes.GET_ALL_BY_FILTER;
-        return httpPost(petitioRoute, secure, filter);
+        return httpPost(petitioRoute, secure, [filter]);
     }
 
     /**

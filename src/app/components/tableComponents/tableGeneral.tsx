@@ -22,6 +22,7 @@ import useDeepCopy from "@/app/hooks/useDeepCopy";
 import { useLoading } from "@/app/context/loadingContext";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
 import { parseToFilter } from "@/app/hooks/utils/selectionUtil";
+import useExport from "@/app/hooks/useExport";
 
 
 export default function TableGeneral({ useFilter = true, columns, gridLines, stripedRows, onRowSelect, showRepotGenerator = true, endpoint, baseFilter, customMap, staticValues, name = "exportacion" }: { useFilter?: boolean, columns: ColumnMeta[], gridLines?: boolean, stripedRows?: boolean, onRowSelect?: (e: DataTableSelectEvent) => void, showRepotGenerator?: boolean, endpoint?: string, baseFilter?: FilterMeta, customMap?: (value: any) => any, staticValues?: any[], name?: string }) {
@@ -121,60 +122,7 @@ export default function TableGeneral({ useFilter = true, columns, gridLines, str
     ));
   };
 
-
-  const usefulColumns = useMemo(() =>
-    columns.filter(column => !(column.field === "supplier" || column.field === "CRUDupdate" || column.field === "CRUDdelete" || column.field === "buy" || column.field === "sale" || column.field === "pattern")),
-    [columns]
-  );
-
-  const exportColumns = useMemo(() =>
-    usefulColumns.map(column => column.header),
-    [usefulColumns]
-  );
-
-  const exportValues = useMemo(() =>
-    values.map((obj: { [x: string]: any }) => usefulColumns.map(item => obj[item.field])),
-    [values, usefulColumns]
-  );
-
-
-  const exportPdf = () => {
-
-    const doc = new jsPDF('p', 'mm', 'a4');
-
-    autoTable(doc, {
-      head: [exportColumns],
-      body: exportValues,
-    });
-
-    doc.save(`${name}.pdf`);
-  }
-
-
-  const exportToExcel = () => {
-
-    const exportData = exportValues.map((subArray: any[]) => {
-      const rowData: { [key: string]: any } = {};
-      exportColumns.forEach((column, index) => {
-        if (column.toLowerCase().includes('fecha') || column.toLowerCase().includes('date')) { // El título de la columna debe tener la palabra fecha
-          const dateArray = subArray[index] as number[];
-          const dateObject = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5]);
-          rowData[column] = dateObject;
-        } else {
-          rowData[column] = subArray[index] as any;
-        }
-      });
-      return rowData;
-    });
-
-    const worksheet = XLSX.utils.json_to_sheet(exportData, { header: exportColumns });
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja 1');
-    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    saveAs(blob, `${name}.xlsx`);
-  };
-
+  const {exportToExcel, exportPdf} = useExport(columns, values, name);
   const handleFilterChange = (partialT: Partial<any>) => {
     setFilter(partialT);
     setPaginator({ loaded: false })
