@@ -18,16 +18,17 @@ import AuthUtil from "@/app/hooks/utils/authUtils";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
 
 import { useToastContext } from "@/app/context/toastContext";
+import PopUp from "../popUp";
 
 
-export default function RegisterWorker({ userSelected }: { userSelected?: User }) {
-    const {registerUser} = useAuthService();
-    const {update} = useCRUDService(Endpoints.USER);
-    const {goToRoute}= useNavigationContext();
-    const {getCredentials} = AuthUtil();
-    const {isValidRes} = ResErrorHandler();
-    const {showSuccess, showError} = useToastContext();
-    const {requiered, maxLenght, minLenght} = useValidators();
+export default function RegisterWorker({ userSelected, visible, setVisible }: { userSelected?: User, visible: boolean, setVisible: (partialT: Partial<boolean>) => void }) {
+    const { registerUser } = useAuthService();
+    const { update } = useCRUDService(Endpoints.USER);
+    const { goToRoute } = useNavigationContext();
+    const { getCredentials } = AuthUtil();
+    const { isValidRes } = ResErrorHandler();
+    const { showSuccess, showError } = useToastContext();
+    const { requiered, maxLenght, minLenght } = useValidators();
     const [submited, setSubmited] = useState<boolean>(false);
     const [workerToRegister, setWorkerToRegister] = useState<User>({
         name: "",
@@ -58,7 +59,7 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
                 invalid: false,
                 message: true,
                 icon: "pi-user",
-                disabled: userSelected !== undefined
+                
             },
             {
                 field: "userName",
@@ -70,7 +71,8 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
                 invalid: false,
                 message: true,
                 icon: "pi-user",
-                disabled: userSelected !== undefined
+                disabled: userSelected !== undefined,
+                
             },
             {
                 field: "mail",
@@ -82,7 +84,8 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
                 validators: [requiered, maxLenght(36), minLenght(3)],
                 invalid: false,
                 message: true,
-                disabled: userSelected !== undefined
+                disabled: userSelected !== undefined,
+               
             },
             {
                 field: "role",
@@ -120,8 +123,8 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
                 setWorkerToRegister(
                     {
                         id: workerToRegister.id ? workerToRegister.id : undefined,
-                        name, 
-                        role, 
+                        name,
+                        role,
                         active: userSelected ? 'S' : "N",
                         credential: {
                             id: workerToRegister.credential?.id ? workerToRegister.credential?.id : undefined,
@@ -144,11 +147,12 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
     const registerNewWorker = () => {
         registerUser(workerToRegister).then(
             res => {
-                if(!isValidRes(res)){
+                if (!isValidRes(res)) {
                     return;
-                 }
+                }
                 showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_CREATE_SUCCESS);
-                goToRoute("/pages/main/user")
+                setVisible(false);
+                
             }
         );
     }
@@ -156,38 +160,51 @@ export default function RegisterWorker({ userSelected }: { userSelected?: User }
     const updateWorker = () => {
         update(true, workerToRegister).then(
             res => {
-                if(!isValidRes(res)){
+                if (!isValidRes(res)) {
                     return;
-                 }
+                }
                 showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_UPDATE_SUCCESS);
-                goToRoute("/pages/main/user")
+               setVisible(false);
             }
         )
     }
 
     useEffect(() => {
+ 
         if (!submited && userSelected) {
-            setWorkerToRegister(userSelected);
-            setUser(userSelected);
-            return;
+          setWorkerToRegister(userSelected);
+      
+          // Comprobaciones de nulidad para userSelected.credential
+          const userName = userSelected.credential?.userName || '';
+          const mail = userSelected.credential?.mail || '';
+      
+          setUser({
+            ...user,
+            name: userSelected.name || '',
+            role: userSelected.role || '',
+            userName: userName,
+            mail: mail,
+          });
+          return;
         }
         if (submited) {
-            if(userSelected === undefined){
-                registerNewWorker();
-            } else {
-                updateWorker();
-            }
+          if (userSelected === undefined) {
+            registerNewWorker();
+          } else {
+            updateWorker();
+          }
         }
         //eslint-disable-next-line
-    }, [submited])
+      }, [submited]);
+      
 
 
     return (
-        <div className="lg:p-6 md:p-10 p-4">
-            <Container title="Registro de trabajador" >
-                <FormGenerator buttonLabel={userSelected === undefined ? 'Guardar' : 'Actualizar'} update={userSelected === undefined} form={form} value={user} setValue={setUser} submit={handleRegisterWorker}></FormGenerator>
-            </Container>
-        </div>
-        
+        <>
+            <PopUp title="Registro de trabajadores" visible={visible} setVisible={setVisible}>
+                <FormGenerator form={form} value={user} setValue={setUser} submit={handleRegisterWorker} buttonLabel="Crear"></FormGenerator>
+            </PopUp >
+        </>
+
     )
 }

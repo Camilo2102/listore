@@ -82,7 +82,7 @@ export default class Form {
      * @param values los valores a parchar dentro de los formcontrols
      */
     public pathValue(values: any) {
-        this.formControls.forEach(control => {
+        this.formControls.forEach(control => {            
             if (values.hasOwnProperty(control.field)) {
                 control.value = values[control.field];
             }

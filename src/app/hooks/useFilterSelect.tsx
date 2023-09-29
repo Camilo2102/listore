@@ -8,14 +8,14 @@ import DateUtil from "./utils/dateUtils";
 
 const convertToInputText = (field: string, description: string) => {
   //eslint-disable-next-line
-  const {requiered, maxLenght, minLenght} = useValidators();
+  
   return {
     field: field,
     value: "",
     description: description,
     colSize: 12,
     type: FormTypes.INPUT,
-    validators: [requiered, maxLenght(60), minLenght(3)],
+    validators: [],
     invalid: false,
     message: true,
   }
@@ -23,14 +23,14 @@ const convertToInputText = (field: string, description: string) => {
 
 const convertToInputNumber = (field: string, description: string) => {
   //eslint-disable-next-line
-  const {requiered, maxLenght, minLenght} = useValidators();
+  
   return {
     field: field,
     value: 0,
     description: description,
     colSize: 12,
     type: FormTypes.NUMBER,
-    validators: [requiered, maxLenght(60), minLenght(3)],
+    validators: [],
     invalid: false,
     message: true,
   }
@@ -38,14 +38,14 @@ const convertToInputNumber = (field: string, description: string) => {
 
 const convertToInputDate = (field: string, description: string) => {
   //eslint-disable-next-line
-  const {requiered, maxLenght, minLenght} = useValidators();
+  
   return {
     field: field,
     value: null,
     description: description,
     colSize: 12,
     type: FormTypes.DATE,
-    validators: [requiered],
+    validators: [],
     invalid: false,
     message: true,
   }
@@ -61,7 +61,11 @@ export default function useGeneratedForm(filter: FilterMeta) {
 
       const description = value.label;
       const key = value.field;
+      if (value.formControl){
+        controls.push(value.formControl)
+        return
 
+      }
       const selectedInput = selectInputFromType(valueType, key, description);
       if (selectedInput) {
         controls.push(selectedInput);

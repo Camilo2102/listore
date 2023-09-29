@@ -7,13 +7,13 @@ export default function useCRUDFactory<T>(baseUrl: string){
 
     /**
      * Obtiene la peticion para traer todos los elementos de un objeto T
-     * @param baseUrl la url basica para hacer la peticion
      * @param secure indica si requiere token, por defecto es true
+     * @param filter
      * @returns la peticion lista que trae los objetos de un elemento T
      */
-    const getAll = (secure: boolean = true): Promise<T[]> => {
-        const petitioRoute: string = baseUrl + Routes.GET_ALL_ROUTE;
-        return httpGet(petitioRoute, secure);
+    const getAll = (secure: boolean = true, filter: T): Promise<T[]> => {
+        const petitioRoute: string = baseUrl + Routes.GET_ALL_BY_FILTER;
+        return httpPost(petitioRoute, secure, [filter]);
     }
 
     /**
@@ -56,7 +56,7 @@ export default function useCRUDFactory<T>(baseUrl: string){
      * @returns  la lista de objetos filtrados
      */
     const getAllByFilter = (secure: boolean = true, paginator: Paginator, t: any): Promise<T[]> => {
-        const petitioRoute: string = baseUrl + Routes.GET_ALL_BY_FILTER + `?pageNumber=${paginator.page}&pageSize=${paginator.rows}`;
+        const petitioRoute: string = baseUrl + Routes.GET_ALL_BY_FILTER_PAGED + `?pageNumber=${paginator.page}&pageSize=${paginator.rows}`;
         return httpPost(petitioRoute, secure, [t]);
     }
 

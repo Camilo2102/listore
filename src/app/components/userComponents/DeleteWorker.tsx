@@ -1,4 +1,5 @@
 import { Messages } from "@/app/constants/messageConstant";
+import { useTableContext } from "@/app/context/tableContext";
 import { useToastContext } from "@/app/context/toastContext";
 import useAuthService from "@/app/hooks/services/useAuthService";
 import ResErrorHandler from "@/app/hooks/utils/resErrorHandler";
@@ -11,7 +12,8 @@ export default function DeleteWorker({ user, visible, setVisible }: { user: any,
     const {disableUser} = useAuthService();
     const {isValidRes} = ResErrorHandler();
     const {showSuccess} = useToastContext();
-    const footerContent = (
+    const { setReloadData } = useTableContext(); 
+    const footerContent = ( 
         <div>
             <Button label="No" icon="pi pi-times" onClick={() => setVisible(undefined)} className="p-button-text" />
             <Button label="Yes" icon="pi pi-check" onClick={() => deleteUser()} autoFocus />
@@ -25,13 +27,14 @@ export default function DeleteWorker({ user, visible, setVisible }: { user: any,
              }
             showSuccess(Messages.MESSAGE_SUCCESS, Messages.MESSAGE_SUCCESS_DISABLED)
             setVisible(undefined)
+            setReloadData(true);
         })
     }
 
     return (
-        <Dialog header="Header" footer={footerContent} visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(undefined)}>
+        <Dialog header="Deshabilitar" footer={footerContent} visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(undefined)}>
             <p className="m-0">
-               Deseas eliminar a: {user?.name}
+               Deseas deshabilitar a: {user?.name}
             </p>
         </Dialog>
 

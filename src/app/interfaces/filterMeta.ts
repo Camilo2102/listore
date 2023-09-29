@@ -1,7 +1,10 @@
-type FilterValue = {
+import FormControl from "../models/formModels/formControl";
+
+export type FilterValue = {
     field: string;
     label: string;
     value: any;
+    formControl?: FormControl;
 }
 
 

@@ -20,12 +20,13 @@ import FilterMeta from "@/app/interfaces/filterMeta";
 import { useNavigationContext } from "@/app/context/navigationContext";
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 import AuthUtil from "@/app/hooks/utils/authUtils";
+import RegisterWorker from "@/app/components/userComponents/RegisterWorker";
 
 export default function UserList() {
-    const {goToRoute}= useNavigationContext();
+    const { goToRoute } = useNavigationContext();
 
     const [users, setUsers] = useState<any[]>([]);
-    const {getCredentials} = AuthUtil();
+    const { getCredentials } = AuthUtil();
     const userFilter: FilterMeta = {
         required: {
             company: { id: getCredentials().company },
@@ -41,7 +42,7 @@ export default function UserList() {
     const { reloadData, setReloadData } = useTableContext();
     const [deleteUser, setDeleteUser] = useState<User | undefined>();
     const [visible, setVisible] = useState<boolean>(false);
-    
+
 
     const columns: ColumnMeta[] = [
         { field: 'name', header: 'Nombre', },
@@ -49,25 +50,33 @@ export default function UserList() {
         { field: 'active', header: 'Estado', values: StatusMap },
         {
             field: 'CRUDupdate', header: 'Actualizar', action: (t: any) => {
-                goToRoute("/pages/main/user/mainteance")
-                setUser(t)
+                
+                setUser(t);
+                setVisible(true);
             }
         },
         {
-            field: 'CRUDdelete', header: "Eliminar", action: (t: any) => {
+            field: 'CRUDdelete', header: "Desactivar", action: (t: any) => {
                 setDeleteUser(t);
+                setReloadData(true);
             }
         }
     ];
 
 
     useDidMountEffect(() => {
-        if(!visible){
+        if (!visible) {
             setReloadData(true);
         }
-    }, 
-    [visible])
+    },
+        [visible])
 
+
+    const handleNewWorker = () => {
+        setVisible(true);
+        setUser(undefined);
+
+    }
 
     return (
         <>
@@ -76,18 +85,17 @@ export default function UserList() {
                 <div className="grid" style={{ width: '90%' }}>
                     <TitleTables title="Usuarios"></TitleTables>
                     <div className="col-12 flex justify-content-start">
-                        <Link href={"/pages/main/user/mainteance"} >
-                            <Button onClick={() => setUser(undefined)} label="Nuevo" icon="pi pi-user-plus"></Button>
-                        </Link>
+
+                        <Button onClick={handleNewWorker} label="Nuevo" icon="pi pi-user-plus"></Button>
+
                     </div>
                     <div className="col-12 flex justify-content-center">
                         <TableGeneral baseFilter={userFilter} columns={columns} endpoint={Endpoints.USER}></TableGeneral>
                     </div>
                 </div>
-                {}
             </div>
             <DeleteWorker user={deleteUser} visible={deleteUser !== undefined} setVisible={setDeleteUser}></DeleteWorker>
-           
+            {visible && <RegisterWorker  userSelected={user} visible={visible} setVisible={setVisible} />}
         </>
     )
 }

@@ -193,7 +193,7 @@ export default function SubProductPage() {
 
     return (
         <>
-            <div className="flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+            <div className="flex justify-content-center align-items-center" style={{ height: '100vh', overflow: 'auto' }}>
                 <div className="grid" style={{ width: '90%' }}>
                     <TitleTables title="Sub-Productos"></TitleTables>
                     <div className="col-12 flex justify-content-start">

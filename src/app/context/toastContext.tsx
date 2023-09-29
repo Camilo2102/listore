@@ -31,6 +31,7 @@ export default function ToastProvider({ children }: { children: React.ReactNode 
         }
     })
 
+
     /**
      * Mostrar mensaje realizado correctamente (verde)
      * @param title titulo del mensaje

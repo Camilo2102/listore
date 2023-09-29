@@ -1,4 +1,5 @@
-import FilterMeta from "@/app/interfaces/filterMeta";
+
+import FilterMeta, { FilterValue } from "@/app/interfaces/filterMeta";
 
 
 export function validateInput(input: any) {
@@ -14,10 +15,18 @@ export function validateInput(input: any) {
 }
 
 export function parseToFilter(filter: FilterMeta) {
+  
   let object: any = {}
 
-  filter.values.forEach((value: { field: string | number; value: any; }) => {
+  filter.values.forEach((value: FilterValue) => {
+    
+    if(value.formControl){
+      filter.required[value.field].id = value.formControl.value?.id
+      return
+    }
+
     object[value.field] = value.value;
+
   })
 
   object = {
