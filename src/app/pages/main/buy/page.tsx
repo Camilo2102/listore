@@ -17,6 +17,7 @@ import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 import AuthUtil from "@/app/hooks/utils/authUtils";
 import StorageService from "@/app/hooks/services/storageService";
 import { FormTypes } from "@/app/constants/formTypeConstant";
+import DateUtil from "@/app/hooks/utils/dateUtils";
 
 export default function BuyPage() {
     const { product, setProduct } = useProductContext();
@@ -30,6 +31,7 @@ export default function BuyPage() {
     const { getCredentials } = AuthUtil();
 
 
+    const {addDaysFromNow, getInitialDate} = DateUtil();
     const { getValue } = StorageService();
     const role = getValue("role");
 
@@ -75,7 +77,9 @@ export default function BuyPage() {
                 company: {
                     id: getCredentials().company
                 },
-            }
+            },
+            initialDate: getInitialDate(),
+            finalDate: addDaysFromNow(1),
         }
 
     }

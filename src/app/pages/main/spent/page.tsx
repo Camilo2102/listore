@@ -16,6 +16,7 @@ import useDidMountEffect from "@/app/hooks/useDidMountEffect";
 import AuthUtil from "@/app/hooks/utils/authUtils";
 import StorageService from "@/app/hooks/services/storageService";
 import { FormTypes } from "@/app/constants/formTypeConstant";
+import DateUtil from "@/app/hooks/utils/dateUtils";
 
 export default function SpentPage() {
     const [visible, setVisible] = useState<boolean>(false);
@@ -23,6 +24,8 @@ export default function SpentPage() {
     const { formatDate } = useFormats();
 
     const { setReloadData } = useTableContext();
+
+    const {addDaysFromNow, getInitialDate} = DateUtil();
 
     const { getValue } = StorageService();
     const role = getValue("role");
@@ -35,6 +38,8 @@ export default function SpentPage() {
                 },
             },
             spentDate: new Date(),
+            initialDate: getInitialDate(),
+            finalDate: addDaysFromNow(1),
         },
         values: [
             { field: "price", label: "Precio", value: 0 },

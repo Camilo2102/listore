@@ -93,6 +93,10 @@ export default function DateUtil() {
       return differenceInDays(targetDate, currentDate);
     };
 
+    const getInitialDate = (): Date => {
+        return new Date(2023, 5, 20)
+    }
+
     return {
         getCurrentDate,
         validateDate,
@@ -102,7 +106,8 @@ export default function DateUtil() {
         addDaysFromNow,
         differenceInDays,
         daysFromNow,
-        daysBefore
+        daysBefore,
+        getInitialDate
     }
   }
   

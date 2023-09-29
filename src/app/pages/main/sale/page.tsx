@@ -18,6 +18,7 @@ import StorageService from "@/app/hooks/services/storageService";
 import { FormTypes } from "@/app/constants/formTypeConstant";
 import FormControl from "@/app/models/formModels/formControl";
 import useValidators from "@/app/models/formModels/validators";
+import DateUtil from "@/app/hooks/utils/dateUtils";
 
 export default function SalePage() {
     const { product } = useProductContext();
@@ -33,7 +34,7 @@ export default function SalePage() {
 
     const role = getValue("role");
 
-
+    const {addDaysFromNow, getInitialDate} = DateUtil();
 
 
     const saleFilter: FilterMeta = {
@@ -80,6 +81,8 @@ export default function SalePage() {
                     id: getCredentials().company
                 },
             },
+            initialDate: getInitialDate(),
+            finalDate: addDaysFromNow(1),
 
         },
     }
